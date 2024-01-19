@@ -1,0 +1,34 @@
+name: deploy-common
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "common/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install -y jq
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: |
+          cd common
+          CURRENT_VERSION=$(jq -r .version package.json)
+          LATEST_VERSION=$(npm show @mmgittix/common version)
+          echo "Current: $CURRENT_VERSION"
+          echo "Latest: $LATEST_VERSION"
+          if [ "$CURRENT_VERSION" != "$LATEST_VERSION" ]; then
+            npm install
+            npm run build
+            npm publish
+          else
+            echo "Skipping publish. Versions are the same."
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
