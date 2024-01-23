@@ -1,6 +1,14 @@
 import Link from "next/link";
 
+import useRequest from "../hooks/use-request";
+
 export default ({ currentUser }) => {
+  const { doRequest } = useRequest({
+    url: "/api/users/sign-out",
+    method: "post",
+    onSuccess: () => Router.push("/"),
+  });
+
   const links = (
     currentUser
       ? [
@@ -13,21 +21,32 @@ export default ({ currentUser }) => {
           { label: "Sign In", href: "/auth/sign-in" },
         ]
   ).map(({ label, href }) => (
-    <li key={href}>
-      <Link className="navbar-brand" href={href}>
+    <li key={href} className="nav-item">
+      <Link className="nav-link" href={href}>
         {label}
       </Link>
     </li>
   ));
 
   return (
-    <nav className="navbar navbar-light bg-light">
-      <div className="container">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary navbar-fixed">
+      <div className="container-fluid">
         <Link className="navbar-brand" href="/">
           Tazaker
         </Link>
-        <div className="d-flex justify-content-end">
-          <ul className="nav d-flex align-items-center">{links}</ul>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">{links}</ul>
         </div>
       </div>
     </nav>

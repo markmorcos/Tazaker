@@ -15,6 +15,9 @@ spec:
       containers:
         - name: orders
           image: markmorcos/tazaker-orders
+          envFrom:
+            - configMapRef:
+                name: global-config
           env:
             - name: MONGO_URI
               value: "mongodb://orders-mongo-srv:27017/orders"

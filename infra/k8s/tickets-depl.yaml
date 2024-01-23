@@ -15,6 +15,9 @@ spec:
       containers:
         - name: tickets
           image: markmorcos/tazaker-tickets
+          envFrom:
+            - configMapRef:
+                name: global-config
           env:
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets"

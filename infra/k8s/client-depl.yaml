@@ -15,6 +15,9 @@ spec:
       containers:
         - name: client
           image: markmorcos/tazaker-client
+          envFrom:
+            - configMapRef:
+                name: global-config
 ---
 apiVersion: v1
 kind: Service

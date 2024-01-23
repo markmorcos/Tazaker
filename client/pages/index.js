@@ -2,28 +2,28 @@ import Link from "next/link";
 
 const LandingPage = ({ tickets }) => {
   const ticketList = tickets.map(({ id, title, price }) => (
-    <tr key={id}>
-      <td>{title}</td>
-      <td>{price}</td>
-      <td>
-        <Link href={`/tickets/${id}`}>View</Link>
-      </td>
-    </tr>
+    <div key={id} className="col">
+      <div className="card shadow-sm">
+        <img className="card-img-top" src="https://placehold.it/180x100" />
+        <div className="card-body">
+          <h5 className="card-title">{title}</h5>
+          <p className="card-text">${price}</p>
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="btn-group">
+              <Link className="btn btn-primary btn-sm" href={`/tickets/${id}`}>
+                View
+              </Link>
+            </div>
+            <small className="text-body-secondary">2024-01-01</small>
+          </div>
+        </div>
+      </div>
+    </div>
   ));
 
   return (
-    <div>
-      <h1>Tickets</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>{ticketList}</tbody>
-      </table>
+    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {ticketList}
     </div>
   );
 };

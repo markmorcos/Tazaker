@@ -21,26 +21,38 @@ export default () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <h1>Sign Up</h1>
-      <div className="form-group">
-        <label>Email</label>
+      {errors}
+      <div className="mb-3">
+        <label htmlFor="email" className="form-label">
+          Email
+        </label>
         <input
+          id="email"
           className="form-control"
+          type="email"
+          aria-describedby="emailHelp"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        <div id="emailHelp" className="form-text">
+          We'll never share your email with anyone else.
+        </div>
       </div>
-      <div className="form-group">
-        <label>password</label>
+      <div className="mb-3">
+        <label htmlFor="password" className="form-label">
+          Password
+        </label>
         <input
+          id="password"
           className="form-control"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      {errors}
-      <button className="btn btn-primary">Sign Up</button>
+      <button type="submit" className="btn btn-primary">
+        Sign Up
+      </button>
     </form>
   );
 };
