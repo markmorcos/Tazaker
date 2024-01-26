@@ -15,15 +15,13 @@ const TicketRead = ({ ticket }) => {
       <h1>{ticket.title}</h1>
       <h4>Price: €{ticket.price}</h4>
       {errors}
-      {!ticket.orderId && (
-        <button
-          className="btn btn-primary"
-          onClick={() => doRequest()}
-          disabled={loading}
-        >
-          Buy
-        </button>
-      )}
+      <button
+        className="btn btn-primary"
+        onClick={() => doRequest()}
+        disabled={loading}
+      >
+        Buy
+      </button>
     </div>
   );
 };
