@@ -1,25 +1,31 @@
-name: deploy-client
+name: payments
 
 on:
   push:
-    branches:
-      - main
     paths:
-      - "client/**"
+      - "payments/**"
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd client && docker build . --target=production -t markmorcos/tazaker-client
+      - run: cd payments && npm install && npm run test:ci
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd payments && docker build . -t markmorcos/tazaker-payments
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push markmorcos/tazaker-client
+      - run: docker push markmorcos/tazaker-payments
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save tazaker
-      - run: kubectl rollout restart deployment client-depl
+      - run: kubectl rollout restart deployment payments-depl

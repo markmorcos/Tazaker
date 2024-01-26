@@ -1,4 +1,4 @@
-name: deploy-common
+name: common
 
 on:
   push:

@@ -1,29 +1,25 @@
-name: deploy-orders
+name: expiration
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - "orders/**"
+      - "expiration/**"
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: cd orders && npm install && npm run test:ci
-
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd orders && docker build . -t markmorcos/tazaker-orders
+      - run: cd expiration && docker build . -t markmorcos/tazaker-expiration
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push markmorcos/tazaker-orders
+      - run: docker push markmorcos/tazaker-expiration
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save tazaker
-      - run: kubectl rollout restart deployment orders-depl
+      - run: kubectl rollout restart deployment expiration-depl

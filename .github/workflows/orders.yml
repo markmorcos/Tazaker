@@ -1,29 +1,31 @@
-name: deploy-tickets
+name: orders
 
 on:
   push:
     paths:
-      - "tickets/**"
+      - "orders/**"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd tickets && npm install && npm run test:ci
+      - run: cd orders && npm install && npm run test:ci
 
   deploy:
     runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd tickets && docker build . -t markmorcos/tazaker-tickets
+      - run: cd orders && docker build . -t markmorcos/tazaker-orders
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push markmorcos/tazaker-tickets
+      - run: docker push markmorcos/tazaker-orders
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save tazaker
-      - run: kubectl rollout restart deployment tickets-depl
+      - run: kubectl rollout restart deployment orders-depl

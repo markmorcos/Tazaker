@@ -1,4 +1,4 @@
-name: deploy-manifest
+name: manifest
 
 on:
   push:
