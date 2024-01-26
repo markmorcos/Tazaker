@@ -2,16 +2,16 @@ import axios from "axios";
 import https from "https";
 
 export default ({ req }) => {
+  const baseURL = {
+    production: "https://www.tazaker.org",
+    development: "https://staging.tazaker.org",
+  }[process.env.NODE_ENV];
+
   if (typeof window === "undefined") {
     return axios.create({
-      baseURL:
-        process.env.NODE_ENV === "production"
-          ? "https://www.tazaker.org"
-          : "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+      baseURL,
       headers: req.headers,
-      ...(process.env.NODE_ENV === "production"
-        ? { httpsAgent: new https.Agent({ rejectUnauthorized: false }) }
-        : {}),
+      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
   }
 

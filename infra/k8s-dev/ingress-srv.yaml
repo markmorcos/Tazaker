@@ -4,10 +4,19 @@ metadata:
   name: ingress-srv
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
+    service.beta.kubernetes.io/do-loadbalancer-protocol: "https"
+    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
+    service.beta.kubernetes.io/do-loadbalancer-hostname: "staging.tazaker.org"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: "nginx"
 spec:
+  tls:
+    - hosts:
+        - staging.tazaker.org
+      secretName: echo-tls
   ingressClassName: nginx
   rules:
-    - host: tazaker.dev
+    - host: staging.tazaker.org
       http:
         paths:
           - path: /api/users/?(.*)
@@ -17,7 +26,7 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-    - host: tazaker.dev
+    - host: staging.tazaker.org
       http:
         paths:
           - path: /api/tickets/?(.*)
@@ -27,7 +36,7 @@ spec:
                 name: tickets-srv
                 port:
                   number: 3000
-    - host: tazaker.dev
+    - host: staging.tazaker.org
       http:
         paths:
           - path: /api/orders/?(.*)
@@ -37,7 +46,7 @@ spec:
                 name: orders-srv
                 port:
                   number: 3000
-    - host: tazaker.dev
+    - host: staging.tazaker.org
       http:
         paths:
           - path: /api/payments/?(.*)
@@ -47,7 +56,7 @@ spec:
                 name: payments-srv
                 port:
                   number: 3000
-    - host: tazaker.dev
+    - host: staging.tazaker.org
       http:
         paths:
           - path: /

@@ -8,7 +8,7 @@ on:
       - "common/**"
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get install -y jq

@@ -18,7 +18,7 @@ const OrderRead = ({ order, currentUser }) => {
   useEffect(() => {
     const findTimeLeft = () => {
       const msLeft = new Date(order.expiresAt) - new Date();
-      setTimeLeft(Math.round(msLeft / 1000));
+      setTimeLeft(Math.round(msLeft / 1000 / 60));
     };
 
     findTimeLeft();
@@ -33,12 +33,12 @@ const OrderRead = ({ order, currentUser }) => {
 
   return (
     <div>
-      Time left to pay: {timeLeft} seconds{" "}
+      Time left to pay: {timeLeft} minutes{" "}
       <StripeCheckout
         token={({ id: token }) => doRequest({ token })}
         stripeKey="pk_test_51OXSmaHxxGduf7hIKonxe3PWejAgpaJxp8xB23FJKpd382RWoPAmauml6l7hg7rIM5sYLm0Si6Y5PZdkON2Cgokj00ODR51asQ"
         amount={order.ticket.price * 100}
-        currency="usd"
+        currency="eur"
         email={currentUser.email}
       />
       {errors}

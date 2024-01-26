@@ -2,13 +2,17 @@ name: deploy-tickets
 
 on:
   push:
-    branches:
-      - main
     paths:
       - "tickets/**"
 
 jobs:
-  build:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd tickets && npm install && npm run test:ci
+
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

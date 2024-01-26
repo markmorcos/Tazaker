@@ -7,7 +7,7 @@ export default () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { doRequest, errors } = useRequest({
+  const { doRequest, loading, errors } = useRequest({
     url: "/api/users/sign-up",
     method: "post",
     body: { email, password },
@@ -33,6 +33,7 @@ export default () => {
           aria-describedby="emailHelp"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
         />
         <div id="emailHelp" className="form-text">
           We'll never share your email with anyone else.
@@ -48,9 +49,10 @@ export default () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={loading}
         />
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary" disabled={loading}>
         Sign Up
       </button>
     </form>

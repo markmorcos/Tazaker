@@ -2,13 +2,17 @@ name: deploy-payments
 
 on:
   push:
-    branches:
-      - main
     paths:
       - "payments/**"
 
 jobs:
-  build:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd payments && npm install && npm run test:ci
+
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

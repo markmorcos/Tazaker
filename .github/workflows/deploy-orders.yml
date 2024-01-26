@@ -2,13 +2,17 @@ name: deploy-orders
 
 on:
   push:
-    branches:
-      - main
     paths:
       - "orders/**"
 
 jobs:
-  build:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd orders && npm install && npm run test:ci
+
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
