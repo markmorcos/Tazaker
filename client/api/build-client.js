@@ -9,6 +9,8 @@ export default ({ req }) => {
     production: "https://www.tazaker.org",
   }[process.env.NODE_ENV];
 
+  console.log({ baseURL });
+
   if (typeof window === "undefined") {
     return axios.create({
       baseURL,
