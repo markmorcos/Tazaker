@@ -1,6 +1,7 @@
 name: tickets
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - "tickets/**"

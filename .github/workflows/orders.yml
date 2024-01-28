@@ -1,6 +1,7 @@
 name: orders
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - "orders/**"

@@ -1,6 +1,7 @@
 name: payments
 
 on:
+  workflow_dispatch: {}
   push:
     paths:
       - "payments/**"

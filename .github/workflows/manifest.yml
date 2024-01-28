@@ -1,10 +1,7 @@
 name: manifest
 
 on:
-  workflow_dispatch:
-    branches:
-      - main
-      - staging
+  workflow_dispatch: {}
   push:
     branches:
       - main
@@ -22,8 +19,8 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save tazaker
-      - run: kubectl apply -f infra/common/init,infra/staging/init -R
-      - run: kubectl apply -f infra/common/k8s,infra/staging/k8s -R
+      - run: kubectl apply -f infra/common/init,infra/staging/init -R --wait
+      - run: kubectl apply -f infra/common/k8s,infra/staging/k8s -R --wait
 
   deploy-production:
     runs-on: ubuntu-latest
@@ -34,5 +31,5 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save tazaker
-      - run: kubectl apply -f infra/common/init,infra/production/init -R
-      - run: kubectl apply -f infra/common/k8s,infra/production/k8s -R
+      - run: kubectl apply -f infra/common/init,infra/production/init -R --wait
+      - run: kubectl apply -f infra/common/k8s,infra/production/k8s -R --wait
