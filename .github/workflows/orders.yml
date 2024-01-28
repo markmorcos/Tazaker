@@ -1,6 +1,10 @@
 name: orders
 
 on:
+  workflow_run:
+    workflows: ["manifest"]
+    types:
+      - completed
   workflow_dispatch: {}
   push:
     paths:

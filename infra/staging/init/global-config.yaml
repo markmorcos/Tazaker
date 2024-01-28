@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: global-config
 data:
-  NODE_ENV: staging
+  ENVIRONMENT: staging
