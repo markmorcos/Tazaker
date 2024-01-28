@@ -34,11 +34,11 @@ spec:
               value: tazaker
             - name: NATS_URL
               value: "http://nats-srv:4222"
-            - name: STRIPE_KEY
+            - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
                   name: stripe-secret
-                  key: STRIPE_KEY
+                  key: STRIPE_SECRET_KEY
 ---
 apiVersion: v1
 kind: Service

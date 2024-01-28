@@ -5,7 +5,7 @@ jest.mock("../nats");
 
 let mongo: MongoMemoryServer;
 
-process.env.STRIPE_KEY =
+process.env.STRIPE_SECRET_KEY =
   "sk_test_51OXSmaHxxGduf7hIscERwmiJRBWCEKWJgJcBoc45iVzBymfxZLeYnEQlf77Wk0TZlAuh3OggGLpyE2WwuXYC0FcR00kBCONAc4";
 
 beforeAll(async () => {
