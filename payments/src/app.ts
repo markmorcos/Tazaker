@@ -15,7 +15,7 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== "test",
+    secure: ["staging", "production"].includes(process.env.NODE_ENV!),
   })
 );
 app.use(currentUser);

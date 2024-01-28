@@ -3,8 +3,10 @@ import https from "https";
 
 export default ({ req }) => {
   const baseURL = {
+    development:
+      "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+    staging: "https://staging.tazaker.org",
     production: "https://www.tazaker.org",
-    development: "https://staging.tazaker.org",
   }[process.env.NODE_ENV];
 
   if (typeof window === "undefined") {
