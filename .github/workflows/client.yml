@@ -1,6 +1,10 @@
 name: client
 
 on:
+  workflow_run:
+    workflows: ["manifest"]
+    types:
+      - completed
   workflow_dispatch: {}
   push:
     branches:
@@ -15,7 +19,7 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     steps:
       - uses: actions/checkout@v4
-      - run: cd client && docker build . --target=production -t markmorcos/tazaker-client
+      - run: cd client && docker build . --target=staging -t markmorcos/tazaker-client
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}

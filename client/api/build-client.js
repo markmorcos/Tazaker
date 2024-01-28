@@ -7,7 +7,7 @@ export default ({ req }) => {
       "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
     staging: "https://staging.tazaker.org",
     production: "https://www.tazaker.org",
-  }[process.env.NODE_ENV];
+  }[process.env.ENVIRONMENT];
 
   if (typeof window === "undefined") {
     return axios.create({
