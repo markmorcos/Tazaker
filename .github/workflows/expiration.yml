@@ -10,6 +10,7 @@ on:
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
     steps:
       - uses: actions/checkout@v4
       - run: cd expiration && docker build . -t markmorcos/tazaker-expiration
@@ -26,6 +27,7 @@ jobs:
 
   deploy-production:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - run: cd expiration && docker build . -t markmorcos/tazaker-expiration
