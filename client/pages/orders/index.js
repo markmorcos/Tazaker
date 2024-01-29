@@ -9,7 +9,9 @@ const OrdersIndex = ({ orders }) => {
         <td>
           <Link href={`/tickets/${ticketId}`}>{title}</Link>
         </td>
-        <td>{status}</td>
+        <td>
+          <Link href={`/orders/${id}`}>{status}</Link>
+        </td>
       </tr>
     )
   );

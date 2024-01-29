@@ -1,6 +1,7 @@
 import Router from "next/router";
 
 import useRequest from "../../hooks/use-request";
+import Ticket from "../../components/ticket";
 
 const TicketRead = ({ ticket }) => {
   const { doRequest, loading, errors } = useRequest({
@@ -11,18 +12,21 @@ const TicketRead = ({ ticket }) => {
   });
 
   return (
-    <div>
-      <h1>{ticket.title}</h1>
-      <h4>Price: €{ticket.price}</h4>
-      {errors}
-      <button
-        className="btn btn-primary"
-        onClick={() => doRequest()}
-        disabled={loading}
-      >
-        Buy
-      </button>
-    </div>
+    <>
+      <Ticket
+        ticket={ticket}
+        action={
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => doRequest()}
+            disabled={loading}
+          >
+            Buy
+          </button>
+        }
+        errors={errors}
+      />
+    </>
   );
 };
 

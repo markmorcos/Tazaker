@@ -1,24 +1,17 @@
 import Link from "next/link";
+import Ticket from "../components/ticket";
 
 const LandingPage = ({ tickets }) => {
-  const ticketList = tickets.map(({ id, title, price }) => (
-    <div key={id} className="col">
-      <div className="card shadow-sm">
-        <img className="card-img-top" src="https://placehold.it/180x100" />
-        <div className="card-body">
-          <h5 className="card-title">{title}</h5>
-          <p className="card-text">€{price}</p>
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="btn-group">
-              <Link className="btn btn-primary btn-sm" href={`/tickets/${id}`}>
-                View
-              </Link>
-            </div>
-            <small className="text-body-secondary">2024-01-01</small>
-          </div>
-        </div>
-      </div>
-    </div>
+  const ticketList = tickets.map((ticket) => (
+    <Ticket
+      key={ticket.id}
+      ticket={ticket}
+      action={
+        <Link className="btn btn-primary btn-sm" href={`/tickets/${ticket.id}`}>
+          View
+        </Link>
+      }
+    />
   ));
 
   return (

@@ -12,7 +12,7 @@ on:
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - run: cd client && docker build . --target=staging -t markmorcos/tazaker-client
