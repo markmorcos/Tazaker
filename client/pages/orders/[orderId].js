@@ -5,7 +5,7 @@ import Router from "next/router";
 import redirect from "../../api/redirect";
 import useRequest from "../../hooks/use-request";
 
-const OrderRead = ({ order, currentUser }) => {
+const OrderRead = ({ order, stripeKey, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
 
   const { doRequest, errors } = useRequest({
@@ -36,7 +36,7 @@ const OrderRead = ({ order, currentUser }) => {
       Time left to pay: {timeLeft} minutes{" "}
       <StripeCheckout
         token={({ id: token }) => doRequest({ token })}
-        stripeKey={process.env.STRIPE_KEY}
+        stripeKey={stripeKey}
         amount={order.ticket.price * 100}
         currency="eur"
         email={currentUser.email}
@@ -51,7 +51,7 @@ OrderRead.getInitialProps = async (context, client) => {
 
   try {
     const { data: order } = await client.get(`/api/orders/${orderId}`);
-    return { order };
+    return { order, stripeKey: process.env.STRIPE_PUBLISHABLE_KEY };
   } catch (error) {
     return redirect({ context, path: "/orders" });
   }
