@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --omit=dev
 COPY . .
-RUN npm run build
+RUN NEXT_PUBLIC_ENVIRONMENT=staging npm run build
 CMD ["npm", "run", "start"]
 
 FROM node:alpine as production
@@ -18,7 +18,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --omit=dev
 COPY . .
-RUN npm run build
+RUN NEXT_PUBLIC_ENVIRONMENT=production npm run build
 CMD ["npm", "run", "start"]
 
 FROM development as final

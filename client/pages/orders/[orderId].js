@@ -4,6 +4,7 @@ import Router from "next/router";
 
 import redirect from "../../api/redirect";
 import useRequest from "../../hooks/use-request";
+import config from "../../utilities/config";
 
 const OrderRead = ({ order, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
@@ -36,7 +37,7 @@ const OrderRead = ({ order, currentUser }) => {
       Time left to pay: {timeLeft} minutes{" "}
       <StripeCheckout
         token={({ id: token }) => doRequest({ token })}
-        stripeKey={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+        stripeKey={config.stripePublishableKey}
         amount={order.ticket.price * 100}
         currency="EUR"
         email={currentUser.email}
