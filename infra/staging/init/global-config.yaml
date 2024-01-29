@@ -4,4 +4,3 @@ metadata:
   name: global-config
 data:
   ENVIRONMENT: staging
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_51OXSmaHxxGduf7hIKonxe3PWejAgpaJxp8xB23FJKpd382RWoPAmauml6l7hg7rIM5sYLm0Si6Y5PZdkON2Cgokj00ODR51asQ
