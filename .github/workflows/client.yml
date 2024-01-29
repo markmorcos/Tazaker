@@ -1,10 +1,6 @@
 name: client
 
 on:
-  workflow_run:
-    workflows: ["manifest"]
-    types:
-      - completed
   workflow_dispatch: {}
   push:
     branches:
