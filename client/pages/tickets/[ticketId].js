@@ -21,7 +21,7 @@ const TicketRead = ({ ticket }) => {
             onClick={() => doRequest()}
             disabled={loading}
           >
-            Buy
+            Order
           </button>
         }
         errors={errors}

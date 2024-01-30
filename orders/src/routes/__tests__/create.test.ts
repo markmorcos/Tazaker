@@ -32,6 +32,15 @@ it("returns an error if the ticket is already reserved", async () => {
   });
   await order.save();
 
+  await request(app)
+    .post("/api/orders")
+    .set("Cookie", signIn(userId))
+    .send({ ticketId: ticket.id })
+    .expect(200);
+
+  order.set({ userId: new Types.ObjectId().toHexString() });
+  await order.save();
+
   return request(app)
     .post("/api/orders")
     .set("Cookie", signIn(userId))

@@ -3,7 +3,7 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 import { OrderStatus } from "@mmgittix/common";
 
-import { Order } from "./order";
+import { Order, OrderDoc } from "./order";
 
 export interface TicketAttrs {
   id: string;
@@ -12,7 +12,12 @@ export interface TicketAttrs {
 }
 
 export type TicketDoc = Document &
-  TicketAttrs & { isReserved: () => Promise<Boolean>; version: number };
+  TicketAttrs & {
+    findOrderByStatuses: (
+      status: OrderStatus | OrderStatus[]
+    ) => Promise<OrderDoc | null>;
+    version: number;
+  };
 
 interface TicketModel extends Model<TicketDoc> {
   build: (ticket: TicketAttrs) => TicketDoc;
@@ -50,13 +55,13 @@ ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
   return Ticket.findOne({ _id: event.id, version: event.version - 1 });
 };
 
-ticketSchema.methods.isReserved = async function () {
-  const existingOrder = await Order.findOne({
+ticketSchema.methods.findOrderByStatuses = async function (
+  status: OrderStatus | OrderStatus[]
+) {
+  return Order.findOne({
     ticket: this,
-    status: { $ne: OrderStatus.Cancelled },
+    status: { $in: Array.isArray(status) ? status : [status] },
   });
-
-  return !!existingOrder;
 };
 
 ticketSchema.set("versionKey", "version");

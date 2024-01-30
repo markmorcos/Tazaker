@@ -37,9 +37,23 @@ router.post(
       throw new NotFoundError();
     }
 
-    const isReserved = await ticket.isReserved();
-    if (isReserved) {
+    const reservedOrder = await ticket.findOrderByStatuses(OrderStatus.Created);
+    if (!!reservedOrder && reservedOrder.userId === userId) {
+      return res.status(200).send(reservedOrder);
+    }
+    if (!!reservedOrder) {
       throw new BadRequestError("Ticket is already reserved");
+    }
+
+    const existingOrder = await ticket.findOrderByStatuses([
+      OrderStatus.AwaitingPayment,
+      OrderStatus.Complete,
+    ]);
+    if (!!existingOrder && existingOrder.userId === userId) {
+      return res.status(200).send(existingOrder);
+    }
+    if (!!existingOrder) {
+      throw new BadRequestError("Order belongs to someone else");
     }
 
     const status = OrderStatus.Created;

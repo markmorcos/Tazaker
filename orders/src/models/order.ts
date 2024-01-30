@@ -12,7 +12,7 @@ export interface OrderAttrs {
   expiresAt: Date;
 }
 
-type OrderDoc = Document & OrderAttrs & { version: number };
+export type OrderDoc = Document & OrderAttrs & { version: number };
 
 interface OrderModel extends Model<OrderDoc> {
   build: (order: OrderAttrs) => OrderDoc;
