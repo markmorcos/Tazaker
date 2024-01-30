@@ -21,7 +21,7 @@ jobs:
       - run: |
           cd common
           CURRENT_VERSION=$(jq -r .version package.json)
-          LATEST_VERSION=$(npm show @mmgittix/common version)
+          LATEST_VERSION=$(npm show @tazaker/common version)
           echo "Current: $CURRENT_VERSION"
           echo "Latest: $LATEST_VERSION"
           if [ "$CURRENT_VERSION" != "$LATEST_VERSION" ]; then

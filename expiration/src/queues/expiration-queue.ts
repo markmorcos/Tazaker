@@ -1,6 +1,6 @@
 import Queue from "bull";
 
-import { Subjects } from "@mmgittix/common";
+import { Subjects } from "@tazaker/common";
 
 import { nats } from "../nats";
 import { ExpirationCompletePublisher } from "../events/publishers/expiration-complete-publisher";

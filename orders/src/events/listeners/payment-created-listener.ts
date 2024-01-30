@@ -5,7 +5,7 @@ import {
   Subjects,
   PaymentCreatedEvent,
   OrderStatus,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { Order } from "../../models/order";
 

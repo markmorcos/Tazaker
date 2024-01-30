@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { Message } from "node-nats-streaming";
 
-import { TicketUpdatedEvent } from "@mmgittix/common";
+import { TicketUpdatedEvent } from "@tazaker/common";
 
 import { nats } from "../../../nats";
 import { Ticket } from "../../../models/ticket";

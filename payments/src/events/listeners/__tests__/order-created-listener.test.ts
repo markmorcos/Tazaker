@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { Message } from "node-nats-streaming";
 
-import { OrderCreatedEvent, OrderStatus } from "@mmgittix/common";
+import { OrderCreatedEvent, OrderStatus } from "@tazaker/common";
 
 import { nats } from "../../../nats";
 import { Order } from "../../../models/order";

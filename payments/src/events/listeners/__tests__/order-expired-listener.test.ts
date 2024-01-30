@@ -1,15 +1,15 @@
 import { Types } from "mongoose";
 import { Message } from "node-nats-streaming";
 
-import { OrderCancelledEvent, OrderStatus } from "@mmgittix/common";
+import { OrderExpiredEvent, OrderStatus } from "@tazaker/common";
 
 import { nats } from "../../../nats";
 import { Order } from "../../../models/order";
 
-import { OrderCancelledListener } from "../order-cancelled-listener";
+import { OrderExpiredListener } from "../order-expired-listener";
 
 const setup = async () => {
-  const listener = new OrderCancelledListener(nats.client);
+  const listener = new OrderExpiredListener(nats.client);
 
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
@@ -20,7 +20,7 @@ const setup = async () => {
   });
   await order.save();
 
-  const data: OrderCancelledEvent["data"] = {
+  const data: OrderExpiredEvent["data"] = {
     id: order.id,
     ticket: { id: new Types.ObjectId().toHexString() },
     version: 1,

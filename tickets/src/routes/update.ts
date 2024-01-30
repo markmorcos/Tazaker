@@ -7,7 +7,7 @@ import {
   NotFoundError,
   requireAuth,
   validateRequest,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { Ticket } from "../models/ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";

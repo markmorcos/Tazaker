@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-import { DatabaseConnectionError } from "@mmgittix/common";
+import { DatabaseConnectionError } from "@tazaker/common";
 
 import { app } from "./app";
 import { nats } from "./nats";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
-import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
+import { OrderExpiredListener } from "./events/listeners/order-expired-listener";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {
@@ -38,7 +38,7 @@ const start = async () => {
     process.on("SIGTERM", () => nats.client.close());
 
     new OrderCreatedListener(nats.client).listen();
-    new OrderCancelledListener(nats.client).listen();
+    new OrderExpiredListener(nats.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");

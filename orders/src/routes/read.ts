@@ -6,7 +6,7 @@ import {
   NotFoundError,
   requireAuth,
   validateRequest,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { Order } from "../models/order";
 

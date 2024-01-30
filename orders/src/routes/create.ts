@@ -7,7 +7,7 @@ import {
   OrderStatus,
   requireAuth,
   validateRequest,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { Order } from "../models/order";
 import { Ticket } from "../models/ticket";

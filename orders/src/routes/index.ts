@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import { requireAuth } from "@mmgittix/common";
+import { requireAuth } from "@tazaker/common";
 
 import { Order } from "../models/order";
 

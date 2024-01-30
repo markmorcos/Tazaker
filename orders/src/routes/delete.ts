@@ -7,11 +7,11 @@ import {
   OrderStatus,
   requireAuth,
   validateRequest,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { Order } from "../models/order";
 import { nats } from "../nats";
-import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
+import { OrderExpiredPublisher } from "../events/publishers/order-expired-publisher";
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.delete(
 
     order.status = OrderStatus.Cancelled;
     await order.save();
-    await new OrderCancelledPublisher(nats.client).publish({
+    await new OrderExpiredPublisher(nats.client).publish({
       id: order.id,
       ticket: { id: order.ticket.id },
       version: order.version,

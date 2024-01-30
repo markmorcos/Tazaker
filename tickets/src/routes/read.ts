@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import { NotFoundError, validateRequest } from "@mmgittix/common";
+import { NotFoundError, validateRequest } from "@tazaker/common";
 
 import { Ticket } from "../models/ticket";
 import { param } from "express-validator";
