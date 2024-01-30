@@ -9,7 +9,9 @@ const router = express.Router();
 router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
   const { id: userId } = req.currentUser!;
 
-  const orders = await Order.find({ userId }).populate("ticket");
+  const orders = await Order.find({ userId })
+    .sort({ expiresAt: "desc" })
+    .populate("ticket");
 
   res.send(orders);
 });

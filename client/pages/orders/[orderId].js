@@ -57,6 +57,8 @@ const OrderRead = ({ order, currentUser }) => {
     return <div>Order expired</div>;
   }
 
+  console.log(config);
+
   return (
     <div>
       <StripeCheckout

@@ -5,11 +5,14 @@ import { OrderStatus } from "@tazaker/common";
 import redirect from "../../api/redirect";
 
 const statuses = {
-  [OrderStatus.Created]: "Started",
-  [OrderStatus.Cancelled]: "Cancelled",
-  [OrderStatus.AwaitingPayment]: "Awaiting payment",
-  [OrderStatus.Expired]: "Expired",
-  [OrderStatus.Complete]: "Complete",
+  [OrderStatus.Created]: { title: "Started", background: "primary" },
+  [OrderStatus.AwaitingPayment]: {
+    title: "Awaiting payment",
+    background: "secondary",
+  },
+  [OrderStatus.Expired]: { title: "Expired", background: "danger" },
+  [OrderStatus.Cancelled]: { title: "Cancelled", background: "danger" },
+  [OrderStatus.Complete]: { title: "Complete", background: "success" },
 };
 
 const OrdersIndex = ({ orders }) => {
@@ -21,8 +24,10 @@ const OrdersIndex = ({ orders }) => {
         </td>
         <td>
           <Link href={`/orders/${id}`}>
-            <span className="badge rounded-pill text-bg-success">
-              {statuses[status]}
+            <span
+              className={`badge rounded-pill text-bg-${statuses[status].background}`}
+            >
+              {statuses[status].title}
             </span>
           </Link>
         </td>
