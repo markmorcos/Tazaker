@@ -1,6 +1,6 @@
 {
-  "name": "@mmgittix/common",
-  "version": "1.0.25",
+  "name": "@tazaker/common",
+  "version": "1.0.0",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
