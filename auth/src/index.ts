@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { DatabaseConnectionError } from "@mmgittix/common";
+import { DatabaseConnectionError } from "@tazaker/common";
 
 import { app } from "./app";
 

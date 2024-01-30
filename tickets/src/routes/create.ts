@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 
-import { requireAuth, validateRequest } from "@mmgittix/common";
+import { requireAuth, validateRequest } from "@tazaker/common";
 
 import { Ticket } from "../models/ticket";
 import { nats } from "../nats";

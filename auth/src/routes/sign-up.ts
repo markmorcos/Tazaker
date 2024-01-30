@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { sign } from "jsonwebtoken";
 
-import { BadRequestError, validateRequest } from "@mmgittix/common";
+import { BadRequestError, validateRequest } from "@tazaker/common";
 
 import { User } from "../models/user";
 

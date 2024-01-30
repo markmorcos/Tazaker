@@ -5,12 +5,12 @@ import {
   Listener,
   OrderStatus,
   Subjects,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { Order } from "../../models/order";
 
 import { queueGroupName } from "./queue-group-name";
-import { OrderCancelledPublisher } from "../publishers/order-cancelled-publisher";
+import { OrderExpiredPublisher } from "../publishers/order-expired-publisher";
 
 export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent> {
   readonly subject = Subjects.ExpirationComplete;
@@ -26,10 +26,10 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
       return msg.ack();
     }
 
-    order.set({ status: OrderStatus.Cancelled });
+    order.set({ status: OrderStatus.Expired });
     await order.save();
 
-    await new OrderCancelledPublisher(this.client).publish({
+    await new OrderExpiredPublisher(this.client).publish({
       id: order.id,
       ticket: { id: order.ticket.id },
       version: order.version,

@@ -1,16 +1,16 @@
 import { Message } from "node-nats-streaming";
 
-import { Listener, OrderCancelledEvent, Subjects } from "@mmgittix/common";
+import { Listener, OrderExpiredEvent, Subjects } from "@tazaker/common";
 
 import { Ticket } from "../../models/ticket";
 
 import { queueGroupName } from "./queue-group-name";
 import { TicketUpdatedPublisher } from "../publishers/ticket-updated-publisher";
 
-export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
-  readonly subject = Subjects.OrderCancelled;
+export class OrderExpiredListener extends Listener<OrderExpiredEvent> {
+  readonly subject = Subjects.OrderExpired;
   queueGroupName = queueGroupName;
-  async onMessage(data: OrderCancelledEvent["data"], msg: Message) {
+  async onMessage(data: OrderExpiredEvent["data"], msg: Message) {
     const ticket = await Ticket.findById(data.ticket.id);
 
     if (!ticket) {

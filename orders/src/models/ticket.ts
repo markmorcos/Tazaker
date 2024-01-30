@@ -1,7 +1,7 @@
 import { Document, Model, Schema, model } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
-import { OrderStatus } from "@mmgittix/common";
+import { OrderStatus } from "@tazaker/common";
 
 import { Order, OrderDoc } from "./order";
 

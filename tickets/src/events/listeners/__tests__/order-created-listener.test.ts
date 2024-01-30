@@ -5,7 +5,7 @@ import {
   OrderCreatedEvent,
   OrderStatus,
   TicketUpdatedEvent,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { nats } from "../../../nats";
 import { Ticket } from "../../../models/ticket";

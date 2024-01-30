@@ -1,6 +1,6 @@
 import { Message } from "node-nats-streaming";
 
-import { Listener, OrderCreatedEvent, Subjects } from "@mmgittix/common";
+import { Listener, OrderCreatedEvent, Subjects } from "@tazaker/common";
 
 import { Ticket } from "../../models/ticket";
 

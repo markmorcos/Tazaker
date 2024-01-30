@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import request from "supertest";
 
-import { OrderStatus } from "@mmgittix/common";
+import { OrderStatus } from "@tazaker/common";
 
 import { app } from "../../app";
 import { signIn } from "../../test/global";

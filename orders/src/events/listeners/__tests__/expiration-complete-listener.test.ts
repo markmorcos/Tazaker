@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { Message } from "node-nats-streaming";
 
-import { ExpirationCompleteEvent, OrderStatus } from "@mmgittix/common";
+import { ExpirationCompleteEvent, OrderStatus } from "@tazaker/common";
 
 import { nats } from "../../../nats";
 import { Order } from "../../../models/order";
@@ -42,10 +42,10 @@ it("updates the order status to cancelled", async () => {
 
   const updatedOrder = await Order.findById(order.id);
 
-  expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
+  expect(updatedOrder!.status).toEqual(OrderStatus.Expired);
 });
 
-it("emits an OrderCancelled event", async () => {
+it("emits an OrderExpired event", async () => {
   const { listener, order, data, msg } = await setup();
 
   await listener.onMessage(data, msg);

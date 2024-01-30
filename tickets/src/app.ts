@@ -3,7 +3,7 @@ import express from "express";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
-import { currentUser, errorHandler, NotFoundError } from "@mmgittix/common";
+import { currentUser, errorHandler, NotFoundError } from "@tazaker/common";
 
 import { createTicketRouter } from "./routes/create";
 import { readTicketRouter } from "./routes/read";

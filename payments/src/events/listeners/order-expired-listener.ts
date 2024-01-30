@@ -2,20 +2,20 @@ import { Message } from "node-nats-streaming";
 
 import {
   Listener,
-  OrderCancelledEvent,
+  OrderExpiredEvent,
   OrderStatus,
   Subjects,
-} from "@mmgittix/common";
+} from "@tazaker/common";
 
 import { Order } from "../../models/order";
 
 import { queueGroupName } from "./queue-group-name";
 
-export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
-  readonly subject = Subjects.OrderCancelled;
+export class OrderExpiredListener extends Listener<OrderExpiredEvent> {
+  readonly subject = Subjects.OrderExpired;
   queueGroupName = queueGroupName;
 
-  async onMessage(data: OrderCancelledEvent["data"], msg: Message) {
+  async onMessage(data: OrderExpiredEvent["data"], msg: Message) {
     const order = await Order.findByEvent(data);
 
     if (!order) {
