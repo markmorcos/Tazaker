@@ -47,7 +47,7 @@ router.post(
     }
 
     const { id: stripeId } = await stripe.charges.create({
-      currency: "eur",
+      currency: "egp",
       amount: order.price * 100,
       source: token,
     });

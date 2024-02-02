@@ -75,7 +75,7 @@ it("returns 201 with valid inputs", async () => {
     (charge) => charge.amount === price * 100
   );
   expect(stripeCharge).toBeDefined();
-  expect(stripeCharge!.currency).toEqual("eur");
+  expect(stripeCharge!.currency).toEqual("egp");
 
   const payment = await Payment.findOne({
     orderId: order.id,

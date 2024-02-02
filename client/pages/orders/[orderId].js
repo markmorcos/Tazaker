@@ -65,7 +65,7 @@ const OrderRead = ({ order, currentUser }) => {
         token={({ id: token }) => doRequest({ token })}
         stripeKey={config.stripePublishableKey}
         amount={order.ticket.price * 100}
-        currency="EUR"
+        currency="EGP"
         email={currentUser.email}
       />
       <p>Time left to pay: {timeLeft} minutes </p>
