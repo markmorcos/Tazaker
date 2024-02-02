@@ -5,23 +5,10 @@ on:
   push:
     branches:
       - main
-      - staging
     paths:
       - "infra/**"
 
 jobs:
-  deploy-staging:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - run: doctl kubernetes cluster kubeconfig save tazaker-staging
-      - run: kubectl apply -f infra/common/init,infra/staging/init -R --wait
-      - run: kubectl apply -f infra/common/k8s,infra/staging/k8s -R --wait
-
   deploy-production:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'

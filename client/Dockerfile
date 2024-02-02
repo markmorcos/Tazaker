@@ -6,14 +6,6 @@ COPY . .
 ENV NEXT_PUBLIC_ENVIRONMENT=development
 CMD ["npm", "run", "dev"]
 
-FROM node:alpine as staging
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --omit=dev
-COPY . .
-RUN NEXT_PUBLIC_ENVIRONMENT=staging npm run build
-CMD ["npm", "run", "start"]
-
 FROM node:alpine as production
 WORKDIR /app
 COPY package*.json ./
