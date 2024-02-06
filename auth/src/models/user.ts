@@ -21,6 +21,7 @@ const userSchema: Schema<UserDoc> = new Schema(
       transform: (doc, ret) => {
         ret.id = ret._id;
         delete ret._id;
+        delete ret.code;
       },
       versionKey: false,
     },

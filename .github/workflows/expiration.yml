@@ -9,12 +9,12 @@ on:
       - "expiration/**"
 
 jobs:
-  deploy-production:
+  deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd expiration && docker build . --target=production -t markmorcos/tazaker-expiration
+      - run: cd expiration && docker build . -f Dockerfile.production -t markmorcos/tazaker-expiration
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}

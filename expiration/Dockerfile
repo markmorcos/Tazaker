@@ -1,16 +1,6 @@
-FROM node:alpine as development
+FROM node:alpine
 WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
 CMD ["npm", "run", "dev"]
-
-FROM node:alpine as production
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --omit=dev
-COPY . .
-RUN npm run build
-CMD ["npm", "run", "start"]
-
-FROM development as final

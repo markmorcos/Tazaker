@@ -1,0 +1,7 @@
+FROM node:alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY . .
+RUN NEXT_PUBLIC_ENVIRONMENT=production npm run build
+CMD ["npm", "run", "start"]
