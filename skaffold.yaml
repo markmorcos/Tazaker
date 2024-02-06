@@ -50,8 +50,8 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-    - image: markmorcos/tazaker-client
-      context: client
+    - image: markmorcos/tazaker-web
+      context: web
       sync:
         manual:
           - src: "**/*.js"

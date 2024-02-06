@@ -1,40 +1,26 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { sign } from "jsonwebtoken";
+import { randomBytes } from "crypto";
 
-import { BadRequestError, validateRequest } from "@tazaker/common";
+import { validateRequest } from "@tazaker/common";
 
 import { User } from "../models/user";
+import * as mailer from "../services/mailer";
 
 const router = express.Router();
 
 router.post(
-  "/api/users/sign-up",
-  [
-    body("email").isEmail().withMessage("Email must be valid"),
-    body("password")
-      .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage("Password must be between 4 and 20 characters"),
-  ],
+  "/api/auth/sign-up",
+  [body("email").isEmail().withMessage("Email must be valid")],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { email } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      throw new BadRequestError("Email in use");
-    }
+    const code = randomBytes(16).toString("hex");
+    const user = await User.createIfNotExists({ email, code });
+    await mailer.send({ email, code });
 
-    const user = User.build({ email, password });
-    await user.save();
-
-    req.session!.jwt = sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_KEY!
-    );
-
-    res.status(201).send(user);
+    res.status(200).send(user);
   }
 );
 

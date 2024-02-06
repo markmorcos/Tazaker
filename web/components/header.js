@@ -7,10 +7,7 @@ export default ({ currentUser }) => {
         { label: "Sell a Ticket", href: "/tickets/new" },
         { label: "Sign Out", href: "/auth/sign-out" },
       ]
-    : [
-        { label: "Sign Up", href: "/auth/sign-up" },
-        { label: "Sign In", href: "/auth/sign-in" },
-      ];
+    : [{ label: "Start", href: "/auth/sign-up" }];
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary navbar-fixed">

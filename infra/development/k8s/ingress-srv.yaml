@@ -10,7 +10,7 @@ spec:
     - host: tazaker.dev
       http:
         paths:
-          - path: /api/users/?(.*)
+          - path: /api/auth/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
@@ -54,6 +54,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: client-srv
+                name: web-srv
                 port:
                   number: 3000

@@ -5,7 +5,7 @@ import { currentUser, requireAuth } from "@tazaker/common";
 const router = express.Router();
 
 router.get(
-  "/api/users/current-user",
+  "/api/auth/current-user",
   currentUser,
   requireAuth,
   (req: Request, res: Response) => {

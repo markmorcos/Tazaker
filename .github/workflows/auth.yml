@@ -19,7 +19,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd auth && docker build . -t markmorcos/tazaker-auth
+      - run: cd auth && docker build . --target=production -t markmorcos/tazaker-auth
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}

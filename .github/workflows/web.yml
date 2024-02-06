@@ -1,4 +1,4 @@
-name: client
+name: web
 
 on:
   workflow_dispatch: {}
@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "client/**"
+      - "web/**"
 
 jobs:
   deploy-production:
@@ -14,14 +14,14 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd client && docker build . --target=production -t markmorcos/tazaker-client
+      - run: cd web && docker build . --target=production -t markmorcos/tazaker-web
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push markmorcos/tazaker-client
+      - run: docker push markmorcos/tazaker-web
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save tazaker
-      - run: kubectl rollout restart deployment client-depl
+      - run: kubectl rollout restart deployment web-depl

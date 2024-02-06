@@ -1,41 +1,24 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { sign } from "jsonwebtoken";
+import { randomBytes } from "crypto";
 
 import { BadRequestError, validateRequest } from "@tazaker/common";
 
 import { User } from "../models/user";
-import { Password } from "../services/password";
+import * as mailer from "../services/mailer";
 
 const router = express.Router();
 
 router.post(
-  "/api/users/sign-in",
-  [
-    body("email").isEmail().withMessage("Email must be valid"),
-    body("password")
-      .trim()
-      .notEmpty()
-      .withMessage("You must supply a password"),
-  ],
+  "/api/auth/sign-in",
+  [body("email").isEmail().withMessage("Email must be valid")],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { email } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new BadRequestError("Invalid credentials");
-    }
-
-    const passwordsMatch = Password.compare(user.password, password);
-    if (!passwordsMatch) {
-      throw new BadRequestError("Invalid credentials");
-    }
-
-    req.session!.jwt = sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_KEY!
-    );
+    const code = randomBytes(16).toString("hex");
+    const user = await User.createIfNotExists({ email, code });
+    await mailer.send({ email, code });
 
     res.status(200).send(user);
   }

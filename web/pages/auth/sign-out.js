@@ -5,7 +5,7 @@ import useRequest from "../../hooks/use-request";
 
 export default () => {
   const { doRequest } = useRequest({
-    url: "/api/users/sign-out",
+    url: "/api/auth/sign-out",
     method: "post",
     onSuccess: () => Router.push("/"),
   });

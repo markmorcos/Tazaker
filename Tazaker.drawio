@@ -27,7 +27,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="6tYGeW66kNj0VJb34lm9-14" value="client" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" vertex="1" parent="1">
+        <mxCell id="6tYGeW66kNj0VJb34lm9-14" value="web" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" vertex="1" parent="1">
           <mxGeometry x="440" y="160" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="6tYGeW66kNj0VJb34lm9-17" value="auth" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" vertex="1" parent="1">
