@@ -18,6 +18,7 @@ router.post(
 
     const code = randomBytes(16).toString("hex");
     const user = await User.createIfNotExists({ email, code });
+
     await mailer.send({ email, code });
 
     res.status(200).send(user);

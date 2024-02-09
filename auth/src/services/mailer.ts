@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
 
 interface Payload {
   email: string;
@@ -10,23 +10,12 @@ const baseURL = {
   production: "https://www.tazaker.org",
 }[process.env.ENVIRONMENT!];
 
-export const send = async ({ email, code }: Payload) => {
-  const testAccount = await nodemailer.createTestAccount();
-
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
-    auth: { user: testAccount.user, pass: testAccount.pass },
-  });
-
-  const info = await transporter.sendMail({
-    from: '"Tazaker" <info@tazaker.org>',
+export const send = ({ email, code }: Payload) => {
+  sgMail.setApiKey(process.env.SENDGRID_KEY!);
+  return sgMail.send({
     to: email,
+    from: "Tazaker <admin@tazaker.org>",
     subject: "Tazaker Sign In",
     html: `<a href="${baseURL}/api/auth/complete?email=${email}&code=${code}">Complete sign in</a>`,
   });
-
-  console.log("Message sent: %s", info.messageId);
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 };

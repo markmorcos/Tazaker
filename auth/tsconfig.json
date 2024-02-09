@@ -8,5 +8,5 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "exclude": ["src/test", "**/*.test.ts"]
+  "exclude": ["**/__mocks__/**/*.ts", "src/test", "**/*.test.ts"]
 }
