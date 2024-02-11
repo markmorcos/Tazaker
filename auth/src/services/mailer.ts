@@ -10,12 +10,20 @@ const baseURL = {
   production: "https://www.tazaker.org",
 }[process.env.ENVIRONMENT!];
 
+const templateId = "d-9e1523620a424dd7825a77ded3e1b39a";
+
 export const send = ({ email, code }: Payload) => {
   sgMail.setApiKey(process.env.SENDGRID_KEY!);
   return sgMail.send({
-    to: email,
     from: "Tazaker <admin@tazaker.org>",
-    subject: "Tazaker Sign In",
-    html: `<a href="${baseURL}/api/auth/complete?email=${email}&code=${code}">Complete sign in</a>`,
+    templateId,
+    personalizations: [
+      {
+        to: email,
+        dynamicTemplateData: {
+          url: `${baseURL}/api/auth/complete?email=${email}&code=${code}`,
+        },
+      },
+    ],
   });
 };
