@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import useRequest from "../../hooks/use-request";
+import useRequest from "../hooks/use-request";
 
 export default () => {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(false);
 
   const { doRequest, loading, errors } = useRequest({
-    url: "/api/auth/sign-in",
+    url: "/api/auth/sign-up",
     method: "post",
     body: { email },
     onSuccess: () => setSuccess(true),
@@ -47,7 +47,7 @@ export default () => {
         </div>
       </div>
       <button type="submit" className="btn btn-primary" disabled={loading}>
-        Sign In
+        Send authentication link
       </button>
     </form>
   );

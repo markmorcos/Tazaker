@@ -1,13 +1,21 @@
 import Link from "next/link";
+import Router from "next/router";
+
+import useRequest from "../hooks/use-request";
 
 export default ({ currentUser }) => {
+  const { doRequest: signOut } = useRequest({
+    url: "/api/auth/sign-out",
+    method: "post",
+    onSuccess: () => Router.push("/"),
+  });
+
   const links = currentUser
     ? [
         { label: "Orders", href: "/orders" },
         { label: "Sell a Ticket", href: "/tickets/new" },
-        { label: "Sign Out", href: "/auth/sign-out" },
       ]
-    : [{ label: "Start", href: "/auth/sign-up" }];
+    : [{ label: "Start", href: "/start" }];
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary navbar-fixed">
@@ -35,6 +43,13 @@ export default ({ currentUser }) => {
                 </Link>
               </li>
             ))}
+            <li className="nav-item">
+              {currentUser && (
+                <button className="nav-link" onClick={() => signOut()}>
+                  Sign Out
+                </button>
+              )}
+            </li>
           </ul>
         </div>
       </div>
