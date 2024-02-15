@@ -19,7 +19,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd payments && docker build . -t markmorcos/tazaker-payments
+      - run: cd payments && docker build . -f Dockerfile.production -t markmorcos/tazaker-payments
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
