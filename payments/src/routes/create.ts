@@ -13,7 +13,7 @@ import {
 import { Order } from "../models/order";
 import { Payment } from "../models/payment";
 import { nats } from "../nats";
-import { stripe } from "../stripe";
+import * as paypal from "../paypal";
 import { PaymentCreatedPublisher } from "../events/publishers/payment-created-publisher";
 
 const router = express.Router();
@@ -26,11 +26,13 @@ router.post(
       .notEmpty()
       .isMongoId()
       .withMessage("Order ID must be provided"),
-    body("token").notEmpty().withMessage("Token must be provided"),
+    body("paypalOrderId")
+      .notEmpty()
+      .withMessage("PayPal Order ID must be provided"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { orderId, token } = req.body;
+    const { orderId, paypalOrderId } = req.body;
 
     const order = await Order.findById(orderId);
 
@@ -46,19 +48,15 @@ router.post(
       throw new BadRequestError("Cannot pay for a cancelled order");
     }
 
-    const { id: stripeId } = await stripe.charges.create({
-      currency: "egp",
-      amount: order.price * 100,
-      source: token,
-    });
-
-    const payment = Payment.build({ orderId, stripeId });
+    const payment = Payment.build({ orderId, paypalOrderId });
     await payment.save();
+
+    await paypal.captureOrder(paypalOrderId);
 
     await new PaymentCreatedPublisher(nats.client).publish({
       id: payment.id,
       orderId: payment.orderId,
-      stripeId: payment.stripeId,
+      paypalOrderId: payment.paypalOrderId,
     });
 
     res.status(201).send(payment);

@@ -1,19 +1,22 @@
 import { Types } from "mongoose";
 import request from "supertest";
+import { randomBytes } from "crypto";
 
 import { OrderStatus } from "@tazaker/common";
 
 import { app } from "../../app";
 import { signIn } from "../../test/global";
 import { Order } from "../../models/order";
-import { stripe } from "../../stripe";
 import { Payment } from "../../models/payment";
 
 it("returns a 404 when purchasing an order that does not exist", async () => {
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn())
-    .send({ orderId: new Types.ObjectId().toHexString(), token: "token" })
+    .send({
+      orderId: new Types.ObjectId().toHexString(),
+      paypalOrderId: "fake_order",
+    })
     .expect(404);
 });
 
@@ -30,7 +33,7 @@ it("returns a 401 when purchasing an order that does not belong to the user", as
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn())
-    .send({ orderId: order.id, token: "token" })
+    .send({ orderId: order.id, paypalOrderId: "fake_order" })
     .expect(401);
 });
 
@@ -48,7 +51,7 @@ it("returns a 400 when purchasing a cancelled order", async () => {
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn(userId))
-    .send({ orderId: order.id, token: "token" })
+    .send({ orderId: order.id, paypalOrderId: "fake_order" })
     .expect(400);
 });
 
@@ -64,22 +67,14 @@ it("returns 201 with valid inputs", async () => {
   });
   await order.save();
 
+  const paypalOrderId = randomBytes(16).toString("hex");
+
   await request(app)
     .post("/api/payments")
     .set("Cookie", signIn(userId))
-    .send({ orderId: order.id, token: "tok_visa" })
+    .send({ orderId: order.id, paypalOrderId })
     .expect(201);
 
-  const stripeCharges = await stripe.charges.list({ limit: 50 });
-  const stripeCharge = stripeCharges.data.find(
-    (charge) => charge.amount === price * 100
-  );
-  expect(stripeCharge).toBeDefined();
-  expect(stripeCharge!.currency).toEqual("egp");
-
-  const payment = await Payment.findOne({
-    orderId: order.id,
-    stripeId: stripeCharge!.id,
-  });
+  const payment = await Payment.findOne({ orderId: order.id, paypalOrderId });
   expect(payment).not.toBeNull();
 });

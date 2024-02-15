@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import StripeCheckout from "react-stripe-checkout";
-import Link from "next/link";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Router from "next/router";
 
 import redirect from "../../api/redirect";
 import useRequest from "../../hooks/use-request";
 import config from "../../utilities/config";
-import Ticket from "../../components/ticket";
 
-const OrderRead = ({ order, currentUser }) => {
+import Loading from "./_components/loading";
+import OrderSummary from "./_components/summary";
+
+const OrderRead = ({ order }) => {
   const [timeLeft, setTimeLeft] = useState(0);
 
   const { doRequest, loading, errors } = useRequest({
@@ -31,43 +32,43 @@ const OrderRead = ({ order, currentUser }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (order.status === "complete") {
-    return (
-      <>
-        <h1>Order summary</h1>
-        <Ticket
-          ticket={order.ticket}
-          action={
-            <Link
-              className="btn btn-primary btn-sm"
-              href={`/tickets/${order.ticket.id}`}
-            >
-              View
-            </Link>
-          }
-        />
-      </>
-    );
+    return <OrderSummary order={order} />;
   }
 
   if (timeLeft <= 0) {
     return <div>Order expired</div>;
   }
 
-  console.log(config);
-
   return (
     <div>
-      <StripeCheckout
-        token={({ id: token }) => doRequest({ token })}
-        stripeKey={config.stripePublishableKey}
-        amount={order.ticket.price * 100}
-        currency="EGP"
-        email={currentUser.email}
-      />
+      <PayPalScriptProvider
+        options={{
+          clientId: config.paypalClientId,
+          currency: "EUR",
+          intent: "capture",
+        }}
+      >
+        <PayPalButtons
+          displayOnly={["vaultable"]}
+          createOrder={(data, actions) =>
+            actions.order.create({
+              purchase_units: [
+                {
+                  amount: { currency_code: "EUR", value: order.ticket.price },
+                  description: order.ticket.title,
+                },
+              ],
+            })
+          }
+          onApprove={({ orderID: paypalOrderId }) =>
+            doRequest({ paypalOrderId })
+          }
+        />
+      </PayPalScriptProvider>
       <p>Time left to pay: {timeLeft} minutes </p>
       {errors}
     </div>

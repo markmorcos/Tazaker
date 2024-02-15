@@ -1,11 +1,11 @@
 const environment = {
   development: {
-    stripePublishableKey:
-      "pk_test_51OXSmaHxxGduf7hIKonxe3PWejAgpaJxp8xB23FJKpd382RWoPAmauml6l7hg7rIM5sYLm0Si6Y5PZdkON2Cgokj00ODR51asQ",
+    paypalClientId:
+      "Ae0Pu7TO-KIMal3n-RZ0tp2ZCCTsntfFQu0T4W1xM3ZroRaVCVVpmk3SI51Eqkc92jMrYOAX9vnDajpZ",
   },
   production: {
-    stripePublishableKey:
-      "pk_live_51OXSmaHxxGduf7hI1BhoX0R1e6mQtCN5jxnM12bWXNE3tU5ZhnSh96PJD7ZrqCCH2vhThBwXh9nQvht5DDqk3FN700uhNoRdhY",
+    paypalClientId:
+      "AZjfrbhbsFAycOCa1e8Fd1wRtTAgBs9Xf4m6hqJG-mRJs4_P8htSYogNhtpZy5njA0eKG8zAsyHvIVqJ",
   },
 };
 

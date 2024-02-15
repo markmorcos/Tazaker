@@ -1,7 +1,7 @@
 export default ({ ticket, action, errors }) => (
   <div className="col">
     <div className="card shadow-sm">
-      <img className="card-img-top" src="https://placehold.it/180x100" />
+      <img className="card-img-top" src="https://placehold.it/180x60" />
       <div className="card-body">
         <h5 className="card-title">{ticket.title}</h5>
         <p className="card-text">€{ticket.price}</p>
