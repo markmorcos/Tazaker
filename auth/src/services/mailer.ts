@@ -15,7 +15,7 @@ const templateId = "d-9e1523620a424dd7825a77ded3e1b39a";
 export const send = ({ email, code }: Payload) => {
   sgMail.setApiKey(process.env.SENDGRID_KEY!);
   return sgMail.send({
-    from: "Tazaker <admin@tazaker.org>",
+    from: "Tazaker <info@tazaker.org>",
     templateId,
     personalizations: [
       {

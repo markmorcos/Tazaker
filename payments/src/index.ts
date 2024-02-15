@@ -23,8 +23,11 @@ const start = async () => {
   if (!process.env.NATS_URL) {
     throw new Error("NATS_URL must be defined");
   }
-  if (!process.env.STRIPE_SECRET_KEY) {
-    throw new Error("STRIPE_SECRET_KEY must be defined");
+  if (!process.env.PAYPAL_CLIENT_ID) {
+    throw new Error("PAYPAL_CLIENT_ID must be defined");
+  }
+  if (!process.env.PAYPAL_SECRET) {
+    throw new Error("PAYPAL_SECRET must be defined");
   }
 
   try {

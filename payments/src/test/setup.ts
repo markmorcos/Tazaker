@@ -2,11 +2,9 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 jest.mock("../nats");
+jest.mock("../paypal");
 
 let mongo: MongoMemoryServer;
-
-process.env.STRIPE_SECRET_KEY =
-  "sk_test_51OXSmaHxxGduf7hIscERwmiJRBWCEKWJgJcBoc45iVzBymfxZLeYnEQlf77Wk0TZlAuh3OggGLpyE2WwuXYC0FcR00kBCONAc4";
 
 beforeAll(async () => {
   process.env.JWT_KEY = "asdfasdf";
