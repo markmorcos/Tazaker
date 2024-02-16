@@ -2,5 +2,5 @@ import { Subjects } from "./subjects";
 
 export interface ExpirationCompleteEvent {
   subject: Subjects.ExpirationComplete;
-  data: { orderId: string };
+  data: { eventId?: string; orderId?: string };
 }
