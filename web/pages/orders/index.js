@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Table from "react-bootstrap/Table";
 
 import { OrderStatus } from "@tazaker/common";
 
@@ -16,38 +17,10 @@ const statuses = {
 };
 
 const OrdersIndex = ({ orders }) => {
-  const orderList = orders.map(
-    ({
-      id,
-      ticket: {
-        event: { id: eventId, title },
-        price,
-      },
-      status,
-    }) => (
-      <tr key={id}>
-        <td>
-          <Link href={`/events/${eventId}`}>{title}</Link>
-        </td>
-        <td>€{price}</td>
-        <td>
-          <Link href={`/orders/${id}`}>{id}</Link>
-        </td>
-        <td>
-          <span
-            className={`badge rounded-pill text-bg-${statuses[status].background}`}
-          >
-            {statuses[status].title}
-          </span>
-        </td>
-      </tr>
-    )
-  );
-
   return (
     <div>
       <h1>Orders</h1>
-      <table className="table">
+      <Table responsive>
         <thead>
           <tr>
             <th>Event</th>
@@ -56,8 +29,29 @@ const OrdersIndex = ({ orders }) => {
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>{orderList}</tbody>
-      </table>
+        <tbody>
+          {orders.map(({ id, ticket, status }) => (
+            <tr key={id}>
+              <td>
+                <Link href={`/events/${ticket.event.id}`}>
+                  {ticket.event.title}
+                </Link>
+              </td>
+              <td>€{ticket.price}</td>
+              <td>
+                <Link href={`/orders/${id}`}>{id}</Link>
+              </td>
+              <td>
+                <span
+                  className={`badge rounded-pill text-bg-${statuses[status].background}`}
+                >
+                  {statuses[status].title}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 };

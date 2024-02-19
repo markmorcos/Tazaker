@@ -6,9 +6,7 @@ const LandingPage = () => {
       <div className="col">
         <div className="card shadow-sm">
           <div className="card-body">
-            <p className="card-title">
-              <h1 className="text-center">Events</h1>
-            </p>
+            <h1 className="text-center">Events</h1>
           </div>
         </div>
       </div>

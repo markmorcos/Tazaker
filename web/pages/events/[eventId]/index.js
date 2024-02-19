@@ -28,7 +28,9 @@ const EventRead = ({ event, tickets }) => (
 
     <div className="row row-cols-1 g-3">
       <h1>
-        {event.title}{" "}
+        <a href={event.url} target="_blank">
+          {event.title}
+        </a>{" "}
         <Link
           className="btn btn-primary btn-sm"
           href={`/events/${event.id}/tickets/new`}
@@ -49,6 +51,7 @@ const EventRead = ({ event, tickets }) => (
 
         return (
           <Ticket
+            key={ticket.id}
             ticket={ticket}
             action={
               <button
