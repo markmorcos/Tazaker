@@ -5,7 +5,7 @@ import { Event } from "../models/event";
 const router = express.Router();
 
 router.get("/api/events", async (req: Request, res: Response) => {
-  const events = await Event.find().sort({ start: 1 });
+  const events = await Event.find().sort({ start: "ascending" });
 
   res.send(events);
 });

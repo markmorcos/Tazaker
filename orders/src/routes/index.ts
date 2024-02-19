@@ -10,8 +10,8 @@ router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
   const { id: userId } = req.currentUser!;
 
   const orders = await Order.find({ userId })
-    .sort({ expiresAt: "desc" })
-    .populate({ path: "ticket", populate: { path: "event" } });
+    .sort({ expiresAt: "descending" })
+    .populate({ path: "ticket", populate: "event" });
 
   res.send(orders);
 });

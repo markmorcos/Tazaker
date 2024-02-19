@@ -14,7 +14,7 @@ router.get(
   async (req: Request, res: Response) => {
     const { eventId } = req.query;
 
-    const tickets = await Ticket.find({ eventId });
+    const tickets = await Ticket.find({ eventId, orderId: null });
 
     res.send(tickets);
   }
