@@ -33,6 +33,7 @@ router.delete(
 
     order.status = OrderStatus.Cancelled;
     await order.save();
+
     await new OrderExpiredPublisher(nats.client).publish({
       id: order.id,
       ticket: { id: order.ticket.id },

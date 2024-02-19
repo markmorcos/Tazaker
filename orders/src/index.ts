@@ -4,6 +4,8 @@ import { DatabaseConnectionError } from "@tazaker/common";
 
 import { app } from "./app";
 import { nats } from "./nats";
+import { EventCreatedListener } from "./events/listeners/event-created-listener";
+import { EventUpdatedListener } from "./events/listeners/event-updated-listener";
 import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
 import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
@@ -39,10 +41,12 @@ const start = async () => {
     process.on("SIGINT", () => nats.client.close());
     process.on("SIGTERM", () => nats.client.close());
 
-    new TicketCreatedListener(nats.client).listen();
-    new TicketUpdatedListener(nats.client).listen();
+    new EventCreatedListener(nats.client).listen();
+    new EventUpdatedListener(nats.client).listen();
     new ExpirationCompleteListener(nats.client).listen();
     new PaymentCreatedListener(nats.client).listen();
+    new TicketCreatedListener(nats.client).listen();
+    new TicketUpdatedListener(nats.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");

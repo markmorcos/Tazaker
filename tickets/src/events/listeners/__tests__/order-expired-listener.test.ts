@@ -14,7 +14,7 @@ const setup = async () => {
   const orderId = new Types.ObjectId().toHexString();
   const ticket = await Ticket.build({
     userId: new Types.ObjectId().toHexString(),
-    title: "Title",
+    eventId: new Types.ObjectId().toHexString(),
     price: 10,
     orderId,
   });

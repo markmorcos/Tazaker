@@ -48,6 +48,10 @@ router.post(
       throw new BadRequestError("Cannot pay for a cancelled order");
     }
 
+    if (new Date() > order.eventEnd) {
+      throw new BadRequestError("Event has already ended");
+    }
+
     const payment = Payment.build({ orderId, paypalOrderId });
     await payment.save();
 

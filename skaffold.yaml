@@ -18,6 +18,14 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
+    - image: markmorcos/tazaker-events
+      context: events
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+      docker:
+        dockerfile: Dockerfile
     - image: markmorcos/tazaker-tickets
       context: tickets
       sync:

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import Link from "next/link";
 import Router from "next/router";
 
 import redirect from "../../api/redirect";
@@ -40,11 +41,41 @@ const OrderRead = ({ order }) => {
   }
 
   if (timeLeft <= 0) {
-    return <div>Order expired</div>;
+    return (
+      <>
+        <div class="alert alert-danger" role="alert">
+          This order has expired. Please go back to the{" "}
+          <Link href={`/events/${order.ticket.event.id}`}>event page</Link> and
+          start a new order.
+        </div>
+        <OrderSummary order={order} />
+      </>
+    );
   }
 
   return (
-    <div>
+    <>
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb p-3 bg-body-tertiary rounded-3">
+          <li className="breadcrumb-item">
+            <Link href="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link href="/events">Events</Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link href={`/events/${order.ticket.event.id}`}>
+              {order.ticket.event.title}
+            </Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Order
+          </li>
+        </ol>
+      </nav>
+      <div class="alert alert-warning" role="alert">
+        Time left to pay: {timeLeft} minutes
+      </div>
       <PayPalScriptProvider
         options={{
           clientId: config.paypalClientId,
@@ -57,10 +88,7 @@ const OrderRead = ({ order }) => {
           createOrder={(data, actions) =>
             actions.order.create({
               purchase_units: [
-                {
-                  amount: { currency_code: "EUR", value: order.ticket.price },
-                  description: order.ticket.title,
-                },
+                { amount: { currency_code: "EUR", value: order.ticket.price } },
               ],
             })
           }
@@ -69,9 +97,8 @@ const OrderRead = ({ order }) => {
           }
         />
       </PayPalScriptProvider>
-      <p>Time left to pay: {timeLeft} minutes </p>
       {errors}
-    </div>
+    </>
   );
 };
 

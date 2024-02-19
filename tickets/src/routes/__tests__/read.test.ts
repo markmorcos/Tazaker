@@ -12,13 +12,14 @@ it("returns a 404 if the ticket is not found", async () => {
 });
 
 it("returns a ticket if the ticket is found", async () => {
-  const body = { title: "title", price: 10 };
+  const eventId = new Types.ObjectId().toHexString();
+  const body = { eventId, price: 10 };
 
   const ticket = await createTicket(body);
   const getResponse = await request(app)
     .get(`/api/tickets/${ticket.id}`)
     .send()
     .expect(200);
-  expect(getResponse.body.title).toEqual(body.title);
+  expect(getResponse.body.eventId).toEqual(body.eventId);
   expect(getResponse.body.price).toEqual(body.price);
 });

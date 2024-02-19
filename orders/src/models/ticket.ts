@@ -3,11 +3,12 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 import { OrderStatus } from "@tazaker/common";
 
+import { EventDoc } from "./event";
 import { Order, OrderDoc } from "./order";
 
 export interface TicketAttrs {
   id: string;
-  title: string;
+  event: EventDoc;
   price: number;
 }
 
@@ -29,13 +30,13 @@ interface TicketModel extends Model<TicketDoc> {
 
 export interface TicketPayload {
   id: string;
-  title: string;
+  eventId: string;
   price: number;
 }
 
 const ticketSchema: Schema<TicketDoc> = new Schema(
   {
-    title: { type: String, required: true },
+    event: { type: Schema.Types.ObjectId, ref: "Event", required: true },
     price: { type: Number, required: true },
   },
   {

@@ -4,6 +4,7 @@ import { Message } from "node-nats-streaming";
 import { ExpirationCompleteEvent, OrderStatus } from "@tazaker/common";
 
 import { nats } from "../../../nats";
+import { Event } from "../../../models/event";
 import { Order } from "../../../models/order";
 import { Ticket } from "../../../models/ticket";
 
@@ -12,9 +13,18 @@ import { ExpirationCompleteListener } from "../expiration-complete-listener";
 const setup = async () => {
   const listener = new ExpirationCompleteListener(nats.client);
 
+  const event = Event.build({
+    id: new Types.ObjectId().toHexString(),
+    title: "Event",
+    start: new Date(),
+    end: new Date(new Date().getTime() + 60000),
+    timezone: "Europe/Berlin",
+  });
+  await event.save();
+
   const ticket = Ticket.build({
     id: new Types.ObjectId().toHexString(),
-    title: "Title",
+    event,
     price: 10,
   });
   await ticket.save();

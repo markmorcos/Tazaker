@@ -1,29 +1,23 @@
 import Link from "next/link";
-import Ticket from "../components/ticket";
 
-const LandingPage = ({ tickets }) => {
-  const ticketList = tickets.map((ticket) => (
-    <Ticket
-      key={ticket.id}
-      ticket={ticket}
-      action={
-        <Link className="btn btn-primary btn-sm" href={`/tickets/${ticket.id}`}>
-          View
-        </Link>
-      }
-    />
-  ));
-
+const LandingPage = () => {
   return (
-    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      {ticketList}
-    </div>
+    <Link className="link-underline link-underline-opacity-0" href="/events">
+      <div className="col">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <p className="card-title">
+              <h1 className="text-center">Events</h1>
+            </p>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 };
 
 LandingPage.getInitialProps = async (context, client) => {
-  const { data: tickets } = await client.get("/api/tickets");
-  return { tickets };
+  return {};
 };
 
 export default LandingPage;

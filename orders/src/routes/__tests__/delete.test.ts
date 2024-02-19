@@ -32,7 +32,7 @@ it("returns a 401 if the user does not own the order", async () => {
   return request(app)
     .delete(`/api/orders/${order.id}`)
     .set("Cookie", signIn())
-    .send({ title: "title", price: 20 })
+    .send({ price: 20 })
     .expect(401);
 });
 
