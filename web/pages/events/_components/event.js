@@ -3,7 +3,11 @@ import { formatDistance } from "date-fns";
 export default ({ event, action, errors }) => (
   <div className="col">
     <div className="card shadow-sm">
-      <img className="card-img-top" src={event.image} />
+      <img
+        className="card-img-top"
+        style={{ width: "100%", height: "180px", objectFit: "cover" }}
+        src={event.image}
+      />
       <div className="card-body">
         <p className="card-text">{event.title}</p>
         <div className="d-flex justify-content-between align-items-center">

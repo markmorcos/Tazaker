@@ -21,6 +21,11 @@ const EventRead = ({ event, tickets }) => (
       </ol>
     </nav>
 
+    <img
+      style={{ width: "100%", maxHeight: "50vh", objectFit: "cover" }}
+      src={event.image}
+    />
+
     <div className="row row-cols-1 g-3">
       <h1>
         {event.title}{" "}
