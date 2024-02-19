@@ -1,7 +1,6 @@
 export default ({ ticket, action, errors }) => (
   <div className="col">
     <div className="card shadow-sm">
-      <img className="card-img-top" src="https://placehold.it/180x60" />
       <div className="card-body">
         <p className="card-text">€{ticket.price}</p>
         <div className="d-flex justify-content-between align-items-center">
