@@ -13,7 +13,7 @@ router.post(
   "/api/tickets",
   requireAuth,
   [
-    body("title").notEmpty().withMessage("Title is required"),
+    body("eventId").isMongoId().withMessage("Event ID is required"),
     body("price")
       .notEmpty()
       .isCurrency({ allow_negatives: false })
@@ -21,17 +21,16 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { body, currentUser } = req;
-    const { id: userId } = currentUser!;
-    const { title, price } = body;
+    const { id: userId } = req.currentUser!;
+    const { eventId, price } = req.body;
 
-    const ticket = await Ticket.build({ userId, title, price });
+    const ticket = await Ticket.build({ userId, eventId, price });
     await ticket.save();
 
     await new TicketCreatedPublisher(nats.client).publish({
-      userId: ticket.userId,
       id: ticket.id,
-      title: ticket.title,
+      userId: ticket.userId,
+      eventId: ticket.eventId,
       price: ticket.price,
       version: ticket.version,
     });

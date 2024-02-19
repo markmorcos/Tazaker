@@ -23,7 +23,7 @@ export class OrderExpiredListener extends Listener<OrderExpiredEvent> {
     await new TicketUpdatedPublisher(this.client).publish({
       id: ticket.id,
       userId: ticket.userId,
-      title: ticket.title,
+      eventId: ticket.eventId,
       price: ticket.price,
       orderId: ticket.orderId,
       version: ticket.version,

@@ -31,6 +31,16 @@ spec:
     - host: www.tazaker.org
       http:
         paths:
+          - path: /api/events/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: events-srv
+                port:
+                  number: 3000
+    - host: www.tazaker.org
+      http:
+        paths:
           - path: /api/tickets/?(.*)
             pathType: ImplementationSpecific
             backend:

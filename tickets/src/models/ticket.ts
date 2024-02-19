@@ -3,7 +3,7 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface TicketAttrs {
   userId: string;
-  title: string;
+  eventId: string;
   price: number;
   orderId?: string;
 }
@@ -17,14 +17,13 @@ interface TicketModel extends Model<TicketDoc> {
 export interface TicketPayload {
   id: string;
   userId: string;
-  title: string;
   price: number;
 }
 
 const ticketSchema: Schema<TicketDoc> = new Schema(
   {
     userId: { type: String, required: true },
-    title: { type: String, required: true },
+    eventId: { type: String, required: true },
     price: { type: Number, required: true },
     orderId: { type: String },
   },

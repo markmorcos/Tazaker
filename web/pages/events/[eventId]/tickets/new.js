@@ -1,17 +1,17 @@
 import { useState } from "react";
+import Link from "next/link";
 import Router from "next/router";
 
-import useRequest from "../../hooks/use-request";
+import useRequest from "../../../../hooks/use-request";
 
-const NewTicket = () => {
-  const [title, setTitle] = useState("");
+const NewTicket = ({ event }) => {
   const [price, setPrice] = useState("");
 
   const { doRequest, loading, errors } = useRequest({
     url: "/api/tickets",
     method: "post",
-    body: { title, price },
-    onSuccess: () => Router.push("/"),
+    body: { eventId: event.id, price },
+    onSuccess: () => Router.push(`/events/${event.id}`),
   });
 
   const onSubmit = (event) => {
@@ -28,22 +28,25 @@ const NewTicket = () => {
   };
 
   return (
-    <div>
-      <h1>Create a Ticket</h1>
+    <>
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb p-3 bg-body-tertiary rounded-3">
+          <li className="breadcrumb-item">
+            <Link href="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link href="/events">Events</Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link href={`/events/${event.id}`}>{event.title}</Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Sell a ticket
+          </li>
+        </ol>
+      </nav>
+
       <form onSubmit={onSubmit}>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Title
-          </label>
-          <input
-            id="title"
-            className="form-control"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            disabled={loading}
-          />
-        </div>
         <div className="mb-3">
           <label htmlFor="price" className="form-label">
             Price
@@ -63,8 +66,16 @@ const NewTicket = () => {
           Create
         </button>
       </form>
-    </div>
+    </>
   );
+};
+
+NewTicket.getInitialProps = async (context, client) => {
+  const { eventId } = context.query;
+
+  const { data: event } = await client.get(`/api/events/${eventId}`);
+
+  return { event };
 };
 
 export default NewTicket;

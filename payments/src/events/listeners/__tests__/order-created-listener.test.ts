@@ -14,7 +14,14 @@ const setup = async () => {
   const data: OrderCreatedEvent["data"] = {
     id: new Types.ObjectId().toHexString(),
     userId: new Types.ObjectId().toHexString(),
-    ticket: { id: new Types.ObjectId().toHexString(), price: 10 },
+    ticket: {
+      id: new Types.ObjectId().toHexString(),
+      event: {
+        id: new Types.ObjectId().toHexString(),
+        end: new Date(new Date().getTime() + 60000).toISOString(),
+      },
+      price: 10,
+    },
     status: OrderStatus.Created,
     expiresAt: new Date().toISOString(),
     version: 0,

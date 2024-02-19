@@ -5,6 +5,7 @@ import { OrderStatus } from "@tazaker/common";
 
 import { app } from "../../app";
 import { signIn } from "../../test/global";
+import { Event } from "../../models/event";
 import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
 import { nats } from "../../nats";
@@ -20,8 +21,16 @@ it("returns an error if the ticket does not exist", () => {
 it("returns an error if the ticket is already reserved", async () => {
   const id = new Types.ObjectId().toHexString();
   const userId = new Types.ObjectId().toHexString();
+  const event = Event.build({
+    id: new Types.ObjectId().toHexString(),
+    title: "Event",
+    start: new Date(),
+    end: new Date(new Date().getTime() + 60000),
+    timezone: "Europe/Berlin",
+  });
+  await event.save();
 
-  const ticket = Ticket.build({ id, title: "Title", price: 10 });
+  const ticket = Ticket.build({ id, event, price: 10 });
   await ticket.save();
 
   const order = Order.build({
@@ -52,7 +61,16 @@ it("reserves a ticket", async () => {
   const id = new Types.ObjectId().toHexString();
   const userId = new Types.ObjectId().toHexString();
 
-  const ticket = Ticket.build({ id, title: "Title", price: 10 });
+  const event = Event.build({
+    id: new Types.ObjectId().toHexString(),
+    title: "Event",
+    start: new Date(),
+    end: new Date(new Date().getTime() + 60000),
+    timezone: "Europe/Berlin",
+  });
+  await event.save();
+
+  const ticket = Ticket.build({ id, event, price: 10 });
   await ticket.save();
 
   const { body } = await request(app)

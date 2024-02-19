@@ -17,19 +17,28 @@ const statuses = {
 
 const OrdersIndex = ({ orders }) => {
   const orderList = orders.map(
-    ({ id, ticket: { id: ticketId, title }, status }) => (
+    ({
+      id,
+      ticket: {
+        event: { id: eventId, title },
+        price,
+      },
+      status,
+    }) => (
       <tr key={id}>
         <td>
-          <Link href={`/tickets/${ticketId}`}>{title}</Link>
+          <Link href={`/events/${eventId}`}>{title}</Link>
+        </td>
+        <td>€{price}</td>
+        <td>
+          <Link href={`/orders/${id}`}>{id}</Link>
         </td>
         <td>
-          <Link href={`/orders/${id}`}>
-            <span
-              className={`badge rounded-pill text-bg-${statuses[status].background}`}
-            >
-              {statuses[status].title}
-            </span>
-          </Link>
+          <span
+            className={`badge rounded-pill text-bg-${statuses[status].background}`}
+          >
+            {statuses[status].title}
+          </span>
         </td>
       </tr>
     )
@@ -41,7 +50,9 @@ const OrdersIndex = ({ orders }) => {
       <table className="table">
         <thead>
           <tr>
-            <th>Ticket</th>
+            <th>Event</th>
+            <th>Price</th>
+            <th>Order</th>
             <th>Status</th>
           </tr>
         </thead>

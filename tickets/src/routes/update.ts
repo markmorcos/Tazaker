@@ -20,7 +20,6 @@ router.put(
   requireAuth,
   [
     param("id").isMongoId(),
-    body("title").notEmpty().withMessage("Title is required"),
     body("price")
       .notEmpty()
       .isCurrency({ allow_negatives: false })
@@ -43,14 +42,14 @@ router.put(
       throw new BadRequestError("Cannot edit a reserved ticket");
     }
 
-    const { title, price } = req.body;
-    ticket.set({ title, price });
+    const { price } = req.body;
+    ticket.set({ price });
     await ticket.save();
 
     await new TicketUpdatedPublisher(nats.client).publish({
-      userId: ticket.userId,
       id: ticket.id,
-      title: ticket.title,
+      userId: ticket.userId,
+      eventId: ticket.eventId,
       price: ticket.price,
       version: ticket.version,
     });

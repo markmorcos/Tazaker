@@ -17,7 +17,7 @@ const setup = async () => {
 
   const ticket = await Ticket.build({
     userId: new Types.ObjectId().toHexString(),
-    title: "Title",
+    eventId: new Types.ObjectId().toHexString(),
     price: 10,
   });
   await ticket.save();
@@ -25,7 +25,14 @@ const setup = async () => {
   const data: OrderCreatedEvent["data"] = {
     id: new Types.ObjectId().toHexString(),
     userId: new Types.ObjectId().toHexString(),
-    ticket: { id: ticket.id, price: ticket.price },
+    ticket: {
+      id: ticket.id,
+      event: {
+        id: ticket.eventId,
+        end: new Date(new Date().getTime() + 60000).toISOString(),
+      },
+      price: ticket.price,
+    },
     status: OrderStatus.Created,
     expiresAt: new Date().toISOString(),
     version: 0,

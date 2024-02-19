@@ -18,7 +18,9 @@ router.get(
   [param("id").isMongoId()],
   validateRequest,
   async (req: Request, res: Response) => {
-    const order = await Order.findById(req.params.id).populate("ticket");
+    const order = await Order.findById(req.params.id)
+      .populate("ticket")
+      .populate({ path: "ticket", populate: { path: "event" } });
 
     if (!order) {
       throw new NotFoundError();

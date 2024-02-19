@@ -4,6 +4,7 @@ import { Message } from "node-nats-streaming";
 import { TicketUpdatedEvent } from "@tazaker/common";
 
 import { nats } from "../../../nats";
+import { Event } from "../../../models/event";
 import { Ticket } from "../../../models/ticket";
 
 import { TicketUpdatedListener } from "../ticket-updated-listener";
@@ -11,18 +12,23 @@ import { TicketUpdatedListener } from "../ticket-updated-listener";
 const setup = async () => {
   const listener = new TicketUpdatedListener(nats.client);
 
-  const id = new Types.ObjectId().toHexString();
-  const ticket = await Ticket.build({
-    id,
-    title: "Title",
-    price: 10,
+  const event = Event.build({
+    id: new Types.ObjectId().toHexString(),
+    title: "Event",
+    start: new Date(),
+    end: new Date(new Date().getTime() + 60000),
+    timezone: "Europe/Berlin",
   });
+  await event.save();
+
+  const id = new Types.ObjectId().toHexString();
+  const ticket = await Ticket.build({ id, event, price: 10 });
   await ticket.save();
 
   const data: TicketUpdatedEvent["data"] = {
     id,
     userId: new Types.ObjectId().toHexString(),
-    title: "Title",
+    eventId: new Types.ObjectId().toHexString(),
     price: 10,
     version: ticket.version + 1,
   };
@@ -41,7 +47,6 @@ it("finds, updates and saves a ticket", async () => {
   const updatedTicket = await Ticket.findById(data.id);
 
   expect(updatedTicket).toBeDefined();
-  expect(updatedTicket!.title).toEqual(ticket.title);
   expect(updatedTicket!.price).toEqual(ticket.price);
   expect(updatedTicket!.version).toEqual(data.version);
 });

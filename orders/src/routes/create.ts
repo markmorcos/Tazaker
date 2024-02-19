@@ -9,6 +9,7 @@ import {
   validateRequest,
 } from "@tazaker/common";
 
+import { Event } from "../models/event";
 import { Order } from "../models/order";
 import { Ticket } from "../models/ticket";
 import { nats } from "../nats";
@@ -32,9 +33,12 @@ router.post(
     const { id: userId } = req.currentUser!;
     const { ticketId } = req.body;
 
-    const ticket = await Ticket.findById(ticketId);
+    const ticket = await Ticket.findById(ticketId).populate("event");
     if (!ticket) {
       throw new NotFoundError();
+    }
+    if (new Date() > ticket.event.end) {
+      throw new BadRequestError("Event has already ended");
     }
 
     const reservedOrder = await ticket.findOrderByStatuses(OrderStatus.Created);
@@ -71,7 +75,11 @@ router.post(
     await new OrderCreatedPublisher(nats.client).publish({
       id: order.id,
       userId: order.userId,
-      ticket: { id: order.ticket.id, price: order.ticket.price },
+      ticket: {
+        id: order.ticket.id,
+        event: { id: ticket.event.id, end: ticket.event.end.toISOString() },
+        price: order.ticket.price,
+      },
       status: order.status,
       expiresAt: order.expiresAt.toISOString(),
       version: order.version,

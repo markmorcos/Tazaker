@@ -11,7 +11,7 @@ router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
 
   const orders = await Order.find({ userId })
     .sort({ expiresAt: "desc" })
-    .populate("ticket");
+    .populate({ path: "ticket", populate: { path: "event" } });
 
   res.send(orders);
 });

@@ -12,8 +12,8 @@ export default ({ currentUser }) => {
 
   const links = currentUser
     ? [
+        { label: "Events", href: "/events" },
         { label: "Orders", href: "/orders" },
-        { label: "Sell a Ticket", href: "/tickets/new" },
       ]
     : [{ label: "Start", href: "/start" }];
 
