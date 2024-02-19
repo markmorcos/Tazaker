@@ -5,6 +5,7 @@ export interface TicketUpdatedEvent {
   data: {
     id: string;
     userId: string;
+    eventId: string;
     price: number;
     orderId?: string;
     version: number;
