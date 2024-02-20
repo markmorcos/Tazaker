@@ -18,9 +18,9 @@ const OrdersIndex = ({ orders }) => {
       <Table responsive>
         <thead>
           <tr>
-            <th>Event</th>
+            <th>ID</th>
             <th>Price</th>
-            <th>Order</th>
+            <th>Event</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -28,13 +28,13 @@ const OrdersIndex = ({ orders }) => {
           {orders.map(({ id, ticket, status }) => (
             <tr key={id}>
               <td>
-                <Link href={`/events/${ticket.event.id}`}>
-                  {ticket.event.title}
-                </Link>
+                <Link href={`/orders/${id}`}>{id}</Link>
               </td>
               <td>€{ticket.price}</td>
               <td>
-                <Link href={`/orders/${id}`}>{id}</Link>
+                <Link href={`/events/${ticket.event.id}`}>
+                  {ticket.event.title}
+                </Link>
               </td>
               <td>
                 <span
