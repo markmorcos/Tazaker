@@ -38,14 +38,14 @@ it("returns a 401 when purchasing an order that does not belong to the user", as
     .expect(401);
 });
 
-it("returns a 400 when purchasing a cancelled order", async () => {
+it("returns a 400 when purchasing an expired order", async () => {
   const userId = new Types.ObjectId().toHexString();
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
     userId,
     eventEnd: new Date(new Date().getTime() + 60000),
     price: 10,
-    status: OrderStatus.Cancelled,
+    status: OrderStatus.Expired,
     version: 0,
   });
   await order.save();

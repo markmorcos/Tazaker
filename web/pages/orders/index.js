@@ -7,12 +7,7 @@ import redirect from "../../api/redirect";
 
 const statuses = {
   [OrderStatus.Created]: { title: "Started", background: "primary" },
-  [OrderStatus.AwaitingPayment]: {
-    title: "Awaiting payment",
-    background: "secondary",
-  },
   [OrderStatus.Expired]: { title: "Expired", background: "danger" },
-  [OrderStatus.Cancelled]: { title: "Cancelled", background: "danger" },
   [OrderStatus.Complete]: { title: "Complete", background: "success" },
 };
 

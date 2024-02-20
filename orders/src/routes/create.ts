@@ -41,7 +41,7 @@ router.post(
       throw new BadRequestError("Event has already ended");
     }
 
-    const reservedOrder = await ticket.findOrderByStatuses(OrderStatus.Created);
+    const reservedOrder = await ticket.findOrderByStatus(OrderStatus.Created);
     if (!!reservedOrder && reservedOrder.userId === userId) {
       return res.status(200).send(reservedOrder);
     }
@@ -49,15 +49,25 @@ router.post(
       throw new BadRequestError("Ticket is already reserved");
     }
 
-    const existingOrder = await ticket.findOrderByStatuses([
-      OrderStatus.AwaitingPayment,
-      OrderStatus.Complete,
-    ]);
+    const existingOrder = await ticket.findOrderByStatus(OrderStatus.Complete);
     if (!!existingOrder && existingOrder.userId === userId) {
       return res.status(200).send(existingOrder);
     }
     if (!!existingOrder) {
       throw new BadRequestError("Order belongs to someone else");
+    }
+
+    const existingOrders = await Order.find({
+      userId,
+      ticket: {
+        $in: await Ticket.find({ id: { $ne: ticket.id }, event: ticket.event }),
+      },
+      status: OrderStatus.Created,
+    });
+    if (existingOrders.length > 0) {
+      throw new BadRequestError(
+        "Please complete the existing order to this event first or wait until it expires"
+      );
     }
 
     const status = OrderStatus.Created;
