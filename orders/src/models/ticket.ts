@@ -14,9 +14,7 @@ export interface TicketAttrs {
 
 export type TicketDoc = Document &
   TicketAttrs & {
-    findOrderByStatuses: (
-      status: OrderStatus | OrderStatus[]
-    ) => Promise<OrderDoc | null>;
+    findOrderByStatus: (status: OrderStatus) => Promise<OrderDoc | null>;
     version: number;
   };
 
@@ -55,14 +53,8 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
 ticketSchema.statics.findByEvent = (event: { id: string; version: number }) => {
   return Ticket.findOne({ _id: event.id, version: event.version - 1 });
 };
-
-ticketSchema.methods.findOrderByStatuses = async function (
-  status: OrderStatus | OrderStatus[]
-) {
-  return Order.findOne({
-    ticket: this,
-    status: { $in: Array.isArray(status) ? status : [status] },
-  });
+ticketSchema.methods.findOrderByStatus = async function (status: OrderStatus) {
+  return Order.findOne({ ticket: this, status });
 };
 
 ticketSchema.set("versionKey", "version");

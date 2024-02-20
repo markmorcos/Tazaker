@@ -9,7 +9,7 @@ it("can fetch a list of tickets", async () => {
     url: "https://google.com",
     image: "https://placehold.it/180x60",
     start: new Date(),
-    end: new Date(),
+    end: new Date(new Date().getTime() - 60000),
     timezone: "Europe/Berlin",
   });
   await createEvent({
@@ -17,7 +17,7 @@ it("can fetch a list of tickets", async () => {
     url: "https://google.com",
     image: "https://placehold.it/180x60",
     start: new Date(),
-    end: new Date(),
+    end: new Date(new Date().getTime()),
     timezone: "Europe/Berlin",
   });
   await createEvent({
@@ -25,10 +25,10 @@ it("can fetch a list of tickets", async () => {
     url: "https://google.com",
     image: "https://placehold.it/180x60",
     start: new Date(),
-    end: new Date(),
+    end: new Date(new Date().getTime() + 60000),
     timezone: "Europe/Berlin",
   });
 
   const response = await request(app).get("/api/events").send().expect(200);
-  expect(response.body).toHaveLength(3);
+  expect(response.body).toHaveLength(1);
 });

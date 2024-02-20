@@ -49,12 +49,14 @@ const NewTicket = ({ event }) => {
       <form onSubmit={onSubmit}>
         <div className="mb-3">
           <label htmlFor="price" className="form-label">
-            Price
+            Price (€)
           </label>
           <input
             id="price"
             className="form-control"
             type="number"
+            required
+            min={0.01}
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             onBlur={onBlur}

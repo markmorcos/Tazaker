@@ -31,7 +31,7 @@ router.delete(
       throw new NotAuthorizedError();
     }
 
-    order.status = OrderStatus.Cancelled;
+    order.status = OrderStatus.Expired;
     await order.save();
 
     await new OrderExpiredPublisher(nats.client).publish({

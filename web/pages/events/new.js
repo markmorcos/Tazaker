@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Router from "next/router";
 
+import redirect from "../../api/redirect";
 import useRequest from "../../hooks/use-request";
 
 const NewEvent = () => {

@@ -47,7 +47,7 @@ it("marks an order as cancelled", async () => {
     .expect(200);
 
   expect(body.id).toEqual(order.id);
-  expect(body.status).toEqual(OrderStatus.Cancelled);
+  expect(body.status).toEqual(OrderStatus.Expired);
 
   expect(nats.client.publish).toHaveBeenCalled();
 });

@@ -22,7 +22,7 @@ export class OrderExpiredListener extends Listener<OrderExpiredEvent> {
       throw new Error("Order not found");
     }
 
-    order.set({ status: OrderStatus.Cancelled });
+    order.set({ status: OrderStatus.Expired });
     await order.save();
 
     msg.ack();
