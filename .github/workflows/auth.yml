@@ -18,6 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: cd auth && npm install && npm run build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-output
+          path: auth/build
 
   deploy:
     runs-on: ubuntu-latest
@@ -25,7 +29,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - run: cd auth && docker build . -f Dockerfile.production -t markmorcos/tazaker-auth
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-output
+          path: auth/build
+      - run: cd auth && npm run build:docker
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
