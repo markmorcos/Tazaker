@@ -14,6 +14,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     const order = Order.build({
       id: data.id,
       userId: data.userId,
+      ticketId: data.ticket.id,
       eventEnd: new Date(data.ticket.event.end),
       price: data.ticket.price,
       status: data.status,

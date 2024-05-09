@@ -12,9 +12,10 @@ router.get(
   [query("eventId").isMongoId().withMessage("Event ID is required")],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { eventId } = req.query;
-
-    const tickets = await Ticket.find({ eventId, orderId: null });
+    const tickets = await Ticket.find({
+      eventId: String(req.query.eventId),
+      orderId: null,
+    });
 
     res.send(tickets);
   }

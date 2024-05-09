@@ -59,8 +59,12 @@ router.post(
 
     await new PaymentCreatedPublisher(nats.client).publish({
       id: payment.id,
-      orderId: payment.orderId,
       paypalOrderId: payment.paypalOrderId,
+      order: {
+        id: order.id,
+        userId: order.userId,
+        ticketId: order.ticketId,
+      },
     });
 
     res.status(201).send(payment);

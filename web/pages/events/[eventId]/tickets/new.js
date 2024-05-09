@@ -6,11 +6,18 @@ import useRequest from "../../../../hooks/use-request";
 
 const NewTicket = ({ event }) => {
   const [price, setPrice] = useState("");
+  const [file, setFile] = useState(null);
+
+  const body = new FormData();
+  body.append("eventId", event.id);
+  body.append("price", price);
+  body.append("file", file);
 
   const { doRequest, loading, errors } = useRequest({
     url: "/api/tickets",
     method: "post",
-    body: { eventId: event.id, price },
+    body,
+    headers: { "Content-Type": "multipart/form-data" },
     onSuccess: () => Router.push(`/events/${event.id}`),
   });
 
@@ -56,10 +63,24 @@ const NewTicket = ({ event }) => {
             className="form-control"
             type="number"
             required
-            min={0.01}
+            min="1"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             onBlur={onBlur}
+            disabled={loading}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="file" className="form-label">
+            Ticket (PDF)
+          </label>
+          <input
+            id="file"
+            className="form-control"
+            type="file"
+            accept=".pdf"
+            required
+            onChange={(e) => setFile(e.target.files[0])}
             disabled={loading}
           />
         </div>

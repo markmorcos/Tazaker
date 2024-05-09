@@ -10,7 +10,7 @@ import config from "../../utilities/config";
 import Loading from "./_components/loading";
 import OrderSummary from "./_components/summary";
 
-const OrderRead = ({ order }) => {
+const OrderRead = ({ order, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
 
   const { doRequest, loading, errors } = useRequest({
@@ -37,13 +37,13 @@ const OrderRead = ({ order }) => {
   }
 
   if (order.status === "complete") {
-    return <OrderSummary order={order} />;
+    return <OrderSummary order={order} currentUser={currentUser} />;
   }
 
   if (timeLeft <= 0) {
     return (
       <>
-        <div class="alert alert-danger" role="alert">
+        <div className="alert alert-danger" role="alert">
           This order has expired. Please go back to the{" "}
           <Link href={`/events/${order.ticket.event.id}`}>event page</Link> and
           start a new order.
@@ -73,7 +73,7 @@ const OrderRead = ({ order }) => {
           </li>
         </ol>
       </nav>
-      <div class="alert alert-warning" role="alert">
+      <div className="alert alert-warning" role="alert">
         Time left to pay: {timeLeft} minutes
       </div>
       <PayPalScriptProvider

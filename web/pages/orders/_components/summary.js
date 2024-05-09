@@ -1,7 +1,7 @@
 import { formatDistance } from "date-fns";
 import Link from "next/link";
 
-export default ({ order }) => (
+export default ({ order, currentUser }) => (
   <>
     <h1>Order {order.id}</h1>
     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -18,6 +18,16 @@ export default ({ order }) => (
                 >
                   View event
                 </Link>
+                {order.userId === currentUser?.id &&
+                  order.status === "complete" && (
+                    <Link
+                      className="btn btn-success btn-sm"
+                      href={`/api/tickets/${order.ticket.id}/file`}
+                      about="_blank"
+                    >
+                      Download
+                    </Link>
+                  )}
               </div>
               <small className="text-body-secondary">
                 {formatDistance(order.ticket.event.start, new Date(), {

@@ -5,7 +5,9 @@ export interface TicketAttrs {
   userId: string;
   eventId: string;
   price: number;
+  fileId: string;
   orderId?: string;
+  orderUserId?: string;
 }
 
 type TicketDoc = Document & TicketAttrs & { version: number };
@@ -18,6 +20,7 @@ export interface TicketPayload {
   id: string;
   userId: string;
   price: number;
+  fileId: string;
 }
 
 const ticketSchema: Schema<TicketDoc> = new Schema(
@@ -25,7 +28,9 @@ const ticketSchema: Schema<TicketDoc> = new Schema(
     userId: { type: String, required: true },
     eventId: { type: String, required: true },
     price: { type: Number, required: true },
+    fileId: { type: String, required: true },
     orderId: { type: String },
+    orderUserId: { type: String },
   },
   {
     toJSON: {

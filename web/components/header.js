@@ -40,7 +40,7 @@ export default ({ currentUser }) => {
             {currentUser && (
               <li className="nav-item">
                 <button className="nav-link" onClick={() => signOut()}>
-                  Sign Out
+                  Sign Out ({currentUser.email})
                 </button>
               </li>
             )}

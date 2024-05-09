@@ -1,17 +1,40 @@
 import express, { Request, Response } from "express";
+import { mongo, connection } from "mongoose";
 import { body } from "express-validator";
+import multer from "multer";
+import { PassThrough } from "stream";
 
-import { requireAuth, validateRequest } from "@tazaker/common";
+import { BadRequestError, requireAuth, validateRequest } from "@tazaker/common";
 
 import { Ticket } from "../models/ticket";
 import { nats } from "../nats";
 import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
 
+const upload = multer({ limits: { fileSize: 2 * 1024 * 1024 } });
+
 const router = express.Router();
+
+const uploadFile = (file: Express.Multer.File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    try {
+      const bucket = new mongo.GridFSBucket(connection.db);
+      const uploadStream = bucket.openUploadStream(file.originalname);
+
+      const readStream = new PassThrough();
+      readStream.end(file.buffer);
+      readStream.pipe(uploadStream);
+
+      uploadStream.on("error", reject);
+      uploadStream.on("finish", () => resolve(uploadStream.id.toHexString()));
+    } catch (error) {
+      reject("Error uploading file");
+    }
+  });
 
 router.post(
   "/api/tickets",
   requireAuth,
+  upload.single("file"),
   [
     body("eventId").isMongoId().withMessage("Event ID is required"),
     body("price")
@@ -24,7 +47,24 @@ router.post(
     const { id: userId } = req.currentUser!;
     const { eventId, price } = req.body;
 
-    const ticket = await Ticket.build({ userId, eventId, price });
+    if (!req.file) {
+      throw new BadRequestError("A PDF ticket must be uploaded");
+    }
+
+    let fileId: string;
+
+    try {
+      fileId = await uploadFile(req.file);
+    } catch (error) {
+      throw new BadRequestError("Could not upload ticket");
+    }
+
+    const ticket = await Ticket.build({
+      userId,
+      eventId,
+      price,
+      fileId,
+    });
     await ticket.save();
 
     await new TicketCreatedPublisher(nats.client).publish({
