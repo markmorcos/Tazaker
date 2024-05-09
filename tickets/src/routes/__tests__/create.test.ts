@@ -38,7 +38,9 @@ it("creates a ticket with valid input", async () => {
   await request(app)
     .post("/api/tickets")
     .set("Cookie", signIn())
-    .send({ eventId: new Types.ObjectId().toHexString(), price: 10 })
+    .field("eventId", new Types.ObjectId().toHexString())
+    .field("price", 10)
+    .attach("file", Buffer.from("Fake PDF File"), "ticket.pdf")
     .expect(201);
 
   const newTickets = await Ticket.find({});

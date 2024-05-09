@@ -16,9 +16,19 @@ export const signIn = (id = new Types.ObjectId().toHexString()) => {
 export const createTicket = async (
   attrs: Partial<TicketAttrs>
 ): Promise<TicketPayload> => {
-  const { body } = await request(app)
+  let req = request(app)
     .post("/api/tickets")
-    .set("Cookie", signIn(attrs.userId))
-    .send(attrs);
+    .set("Cookie", signIn(attrs.userId));
+
+  for (const key in attrs) {
+    const value = attrs[key as keyof typeof attrs] as string;
+    req = req.field(key, value);
+  }
+
+  const { body } = await req.attach(
+    "file",
+    Buffer.from("Fake PDF File"),
+    "ticket.pdf"
+  );
   return body;
 };

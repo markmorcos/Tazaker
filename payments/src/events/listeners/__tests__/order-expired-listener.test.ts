@@ -14,6 +14,7 @@ const setup = async () => {
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
     userId: new Types.ObjectId().toHexString(),
+    ticketId: new Types.ObjectId().toHexString(),
     eventEnd: new Date(new Date().getTime() + 60000),
     price: 10,
     status: OrderStatus.Created,

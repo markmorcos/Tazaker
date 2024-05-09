@@ -5,6 +5,7 @@ it("should update the version key automatically", async () => {
   const { id } = await Ticket.build({
     userId: new Types.ObjectId().toHexString(),
     eventId: new Types.ObjectId().toHexString(),
+    fileId: new Types.ObjectId().toHexString(),
     price: 5,
   }).save();
 
@@ -29,6 +30,7 @@ it("increments the version number on multiple saves", async () => {
   const ticket = Ticket.build({
     userId: new Types.ObjectId().toHexString(),
     eventId: new Types.ObjectId().toHexString(),
+    fileId: new Types.ObjectId().toHexString(),
     price: 5,
   });
 
