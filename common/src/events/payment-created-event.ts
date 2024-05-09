@@ -2,5 +2,13 @@ import { Subjects } from "./subjects";
 
 export interface PaymentCreatedEvent {
   subject: Subjects.PaymentCreated;
-  data: { id: string; orderId: string; userId: string; paypalOrderId: string };
+  data: {
+    id: string;
+    paypalOrderId: string;
+    order: {
+      id: string;
+      userId: string;
+      ticketId: string;
+    };
+  };
 }
