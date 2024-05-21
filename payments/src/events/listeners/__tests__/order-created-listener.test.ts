@@ -16,6 +16,7 @@ const setup = async () => {
     userId: new Types.ObjectId().toHexString(),
     ticket: {
       id: new Types.ObjectId().toHexString(),
+      userId: new Types.ObjectId().toHexString(),
       event: {
         id: new Types.ObjectId().toHexString(),
         end: new Date(new Date().getTime() + 60000).toISOString(),
@@ -39,7 +40,7 @@ it("replicates the order info", async () => {
   await listener.onMessage(data, msg);
 
   const order = await Order.findById(data.id);
-  expect(order!.price).toEqual(data.ticket.price);
+  expect(order!.ticket.price).toEqual(data.ticket.price);
 });
 
 it("acks the message", async () => {

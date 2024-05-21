@@ -1,0 +1,38 @@
+name: payouts
+
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - "payouts/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd payouts && npm install && npm run test:ci
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd payouts && npm install && npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd payouts && docker build . -f Dockerfile.production -t markmorcos/tazaker-payouts
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker push markmorcos/tazaker-payouts
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - run: doctl kubernetes cluster kubeconfig save tazaker
+      - run: kubectl rollout restart deployment payouts-depl

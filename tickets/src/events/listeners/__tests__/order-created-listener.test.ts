@@ -28,6 +28,7 @@ const setup = async () => {
     userId: new Types.ObjectId().toHexString(),
     ticket: {
       id: ticket.id,
+      userId: new Types.ObjectId().toHexString(),
       event: {
         id: ticket.eventId,
         end: new Date(new Date().getTime() + 60000).toISOString(),

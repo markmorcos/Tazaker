@@ -24,9 +24,12 @@ it("returns a 401 when purchasing an order that does not belong to the user", as
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
     userId: new Types.ObjectId().toHexString(),
-    ticketId: new Types.ObjectId().toHexString(),
+    ticket: {
+      id: new Types.ObjectId().toHexString(),
+      userId: new Types.ObjectId().toHexString(),
+      price: 10,
+    },
     eventEnd: new Date(new Date().getTime() + 60000),
-    price: 10,
     status: OrderStatus.Created,
     version: 0,
   });
@@ -44,9 +47,12 @@ it("returns a 400 when purchasing an expired order", async () => {
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
     userId,
-    ticketId: new Types.ObjectId().toHexString(),
+    ticket: {
+      id: new Types.ObjectId().toHexString(),
+      userId: new Types.ObjectId().toHexString(),
+      price: 10,
+    },
     eventEnd: new Date(new Date().getTime() + 60000),
-    price: 10,
     status: OrderStatus.Expired,
     version: 0,
   });
@@ -65,9 +71,12 @@ it("returns 201 with valid inputs", async () => {
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
     userId,
-    ticketId: new Types.ObjectId().toHexString(),
+    ticket: {
+      id: new Types.ObjectId().toHexString(),
+      userId: new Types.ObjectId().toHexString(),
+      price: 10,
+    },
     eventEnd: new Date(new Date().getTime() + 60000),
-    price,
     status: OrderStatus.Created,
     version: 0,
   });

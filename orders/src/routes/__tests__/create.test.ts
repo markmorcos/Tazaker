@@ -30,7 +30,12 @@ it("returns an error if the ticket is already reserved", async () => {
   });
   await event.save();
 
-  const ticket = Ticket.build({ id, event, price: 10 });
+  const ticket = Ticket.build({
+    id,
+    userId: new Types.ObjectId().toHexString(),
+    event,
+    price: 10,
+  });
   await ticket.save();
 
   const order = Order.build({
@@ -70,7 +75,12 @@ it("reserves a ticket", async () => {
   });
   await event.save();
 
-  const ticket = Ticket.build({ id, event, price: 10 });
+  const ticket = Ticket.build({
+    id,
+    userId: new Types.ObjectId().toHexString(),
+    event,
+    price: 10,
+  });
   await ticket.save();
 
   const { body } = await request(app)

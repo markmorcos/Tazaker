@@ -24,6 +24,7 @@ const setup = async () => {
 
   const ticket = Ticket.build({
     id: new Types.ObjectId().toHexString(),
+    userId: new Types.ObjectId().toHexString(),
     event,
     price: 10,
   });
