@@ -6,6 +6,7 @@ import { PaymentCreatedEvent } from "@tazaker/common";
 import { nats } from "../../../nats";
 
 import { PaymentCreatedListener } from "../payment-created-listener";
+import { Wallet } from "../../../models/wallet";
 
 const setup = async () => {
   const listener = new PaymentCreatedListener(nats.client);
@@ -30,7 +31,24 @@ const setup = async () => {
   return { listener, data, msg };
 };
 
-it("sends the payout successfully", async () => {});
+it("saves the price successfully", async () => {
+  const { listener, data, msg } = await setup();
+
+  const walletBefore = await Wallet.findOne({
+    userId: data.order.ticket.userId,
+  });
+  const balanceBefore = walletBefore?.balance || 0;
+
+  await listener.onMessage(data, msg);
+
+  const walletAfter = await Wallet.findOne({
+    userId: data.order.ticket.userId,
+  });
+  const balanceAfter = walletAfter?.balance || data.order.ticket.price;
+
+  expect(balanceBefore).toEqual(balanceAfter - data.order.ticket.price);
+  expect(msg.ack).toHaveBeenCalled();
+});
 
 it("acks the message", async () => {
   const { listener, data, msg } = await setup();

@@ -2,6 +2,7 @@ import { Document, Model, Schema, model } from "mongoose";
 
 export interface UserAttrs {
   email: string;
+  paypalEmail: string;
   code: string;
 }
 
@@ -14,6 +15,7 @@ interface UserModel extends Model<UserDoc> {
 const userSchema: Schema<UserDoc> = new Schema(
   {
     email: { type: String, required: true },
+    paypalEmail: { type: String, required: true },
     code: { type: String },
   },
   {

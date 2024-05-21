@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { query } from "express-validator";
 import { sign } from "jsonwebtoken";
 
-import { BadRequestError, validateRequest } from "@tazaker/common";
+import { validateRequest } from "@tazaker/common";
 
 import { User } from "../models/user";
 
@@ -24,7 +24,7 @@ router.get(
     await user.save();
 
     req.session!.jwt = sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, paypalEmail: user.paypalEmail },
       process.env.JWT_KEY!
     );
 
