@@ -6,9 +6,12 @@ import { OrderStatus } from "@tazaker/common";
 export interface OrderAttrs {
   id: string;
   userId: string;
-  ticketId: string;
+  ticket: {
+    id: string;
+    userId: string;
+    price: number;
+  };
   eventEnd: Date;
-  price: number;
   status: OrderStatus;
   version: number;
 }
@@ -33,9 +36,12 @@ export interface OrderPayload {
 const orderSchema: Schema<OrderDoc> = new Schema(
   {
     userId: { type: String, required: true },
-    ticketId: { type: String, required: true },
+    ticket: {
+      id: { type: String, required: true },
+      userId: { type: String, required: true },
+      price: { type: Number, required: true },
+    },
     eventEnd: { type: Schema.Types.Date, required: true },
-    price: { type: Number, required: true },
     status: { type: String, enum: Object.values(OrderStatus), required: true },
   },
   {

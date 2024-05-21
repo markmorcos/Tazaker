@@ -63,7 +63,11 @@ router.post(
       order: {
         id: order.id,
         userId: order.userId,
-        ticketId: order.ticketId,
+        ticket: {
+          id: order.ticket.id,
+          userId: order.ticket.userId,
+          price: order.ticket.price,
+        },
       },
     });
 

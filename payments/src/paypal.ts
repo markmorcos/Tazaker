@@ -15,7 +15,6 @@ const client = new paypal.core.PayPalHttpClient(environment);
 
 export const captureOrder = async (paypalOrderId: string) => {
   const request = new paypal.orders.OrdersCaptureRequest(paypalOrderId);
-  const response = await client.execute(request);
-
-  return response.result;
+  const { result } = await client.execute(request);
+  return result;
 };
