@@ -4,6 +4,7 @@ import { verify } from "jsonwebtoken";
 export interface UserPayload {
   id: string;
   email: string;
+  paypalEmail: string;
 }
 
 declare global {
