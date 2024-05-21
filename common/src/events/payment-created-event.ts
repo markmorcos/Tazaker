@@ -8,7 +8,7 @@ export interface PaymentCreatedEvent {
     order: {
       id: string;
       userId: string;
-      ticketId: string;
+      ticket: { id: string; userId: string; price: number };
     };
   };
 }
