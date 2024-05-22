@@ -6,6 +6,7 @@ import cookieSession from "cookie-session";
 import { currentUser, errorHandler, NotFoundError } from "@tazaker/common";
 
 import { createPayoutRouter } from "./routes/create";
+import { readPayoutRouter } from "./routes/read";
 
 export const app = express();
 
@@ -21,6 +22,7 @@ app.use(
 app.use(currentUser);
 
 app.use(createPayoutRouter);
+app.use(readPayoutRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

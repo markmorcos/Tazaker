@@ -10,6 +10,7 @@ import { signInRouter } from "./routes/sign-in";
 import { signOutRouter } from "./routes/sign-out";
 import { signUpRouter } from "./routes/sign-up";
 import { completeRouter } from "./routes/complete";
+import { updateAuthRouter } from "./routes/update";
 
 export const app = express();
 
@@ -28,6 +29,7 @@ app.use(signInRouter);
 app.use(signOutRouter);
 app.use(signUpRouter);
 app.use(completeRouter);
+app.use(updateAuthRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

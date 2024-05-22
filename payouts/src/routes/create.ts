@@ -18,6 +18,9 @@ router.post(
 
     await paypal.initiatePayout(wallet.balance, req.currentUser!.paypalEmail);
 
+    wallet.set("balance", 0);
+    await wallet.save();
+
     res.status(200).send({});
   }
 );
