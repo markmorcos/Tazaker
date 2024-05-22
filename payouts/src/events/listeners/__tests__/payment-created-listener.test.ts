@@ -34,17 +34,11 @@ const setup = async () => {
 it("saves the price successfully", async () => {
   const { listener, data, msg } = await setup();
 
-  const walletBefore = await Wallet.findOne({
-    userId: data.order.ticket.userId,
-  });
-  const balanceBefore = walletBefore?.balance || 0;
+  const balanceBefore = await Wallet.balance(data.order.ticket.userId);
 
   await listener.onMessage(data, msg);
 
-  const walletAfter = await Wallet.findOne({
-    userId: data.order.ticket.userId,
-  });
-  const balanceAfter = walletAfter?.balance || data.order.ticket.price;
+  const balanceAfter = await Wallet.balance(data.order.ticket.userId);
 
   expect(balanceBefore).toEqual(balanceAfter - data.order.ticket.price);
   expect(msg.ack).toHaveBeenCalled();
