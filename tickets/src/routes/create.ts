@@ -59,12 +59,7 @@ router.post(
       throw new BadRequestError("Could not upload ticket");
     }
 
-    const ticket = await Ticket.build({
-      userId,
-      eventId,
-      price,
-      fileId,
-    });
+    const ticket = await Ticket.build({ userId, eventId, price, fileId });
     await ticket.save();
 
     await new TicketCreatedPublisher(nats.client).publish({

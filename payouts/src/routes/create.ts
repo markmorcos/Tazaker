@@ -11,17 +11,19 @@ router.post(
   "/api/payouts",
   requireAuth,
   async (req: Request, res: Response) => {
-    const wallet = await Wallet.findOne({ userId: req.currentUser!.id });
-    if (!wallet || wallet.balance <= 0) {
+    const userId = req.currentUser!.id;
+    const balance = await Wallet.balance(userId);
+
+    if (balance == 0) {
       throw new BadRequestError("Cannot send payout");
     }
 
-    await paypal.initiatePayout(wallet.balance, req.currentUser!.paypalEmail);
+    await paypal.initiatePayout(balance, req.currentUser!.paypalEmail);
 
-    wallet.set("balance", 0);
-    await wallet.save();
+    const payout = Wallet.build({ userId, amount: -balance });
+    await payout.save();
 
-    res.status(200).send({});
+    res.status(200).send({ success: true });
   }
 );
 

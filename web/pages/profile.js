@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Link from "next/link";
 
 import redirect from "../api/redirect";
 import useRequest from "../hooks/use-request";

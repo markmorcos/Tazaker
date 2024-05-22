@@ -11,21 +11,10 @@ export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: PaymentCreatedEvent["data"], msg: Message) {
-    const {
-      order: {
-        ticket: { userId, price },
-      },
-    } = data;
+    const { userId, price: amount } = data.order.ticket;
 
-    let wallet;
-
-    wallet = await Wallet.findOne({ userId });
-    if (!wallet) {
-      wallet = Wallet.build({ userId, balance: 0 });
-    }
-
-    wallet.set("balance", wallet.balance + price);
-    await wallet.save();
+    const payment = Wallet.build({ userId, amount });
+    await payment.save();
 
     msg.ack();
   }

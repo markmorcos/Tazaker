@@ -88,7 +88,13 @@ const OrderRead = ({ order, currentUser }) => {
           createOrder={(data, actions) =>
             actions.order.create({
               purchase_units: [
-                { amount: { currency_code: "EUR", value: order.ticket.price } },
+                {
+                  amount: {
+                    currency_code: "EUR",
+                    value:
+                      Math.round(100 * (order.ticket.price * 1.05 + 0.5)) / 100,
+                  },
+                },
               ],
             })
           }

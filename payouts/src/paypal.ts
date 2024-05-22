@@ -26,7 +26,10 @@ export const initiatePayout = async (amount: number, email: string) => {
     items: [
       {
         recipient_type: "EMAIL",
-        amount: { value: amount, currency: "EUR" },
+        amount: {
+          value: Math.round((100 * (amount + 0.39)) / 0.97) / 100,
+          currency: "EUR",
+        },
         receiver: email,
         sender_item_id: randomBytes(16).toString("hex"),
       },
