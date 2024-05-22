@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { randomBytes } from "crypto";
 
-import { BadRequestError, validateRequest } from "@tazaker/common";
+import { validateRequest } from "@tazaker/common";
 
 import { User } from "../models/user";
 import * as mailer from "../services/mailer";

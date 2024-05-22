@@ -60,6 +60,16 @@ spec:
     - host: tazaker.dev
       http:
         paths:
+          - path: /api/payouts/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: payouts-srv
+                port:
+                  number: 3000
+    - host: tazaker.dev
+      http:
+        paths:
           - path: /
             pathType: Prefix
             backend:

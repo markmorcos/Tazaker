@@ -8,6 +8,7 @@ import { Order, OrderDoc } from "./order";
 
 export interface TicketAttrs {
   id: string;
+  userId: string;
   event: EventDoc;
   price: number;
 }
@@ -34,6 +35,7 @@ export interface TicketPayload {
 
 const ticketSchema: Schema<TicketDoc> = new Schema(
   {
+    userId: { type: String, required: true },
     event: { type: Schema.Types.ObjectId, ref: "Event", required: true },
     price: { type: Number, required: true },
   },

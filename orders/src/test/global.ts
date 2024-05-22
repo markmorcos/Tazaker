@@ -27,7 +27,12 @@ export const createTicket = async () => {
   });
   await event.save();
 
-  const ticket = Ticket.build({ id, event, price: 10 });
+  const ticket = Ticket.build({
+    id,
+    userId: new Types.ObjectId().toHexString(),
+    event,
+    price: 10,
+  });
   await ticket.save();
 
   return ticket;

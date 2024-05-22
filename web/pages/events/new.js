@@ -39,6 +39,7 @@ const NewEvent = () => {
     <div>
       <h1>Create a Event</h1>
       <form onSubmit={onSubmit}>
+        {errors}
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
             Title
@@ -143,7 +144,6 @@ const NewEvent = () => {
             disabled={loading}
           />
         </div>
-        {errors}
         <button type="submit" className="btn btn-primary" disabled={loading}>
           Create
         </button>

@@ -87,6 +87,7 @@ router.post(
       userId: order.userId,
       ticket: {
         id: order.ticket.id,
+        userId: order.ticket.userId,
         event: { id: ticket.event.id, end: ticket.event.end.toISOString() },
         price: order.ticket.price,
       },

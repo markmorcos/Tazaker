@@ -2,18 +2,20 @@ import { Document, Model, Schema, model } from "mongoose";
 
 export interface UserAttrs {
   email: string;
+  paypalEmail?: string;
   code: string;
 }
 
 type UserDoc = Document & UserAttrs;
 
 interface UserModel extends Model<UserDoc> {
-  createIfNotExists: (user: UserAttrs) => UserDoc;
+  createIfNotExists: (user: Partial<UserAttrs>) => UserDoc;
 }
 
 const userSchema: Schema<UserDoc> = new Schema(
   {
     email: { type: String, required: true },
+    paypalEmail: { type: String },
     code: { type: String },
   },
   {
@@ -27,6 +29,14 @@ const userSchema: Schema<UserDoc> = new Schema(
     },
   }
 );
+
+userSchema.pre("save", async function (done) {
+  if (!this.paypalEmail) {
+    this.set("paypalEmail", this.email);
+  }
+
+  done();
+});
 
 userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
   let user = await User.findOne({ email: attrs.email });
