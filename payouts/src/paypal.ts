@@ -14,7 +14,7 @@ const environment =
 
 const client = new paypal.core.PayPalHttpClient(environment);
 
-export const initiatePayout = async (amount: number, email: string) => {
+export const initiatePayout = async (value: number, email: string) => {
   const request = new paypal.payouts.PayoutsPostRequest();
   request.requestBody({
     sender_batch_header: {
@@ -26,10 +26,7 @@ export const initiatePayout = async (amount: number, email: string) => {
     items: [
       {
         recipient_type: "EMAIL",
-        amount: {
-          value: Math.round((100 * (amount + 0.39)) / 0.97) / 100,
-          currency: "EUR",
-        },
+        amount: { value, currency: "EUR" },
         receiver: email,
         sender_item_id: randomBytes(16).toString("hex"),
       },
