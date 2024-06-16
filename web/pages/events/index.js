@@ -11,7 +11,7 @@ const LandingPage = ({ events }) => (
       </li>
       <li className="active">Events</li>
     </Breadcrumbs>
-    <section>
+    <section style={{ display: "flex", flexWrap: "wrap" }}>
       {events.map((event) => (
         <Event key={event.id} event={event} />
       ))}
