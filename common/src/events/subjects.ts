@@ -12,5 +12,5 @@ export enum Subjects {
 
   PaymentCreated = "payment:created",
 
-  Notification = "notification",
+  NotificationEmail = "notification:email",
 }
