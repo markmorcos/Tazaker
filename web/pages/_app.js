@@ -1,29 +1,21 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
-import { useEffect } from "react";
 import Head from "next/head";
 
 import buildClient from "../api/build-client";
 import Header from "../components/header";
 
-const AppComponent = ({ Component, pageProps, currentUser }) => {
-  useEffect(() => {
-    require("bootstrap/dist/js/bootstrap.bundle.min.js");
-  }, []);
-
-  return (
-    <div>
-      <Head>
-        <title>Tazaker</title>
-      </Head>
-      <Header currentUser={currentUser} />
-      <div className="container py-5">
-        <Component {...pageProps} currentUser={currentUser} />
-      </div>
-    </div>
-  );
-};
+const AppComponent = ({ Component, pageProps, currentUser }) => (
+  <>
+    <Head>
+      <title>Tazaker</title>
+    </Head>
+    <Header currentUser={currentUser} />
+    <container className="app">
+      <Component {...pageProps} currentUser={currentUser} />
+    </container>
+  </>
+);
 
 AppComponent.getInitialProps = async ({ Component, ctx }) => {
   const client = buildClient(ctx);

@@ -3,6 +3,10 @@ import Router from "next/router";
 
 import redirect from "../../api/redirect";
 import useRequest from "../../hooks/use-request";
+import { Title } from "../../components/title";
+import { Button } from "../../components/button";
+import { Form } from "../../components/form";
+import { Input } from "../../components/input";
 
 const NewEvent = () => {
   const [title, setTitle] = useState("");
@@ -37,117 +41,77 @@ const NewEvent = () => {
 
   return (
     <div>
-      <h1>Create a Event</h1>
-      <form onSubmit={onSubmit}>
+      <Title>Create a Event</Title>
+      <Form onSubmit={onSubmit}>
         {errors}
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            Title
-          </label>
-          <input
-            id="title"
-            className="form-control"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="url" className="form-label">
-            Url
-          </label>
-          <input
-            id="url"
-            className="form-control"
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="image" className="form-label">
-            Image
-          </label>
-          <input
-            id="image"
-            className="form-control"
-            type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="startDate" className="form-label">
-            Start Date
-          </label>
-          <input
-            id="startDate"
-            className="form-control"
-            type="text"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="startTime" className="form-label">
-            Start Time
-          </label>
-          <input
-            id="startTime"
-            className="form-control"
-            type="text"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="endDate" className="form-label">
-            End Date
-          </label>
-          <input
-            id="endDate"
-            className="form-control"
-            type="text"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="endTime" className="form-label">
-            End Time
-          </label>
-          <input
-            id="endTime"
-            className="form-control"
-            type="text"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="timezone" className="form-label">
-            Timezone
-          </label>
-          <input
-            id="timezone"
-            className="form-control"
-            type="text"
-            value={timezone}
-            onChange={(e) => setTimezone(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
+        <label htmlFor="title">Title</label>
+        <Input
+          id="title"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor="url">Url</label>
+        <Input
+          id="url"
+          type="text"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor="image">Image</label>
+        <Input
+          id="image"
+          type="text"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor="startDate">Start Date</label>
+        <Input
+          id="startDate"
+          type="text"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor="startTime">Start Time</label>
+        <Input
+          id="startTime"
+          type="text"
+          value={startTime}
+          onChange={(e) => setStartTime(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor="endDate">End Date</label>
+        <Input
+          id="endDate"
+          type="text"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor="endTime">End Time</label>
+        <Input
+          id="endTime"
+          type="text"
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+          disabled={loading}
+        />
+        <label htmlFor="timezone">Timezone</label>
+        <Input
+          id="timezone"
+          type="text"
+          value={timezone}
+          onChange={(e) => setTimezone(e.target.value)}
+          disabled={loading}
+        />
+        <Button type="submit" disabled={loading}>
           Create
-        </button>
-      </form>
+        </Button>
+      </Form>
     </div>
   );
 };

@@ -1,8 +1,13 @@
 import { useState } from "react";
-import Link from "next/link";
 import Router from "next/router";
 
 import useRequest from "../../../../hooks/use-request";
+import { Button } from "../../../../components/button";
+import { Link } from "../../../../components/link";
+import { Breadcrumbs } from "../../../../components/breadcrumbs";
+import { Card } from "../../../../components/card";
+import { Form } from "../../../../components/form";
+import { Input } from "../../../../components/input";
 
 const NewTicket = ({ event }) => {
   const [price, setPrice] = useState("");
@@ -36,59 +41,51 @@ const NewTicket = ({ event }) => {
 
   return (
     <>
-      <nav aria-label="breadcrumb">
-        <ol className="breadcrumb p-3 bg-body-tertiary rounded-3">
-          <li className="breadcrumb-item">
-            <Link href="/">Home</Link>
-          </li>
-          <li className="breadcrumb-item">
-            <Link href="/events">Events</Link>
-          </li>
-          <li className="breadcrumb-item">
-            <Link href={`/events/${event.id}`}>{event.title}</Link>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            Sell a ticket
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumbs>
+        <li>
+          <Link href="/">Home</Link>
+        </li>
+        <li>
+          <Link href="/events">Events</Link>
+        </li>
+        <li>
+          <Link href={`/events/${event.id}`}>{event.title}</Link>
+        </li>
+        <li className="active">Sell a ticket</li>
+      </Breadcrumbs>
 
-      <form onSubmit={onSubmit}>
-        <div className="mb-3">
-          <label htmlFor="price" className="form-label">
-            Price (€)
-          </label>
-          <input
-            id="price"
-            className="form-control"
-            type="number"
-            required
-            min="1"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            onBlur={onBlur}
-            disabled={loading}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="file" className="form-label">
-            Ticket (PDF)
-          </label>
-          <input
-            id="file"
-            className="form-control"
-            type="file"
-            accept=".pdf"
-            required
-            onChange={(e) => setFile(e.target.files[0])}
-            disabled={loading}
-          />
-        </div>
-        {errors}
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          Create
-        </button>
-      </form>
+      <div style={{ maxWidth: "30rem" }}>
+        <Card>
+          <div className="content">
+            <Form onSubmit={onSubmit}>
+              <label htmlFor="price">Price (€)</label>
+              <Input
+                id="price"
+                type="number"
+                required
+                min="1"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                onBlur={onBlur}
+                disabled={loading}
+              />
+              <label htmlFor="file">Ticket (PDF)</label>
+              <Input
+                id="file"
+                type="file"
+                accept=".pdf"
+                required
+                onChange={(e) => setFile(e.target.files[0])}
+                disabled={loading}
+              />
+              {errors}
+              <Button type="submit" disabled={loading}>
+                Create
+              </Button>
+            </Form>
+          </div>
+        </Card>
+      </div>
     </>
   );
 };

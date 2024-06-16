@@ -1,23 +1,21 @@
 import { formatDistance } from "date-fns";
 
-export default ({ event, action, errors }) => (
-  <div className="col">
-    <div className="card shadow-sm">
-      <img
-        className="card-img-top"
-        style={{ width: "100%", height: "180px", objectFit: "cover" }}
-        src={event.image}
-      />
-      <div className="card-body">
-        <p className="card-text">{event.title}</p>
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="btn-group">{action}</div>
-          <small className="text-body-secondary">
+import { Link } from "../../../components/link";
+import { Card } from "../../../components/card";
+
+export default ({ event, errors }) => (
+  <Link href={`/events/${event.id}`}>
+    <div style={{ maxWidth: "30rem" }}>
+      <Card>
+        <img className="image" width="100%" src={event.image} />
+        <div className="content">
+          <h1 className="text">{event.title}</h1>
+          <small>
             {formatDistance(event.start, new Date(), { addSuffix: true })}
           </small>
         </div>
-      </div>
+      </Card>
+      {errors}
     </div>
-    {errors}
-  </div>
+  </Link>
 );

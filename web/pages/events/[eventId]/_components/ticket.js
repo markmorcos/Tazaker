@@ -1,16 +1,17 @@
+import { Card } from "../../../../components/card";
+
 export default ({ ticket, action, errors }) => (
-  <div className="col">
-    <div className="card shadow-sm">
-      <div className="card-body">
+  <div style={{ maxWidth: "20rem" }}>
+    <Card>
+      <div className="content">
         {errors}
-        <p className="card-text">
-          €{ticket.price} + €
-          {Math.round(100 * (ticket.price * 0.05 + 0.5)) / 100}
+        <p className="text">
+          €{ticket.price} <i>(price)</i> + €
+          {Math.round(100 * (ticket.price * 0.05 + 0.5)) / 100}{" "}
+          <i>(platform fees)</i>
         </p>
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="btn-group">{action}</div>
-        </div>
+        <div>{action}</div>
       </div>
-    </div>
+    </Card>
   </div>
 );

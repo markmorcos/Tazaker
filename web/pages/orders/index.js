@@ -1,9 +1,9 @@
-import Link from "next/link";
-import Table from "react-bootstrap/Table";
-
 import { OrderStatus } from "@tazaker/common";
 
 import redirect from "../../api/redirect";
+import { Link } from "../../components/link";
+import { Table } from "../../components/table";
+import { Title } from "../../components/title";
 
 const statuses = {
   [OrderStatus.Created]: { title: "Started", background: "primary" },
@@ -14,8 +14,8 @@ const statuses = {
 const OrdersIndex = ({ orders }) => {
   return (
     <div>
-      <h1>Orders</h1>
-      <Table responsive>
+      <Title>Orders</Title>
+      <Table>
         <thead>
           <tr>
             <th>ID</th>
@@ -37,9 +37,7 @@ const OrdersIndex = ({ orders }) => {
                 </Link>
               </td>
               <td>
-                <span
-                  className={`badge rounded-pill text-bg-${statuses[status].background}`}
-                >
+                <span className={`badge ${statuses[status].background}`}>
                   {statuses[status].title}
                 </span>
               </td>

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+import { Alert } from "../components/alert";
+
 export default ({ url, method, body, headers, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
@@ -19,13 +21,13 @@ export default ({ url, method, body, headers, onSuccess }) => {
       return data;
     } catch (error) {
       setErrors(
-        <div className="alert alert-danger">
-          <ul className="my-0">
+        <Alert className="danger">
+          <ul>
             {error.response.data.errors.map((error) => (
               <li key={error.message}>{error.message}</li>
             ))}
           </ul>
-        </div>
+        </Alert>
       );
     } finally {
       setLoading(false);

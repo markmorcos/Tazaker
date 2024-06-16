@@ -1,18 +1,12 @@
-import Link from "next/link";
+import { Link } from "../components/link";
 
-const LandingPage = () => {
-  return (
-    <Link className="link-underline link-underline-opacity-0" href="/events">
-      <div className="col">
-        <div className="card shadow-sm">
-          <div className="card-body">
-            <h1 className="text-center">Events</h1>
-          </div>
-        </div>
-      </div>
+const LandingPage = () => (
+  <section className="home">
+    <Link href="/events">
+      <h1>Events</h1>
     </Link>
-  );
-};
+  </section>
+);
 
 LandingPage.getInitialProps = async (context, client) => {
   return {};

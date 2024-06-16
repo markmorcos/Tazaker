@@ -2,6 +2,10 @@ import { useState } from "react";
 
 import redirect from "../api/redirect";
 import useRequest from "../hooks/use-request";
+import { Button } from "../components/button";
+import { Input } from "../components/input";
+import { Form } from "../components/form";
+import { Title } from "../components/title";
 
 const ProfileIndex = ({ currentUser, wallet }) => {
   const [paypalEmail, setPaypalEmail] = useState(currentUser.paypalEmail);
@@ -19,47 +23,44 @@ const ProfileIndex = ({ currentUser, wallet }) => {
     onSuccess: () => setBalance(0),
   });
 
+  const onSubmitUpdateUser = (e) => {
+    e.preventDefault();
+    updateUser.doRequest();
+  };
+
   return (
-    <div>
-      <h1>Wallet</h1>
-      <h2>€{balance}</h2>
-      {receivePayout.errors}
-      <button
-        className="btn btn-success"
-        onClick={() => receivePayout.doRequest()}
-        disabled={receivePayout.loading}
-      >
-        Receive payout
-      </button>
+    <container className="profile">
+      <section>
+        <Title>Wallet</Title>
+        <h2>€{balance}</h2>
+        {receivePayout.errors}
+        <Button
+          onClick={() => receivePayout.doRequest()}
+          disabled={!balance || receivePayout.loading}
+        >
+          Receive payout
+        </Button>
+      </section>
       <hr />
-      <form onSubmit={() => updateUser.doRequest()}>
+      <Form onSubmit={onSubmitUpdateUser}>
         {updateUser.errors}
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            PayPal Email
-          </label>
-          <input
+        <section>
+          <label htmlFor="email">PayPal Email</label>
+          <Input
             id="email"
-            className="form-control"
             type="email"
-            aria-describedby="emailHelp"
             value={paypalEmail}
             onChange={(e) => setPaypalEmail(e.target.value)}
             disabled={updateUser.loading}
+            $error={updateUser.errors}
           />
-          <div id="emailHelp" className="form-text">
-            Please make sure it is a valid PayPal email
-          </div>
-        </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={updateUser.loading}
-        >
+          <small>Please make sure it is a valid PayPal email</small>
+        </section>
+        <Button type="submit" disabled={!paypalEmail || updateUser.loading}>
           Update
-        </button>
-      </form>
-    </div>
+        </Button>
+      </Form>
+    </container>
   );
 };
 

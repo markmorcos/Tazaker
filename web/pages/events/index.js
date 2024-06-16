@@ -1,35 +1,21 @@
-import Link from "next/link";
+import { Breadcrumbs } from "../../components/breadcrumbs";
+import { Link } from "../../components/link";
 
 import Event from "./_components/event";
 
 const LandingPage = ({ events }) => (
   <>
-    <nav aria-label="breadcrumb">
-      <ol className="breadcrumb p-3 bg-body-tertiary rounded-3">
-        <li className="breadcrumb-item">
-          <Link href="/">Home</Link>
-        </li>
-        <li className="breadcrumb-item active" aria-current="page">
-          Events
-        </li>
-      </ol>
-    </nav>
-    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <Breadcrumbs className="breadcrumb">
+      <li>
+        <Link href="/">Home</Link>
+      </li>
+      <li className="active">Events</li>
+    </Breadcrumbs>
+    <section>
       {events.map((event) => (
-        <Event
-          key={event.id}
-          event={event}
-          action={
-            <Link
-              className="btn btn-primary btn-sm"
-              href={`/events/${event.id}`}
-            >
-              View
-            </Link>
-          }
-        />
+        <Event key={event.id} event={event} />
       ))}
-    </div>
+    </section>
   </>
 );
 

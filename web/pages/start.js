@@ -1,6 +1,11 @@
 import { useState } from "react";
 
 import useRequest from "../hooks/use-request";
+import { Button } from "../components/button";
+import { Form } from "../components/form";
+import { Alert } from "../components/alert";
+import { Card } from "../components/card";
+import { Input } from "../components/input";
 
 export default () => {
   const [email, setEmail] = useState("");
@@ -20,35 +25,36 @@ export default () => {
 
   if (success) {
     return (
-      <div className="alert alert-success" role="alert">
+      <Alert className="success">
         Please check your email to complete the login.
-      </div>
+      </Alert>
     );
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      {errors}
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label">
-          Email
-        </label>
-        <input
-          id="email"
-          className="form-control"
-          type="email"
-          aria-describedby="emailHelp"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-        />
-        <div id="emailHelp" className="form-text">
-          We'll never share your email with anyone else.
+    <div style={{ maxWidth: "30rem" }}>
+      <Card>
+        <div className="content">
+          <Form onSubmit={onSubmit}>
+            {errors}
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
+            <Input
+              id="email"
+              className="form-control"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+            />
+            <small>We'll never share your email with anyone else.</small>
+            <Button type="submit" disabled={loading}>
+              Send authentication link
+            </Button>
+          </Form>
         </div>
-      </div>
-      <button type="submit" className="btn btn-primary" disabled={loading}>
-        Send authentication link
-      </button>
-    </form>
+      </Card>
+    </div>
   );
 };

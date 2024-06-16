@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import Link from "next/link";
 import Router from "next/router";
 
 import redirect from "../../api/redirect";
 import useRequest from "../../hooks/use-request";
 import config from "../../utilities/config";
+import { Link } from "../../components/link";
 
 import Loading from "./_components/loading";
 import OrderSummary from "./_components/summary";
+import { Breadcrumbs } from "../../components/breadcrumbs";
+import { Alert } from "../../components/alert";
 
 const OrderRead = ({ order, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
@@ -43,11 +45,11 @@ const OrderRead = ({ order, currentUser }) => {
   if (timeLeft <= 0) {
     return (
       <>
-        <div className="alert alert-danger" role="alert">
+        <Alert className="danger">
           This order has expired. Please go back to the{" "}
           <Link href={`/events/${order.ticket.event.id}`}>event page</Link> and
           start a new order.
-        </div>
+        </Alert>
         <OrderSummary order={order} />
       </>
     );
@@ -55,27 +57,21 @@ const OrderRead = ({ order, currentUser }) => {
 
   return (
     <>
-      <nav aria-label="breadcrumb">
-        <ol className="breadcrumb p-3 bg-body-tertiary rounded-3">
-          <li className="breadcrumb-item">
-            <Link href="/">Home</Link>
-          </li>
-          <li className="breadcrumb-item">
-            <Link href="/events">Events</Link>
-          </li>
-          <li className="breadcrumb-item">
-            <Link href={`/events/${order.ticket.event.id}`}>
-              {order.ticket.event.title}
-            </Link>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            Order
-          </li>
-        </ol>
-      </nav>
-      <div className="alert alert-warning" role="alert">
-        Time left to pay: {timeLeft} minutes
-      </div>
+      <Breadcrumbs>
+        <li>
+          <Link href="/">Home</Link>
+        </li>
+        <li>
+          <Link href="/events">Events</Link>
+        </li>
+        <li>
+          <Link href={`/events/${order.ticket.event.id}`}>
+            {order.ticket.event.title}
+          </Link>
+        </li>
+        <li className="active">Order</li>
+      </Breadcrumbs>
+      <Alert className="warning">Time left to pay: {timeLeft} minutes</Alert>
       <PayPalScriptProvider
         options={{
           clientId: config.paypalClientId,
