@@ -1,6 +1,8 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
+jest.mock("../nats");
+
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
