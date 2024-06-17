@@ -7,7 +7,7 @@ export const baseURL = {
 }[process.env.ENVIRONMENT!];
 
 export interface NotificationEvent {
-  subject: Subjects.NotificationEmail;
+  subject: Subjects.Notification;
   data: {
     type: NotificationType;
     email: string;
