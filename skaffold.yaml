@@ -66,6 +66,14 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
+    - image: markmorcos/tazaker-notification
+      context: notification
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+      docker:
+        dockerfile: Dockerfile
     - image: markmorcos/tazaker-web
       context: web
       sync:

@@ -9,11 +9,12 @@ const AppComponent = ({ Component, pageProps, currentUser }) => (
   <>
     <Head>
       <title>Tazaker</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </Head>
     <Header currentUser={currentUser} />
-    <container className="app">
+    <main className="app">
       <Component {...pageProps} currentUser={currentUser} />
-    </container>
+    </main>
   </>
 );
 

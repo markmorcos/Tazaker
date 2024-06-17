@@ -29,7 +29,7 @@ body {
   flex-direction: column;
 }
 
-container.app {
+main.app {
   height: 100%;
   padding: 1rem;
   overflow: auto;

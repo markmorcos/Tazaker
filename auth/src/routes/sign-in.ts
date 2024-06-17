@@ -2,10 +2,11 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { randomBytes } from "crypto";
 
-import { validateRequest } from "@tazaker/common";
+import { NotificationType, baseURL, validateRequest } from "@tazaker/common";
 
+import { nats } from "../nats";
+import { NotificationPublisher } from "../events/publishers/notification-publisher";
 import { User } from "../models/user";
-import * as mailer from "../services/mailer";
 
 const router = express.Router();
 
@@ -18,7 +19,14 @@ router.post(
 
     const code = randomBytes(16).toString("hex");
     const user = await User.createIfNotExists({ email, code });
-    await mailer.send({ email, code });
+
+    await new NotificationPublisher(nats.client).publish({
+      email,
+      type: NotificationType.Auth,
+      payload: {
+        url: `${baseURL}/api/auth/complete?email=${email}&code=${code}`,
+      },
+    });
 
     res.status(200).send(user);
   }

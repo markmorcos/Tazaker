@@ -29,7 +29,7 @@ const ProfileIndex = ({ currentUser, wallet }) => {
   };
 
   return (
-    <container className="profile">
+    <>
       <section>
         <Title>Wallet</Title>
         <h2>€{balance}</h2>
@@ -60,7 +60,7 @@ const ProfileIndex = ({ currentUser, wallet }) => {
           Update
         </Button>
       </Form>
-    </container>
+    </>
   );
 };
 
