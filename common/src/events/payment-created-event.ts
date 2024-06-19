@@ -4,11 +4,7 @@ export interface PaymentCreatedEvent {
   subject: Subjects.PaymentCreated;
   data: {
     id: string;
+    orderId: string;
     paypalOrderId: string;
-    order: {
-      id: string;
-      userId: string;
-      ticket: { id: string; userId: string; price: number };
-    };
   };
 }
