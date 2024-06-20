@@ -2,6 +2,8 @@ import { Message } from "node-nats-streaming";
 
 import { Listener, OrderCreatedEvent, Subjects } from "@tazaker/common";
 
+import { Ticket } from "../../models/ticket";
+import { Event } from "../../models/event";
 import { Order } from "../../models/order";
 
 import { queueGroupName } from "./queue-group-name";
@@ -11,15 +13,15 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   queueGroupName = queueGroupName;
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
+    const ticket = await Ticket.findById(data.ticketId);
+    if (!ticket) {
+      throw new Error("Ticket not found");
+    }
+
     const order = Order.build({
       id: data.id,
       userId: data.userId,
-      ticket: {
-        id: data.ticket.id,
-        userId: data.ticket.userId,
-        price: data.ticket.price,
-      },
-      eventEnd: new Date(data.ticket.event.end),
+      ticket,
       status: data.status,
       version: data.version,
     });

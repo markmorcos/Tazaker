@@ -15,7 +15,7 @@ import { OrderCreatedListener } from "../order-created-listener";
 const setup = async () => {
   const listener = new OrderCreatedListener(nats.client);
 
-  const ticket = await Ticket.build({
+  const ticket = Ticket.build({
     userId: new Types.ObjectId().toHexString(),
     eventId: new Types.ObjectId().toHexString(),
     fileId: new Types.ObjectId().toHexString(),
@@ -26,15 +26,7 @@ const setup = async () => {
   const data: OrderCreatedEvent["data"] = {
     id: new Types.ObjectId().toHexString(),
     userId: new Types.ObjectId().toHexString(),
-    ticket: {
-      id: ticket.id,
-      userId: new Types.ObjectId().toHexString(),
-      event: {
-        id: ticket.eventId,
-        end: new Date(new Date().getTime() + 60000).toISOString(),
-      },
-      price: ticket.price,
-    },
+    ticketId: ticket.id,
     status: OrderStatus.Created,
     expiresAt: new Date().toISOString(),
     version: 0,
@@ -51,9 +43,9 @@ it("sets the orderId of the ticket", async () => {
 
   await listener.onMessage(data, msg);
 
-  const updatedTicket = await Ticket.findById(ticket.id);
+  const updatedTicket = await Ticket.findById(ticket.id).populate("order");
 
-  expect(updatedTicket!.orderId).toEqual(data.id);
+  expect(updatedTicket!.order!.id).toEqual(data.id);
 });
 
 it("acks the message", async () => {

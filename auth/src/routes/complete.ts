@@ -4,7 +4,9 @@ import { sign } from "jsonwebtoken";
 
 import { validateRequest } from "@tazaker/common";
 
+import { nats } from "../nats";
 import { User } from "../models/user";
+import { UserUpdatedPublisher } from "../events/publishers/user-created-publisher";
 
 const router = express.Router();
 

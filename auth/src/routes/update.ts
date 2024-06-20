@@ -9,7 +9,9 @@ import {
   validateRequest,
 } from "@tazaker/common";
 
+import { nats } from "../nats";
 import { User } from "../models/user";
+import { UserUpdatedPublisher } from "../events/publishers/user-created-publisher";
 
 const router = express.Router();
 
@@ -26,13 +28,22 @@ router.patch(
     }
 
     const { paypalEmail } = req.body;
-    user.set("paypalEmail", paypalEmail);
-    await user.save();
 
-    req.session!.jwt = sign(
-      { id: user.id, email: user.email, paypalEmail: user.paypalEmail },
-      process.env.JWT_KEY!
-    );
+    if (paypalEmail) {
+      user.set("paypalEmail", paypalEmail);
+      await user.save();
+
+      req.session!.jwt = sign(
+        { id: user.id, email: user.email, paypalEmail: user.paypalEmail },
+        process.env.JWT_KEY!
+      );
+
+      await new UserUpdatedPublisher(nats.client).publish({
+        id: user.id,
+        paypalEmail: user.paypalEmail!,
+        version: user.version,
+      });
+    }
 
     return res.status(204).send(user);
   }

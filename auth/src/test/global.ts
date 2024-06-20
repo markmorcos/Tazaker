@@ -7,7 +7,7 @@ export const signUp = async () => {
   const email = "test@example.com";
 
   const response = await request(app)
-    .post("/api/auth/sign-up")
+    .post("/api/auth/start")
     .send({ email })
     .expect(200);
   expect(response.body.id).toBeDefined();
@@ -27,7 +27,7 @@ export const signIn = async () => {
   const email = "test@example.com";
 
   const response = await request(app)
-    .post("/api/auth/sign-up")
+    .post("/api/auth/start")
     .send({ email })
     .expect(200);
   expect(response.body.id).toBeDefined();

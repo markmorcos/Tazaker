@@ -1,15 +1,15 @@
 import request from "supertest";
 
 import { app } from "../../app";
-import { signIn } from "../../test/global";
+import { signUp } from "../../test/global";
 
-it("fails when an email that does not exist is supplied", () => {
+it("fails when an invalid email is supplied", () => {
   return request(app)
-    .post("/api/auth/sign-in")
+    .post("/api/auth/start")
     .send({ email: "test" })
     .expect(400);
 });
 
 it("responds with a cookie when given valid credentials", async () => {
-  return signIn();
+  return signUp();
 });

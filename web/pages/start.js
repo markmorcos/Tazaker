@@ -12,7 +12,7 @@ export default () => {
   const [success, setSuccess] = useState(false);
 
   const { doRequest, loading, errors } = useRequest({
-    url: "/api/auth/sign-up",
+    url: "/api/auth/start",
     method: "post",
     body: { email },
     onSuccess: () => setSuccess(true),

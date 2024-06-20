@@ -11,21 +11,18 @@ export class OrderExpiredListener extends Listener<OrderExpiredEvent> {
   readonly subject = Subjects.OrderExpired;
   queueGroupName = queueGroupName;
   async onMessage(data: OrderExpiredEvent["data"], msg: Message) {
-    const ticket = await Ticket.findById(data.ticket.id);
-
+    const ticket = await Ticket.findById(data.ticketId);
     if (!ticket) {
       throw new Error("Ticket not found");
     }
 
-    ticket.set({ orderId: undefined });
+    ticket.set({ order: undefined });
     await ticket.save();
 
     await new TicketUpdatedPublisher(this.client).publish({
       id: ticket.id,
-      userId: ticket.userId,
-      eventId: ticket.eventId,
       price: ticket.price,
-      orderId: ticket.orderId,
+      orderId: undefined,
       version: ticket.version,
     });
 

@@ -6,26 +6,33 @@ import { Ticket } from "../../models/ticket";
 
 import { queueGroupName } from "./queue-group-name";
 import { TicketUpdatedPublisher } from "../publishers/ticket-updated-publisher";
+import { Order } from "../../models/order";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   readonly subject = Subjects.OrderCreated;
   queueGroupName = queueGroupName;
 
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
-    const ticket = await Ticket.findById(data.ticket.id);
+    const ticket = await Ticket.findById(data.ticketId);
     if (!ticket) {
       throw new Error("Ticket not found");
     }
 
-    ticket.set({ orderId: data.id });
+    const order = Order.build({
+      id: data.id,
+      userId: data.userId,
+      ticket,
+      version: data.version,
+    });
+    await order.save();
+
+    ticket.set({ order });
     await ticket.save();
 
     await new TicketUpdatedPublisher(this.client).publish({
       id: ticket.id,
-      userId: ticket.userId,
-      eventId: ticket.eventId,
       price: ticket.price,
-      orderId: ticket.orderId,
+      orderId: ticket.order!.id,
       version: ticket.version,
     });
 

@@ -38,7 +38,7 @@ router.put(
       throw new NotAuthorizedError();
     }
 
-    if (ticket.orderId) {
+    if (ticket.order) {
       throw new BadRequestError("Cannot edit a reserved ticket");
     }
 
@@ -48,8 +48,6 @@ router.put(
 
     await new TicketUpdatedPublisher(nats.client).publish({
       id: ticket.id,
-      userId: ticket.userId,
-      eventId: ticket.eventId,
       price: ticket.price,
       version: ticket.version,
     });

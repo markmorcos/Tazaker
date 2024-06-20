@@ -6,9 +6,8 @@ import cookieSession from "cookie-session";
 import { errorHandler, NotFoundError } from "@tazaker/common";
 
 import { currentUserRouter } from "./routes/current-user";
-import { signInRouter } from "./routes/sign-in";
+import { startRouter } from "./routes/start";
 import { signOutRouter } from "./routes/sign-out";
-import { signUpRouter } from "./routes/sign-up";
 import { completeRouter } from "./routes/complete";
 import { updateAuthRouter } from "./routes/update";
 
@@ -25,9 +24,8 @@ app.use(
 );
 
 app.use(currentUserRouter);
-app.use(signInRouter);
+app.use(startRouter);
 app.use(signOutRouter);
-app.use(signUpRouter);
 app.use(completeRouter);
 app.use(updateAuthRouter);
 
