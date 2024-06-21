@@ -4,11 +4,11 @@ import { Message } from "node-nats-streaming";
 import { PaymentCreatedEvent } from "@tazaker/common";
 
 import { nats } from "../../../nats";
+import { Order } from "../../../models/order";
+import { Ticket } from "../../../models/ticket";
+import { Wallet } from "../../../models/wallet";
 
 import { PaymentCreatedListener } from "../payment-created-listener";
-import { Wallet } from "../../../models/wallet";
-import { Ticket } from "../../../models/ticket";
-import { Order } from "../../../models/order";
 
 const setup = async () => {
   const listener = new PaymentCreatedListener(nats.client);

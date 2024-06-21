@@ -3,7 +3,6 @@ import { Message } from "node-nats-streaming";
 import { Listener, OrderCreatedEvent, Subjects } from "@tazaker/common";
 
 import { Ticket } from "../../models/ticket";
-import { Event } from "../../models/event";
 import { Order } from "../../models/order";
 
 import { queueGroupName } from "./queue-group-name";
