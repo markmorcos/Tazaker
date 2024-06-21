@@ -1,4 +1,5 @@
 import { Document, Model, Schema, model } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface UserAttrs {
   email: string;
@@ -6,10 +7,13 @@ export interface UserAttrs {
   code: string;
 }
 
-type UserDoc = Document & UserAttrs;
+type UserDoc = Document & UserAttrs & { version: number };
 
 interface UserModel extends Model<UserDoc> {
-  createIfNotExists: (user: Partial<UserAttrs>) => UserDoc;
+  createIfNotExists: (user: Partial<UserAttrs>) => {
+    isNewUser: boolean;
+    user: UserDoc;
+  };
 }
 
 const userSchema: Schema<UserDoc> = new Schema(
@@ -25,29 +29,26 @@ const userSchema: Schema<UserDoc> = new Schema(
         delete ret._id;
         delete ret.code;
       },
-      versionKey: false,
     },
   }
 );
 
-userSchema.pre("save", async function (done) {
-  if (!this.paypalEmail) {
-    this.set("paypalEmail", this.email);
-  }
-
-  done();
-});
-
 userSchema.statics.createIfNotExists = async (attrs: Partial<UserAttrs>) => {
-  let user = await User.findOne({ email: attrs.email });
+  const { email, code } = attrs;
+
+  let isNewUser = false;
+  let user = await User.findOne({ email });
   if (!user) {
+    isNewUser = true;
     user = new User(attrs);
   }
 
-  user.set({ code: attrs.code });
+  user.set("code", code);
   await user.save();
 
-  return user;
+  return { isNewUser, user };
 };
+userSchema.set("versionKey", "version");
+userSchema.plugin(updateIfCurrentPlugin);
 
 export const User = model<UserDoc, UserModel>("User", userSchema);

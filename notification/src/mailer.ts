@@ -3,7 +3,7 @@ import sgMail from "@sendgrid/mail";
 export const send = (
   templateId: string,
   to: string,
-  dynamicTemplateData: any
+  dynamicTemplateData?: any
 ) => {
   sgMail.setApiKey(process.env.SENDGRID_KEY!);
   return sgMail.send({

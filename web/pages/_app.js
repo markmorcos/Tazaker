@@ -1,6 +1,7 @@
-import "./index.css";
-
 import Head from "next/head";
+import CookieConsent from "react-cookie-consent";
+
+import "./index.css";
 
 import buildClient from "../api/build-client";
 import Header from "../components/header";
@@ -15,6 +16,9 @@ const AppComponent = ({ Component, pageProps, currentUser }) => (
     <main className="app">
       <Component {...pageProps} currentUser={currentUser} />
     </main>
+    <CookieConsent enableDeclineButton>
+      This website uses cookies to enhance the user experience.
+    </CookieConsent>
   </>
 );
 

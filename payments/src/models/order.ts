@@ -3,15 +3,13 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 import { OrderStatus } from "@tazaker/common";
 
+import { TicketDoc } from "./ticket";
+import { EventDoc } from "./event";
+
 export interface OrderAttrs {
   id: string;
   userId: string;
-  ticket: {
-    id: string;
-    userId: string;
-    price: number;
-  };
-  eventEnd: Date;
+  ticket: TicketDoc;
   status: OrderStatus;
   version: number;
 }
@@ -26,22 +24,10 @@ interface OrderModel extends Model<OrderDoc> {
   }) => Promise<OrderDoc | null>;
 }
 
-export interface OrderPayload {
-  id: string;
-  userId: string;
-  price: number;
-  status: OrderStatus;
-}
-
 const orderSchema: Schema<OrderDoc> = new Schema(
   {
     userId: { type: String, required: true },
-    ticket: {
-      id: { type: String, required: true },
-      userId: { type: String, required: true },
-      price: { type: Number, required: true },
-    },
-    eventEnd: { type: Schema.Types.Date, required: true },
+    ticket: { type: Schema.Types.ObjectId, ref: "Ticket", required: true },
     status: { type: String, enum: Object.values(OrderStatus), required: true },
   },
   {

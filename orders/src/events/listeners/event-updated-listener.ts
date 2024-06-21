@@ -12,7 +12,6 @@ export class EventUpdatedListener extends Listener<EventUpdatedEvent> {
 
   async onMessage(data: EventUpdatedEvent["data"], msg: Message) {
     const event = await Event.findByEvent(data);
-
     if (!event) {
       throw new Error("Event not found");
     }

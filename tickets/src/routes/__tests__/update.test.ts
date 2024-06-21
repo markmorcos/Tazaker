@@ -58,7 +58,7 @@ it("rejects updates if the ticket is reserved", async () => {
   });
 
   const ticket = await Ticket.findById(id);
-  ticket!.set({ orderId: new Types.ObjectId().toHexString() });
+  ticket!.set({ order: new Types.ObjectId().toHexString() });
   await ticket!.save();
 
   return request(app)

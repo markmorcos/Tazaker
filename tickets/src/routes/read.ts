@@ -51,12 +51,12 @@ router.get(
   async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const ticket = await Ticket.findById(id);
+    const ticket = await Ticket.findById(id).populate("order");
     if (!ticket) {
       throw new NotFoundError();
     }
 
-    if (ticket.orderUserId !== req.currentUser?.id) {
+    if (ticket.order?.userId !== req.currentUser?.id) {
       return res.send("Not authorized");
     }
 

@@ -44,7 +44,7 @@ router.post(
       timezone,
     } = body;
 
-    const event = await Event.build({
+    const event = Event.build({
       title,
       url,
       image,

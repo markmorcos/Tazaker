@@ -17,7 +17,6 @@ export class OrderExpiredListener extends Listener<OrderExpiredEvent> {
 
   async onMessage(data: OrderExpiredEvent["data"], msg: Message) {
     const order = await Order.findByEvent(data);
-
     if (!order) {
       throw new Error("Order not found");
     }

@@ -4,7 +4,9 @@ import { sign } from "jsonwebtoken";
 
 import { validateRequest } from "@tazaker/common";
 
+import { nats } from "../nats";
 import { User } from "../models/user";
+import { UserUpdatedPublisher } from "../events/publishers/user-created-publisher";
 
 const router = express.Router();
 
@@ -15,7 +17,10 @@ router.get(
   async (req: Request, res: Response) => {
     const { email, code } = req.query;
 
-    const user = await User.findOne({ email, code });
+    const user = await User.findOne({
+      email: decodeURIComponent(String(email)),
+      code,
+    });
     if (!user) {
       return res.send("Invalid sign in link");
     }

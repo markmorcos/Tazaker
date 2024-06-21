@@ -31,7 +31,7 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
 
     await new OrderExpiredPublisher(this.client).publish({
       id: order.id,
-      ticket: { id: order.ticket.id },
+      ticketId: order.ticket.id,
       version: order.version,
     });
 

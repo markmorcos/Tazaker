@@ -1,16 +1,17 @@
 import { Document, Model, Schema, model } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
+import { OrderDoc } from "./order";
+
 export interface TicketAttrs {
   userId: string;
   eventId: string;
   price: number;
   fileId: string;
-  orderId?: string;
-  orderUserId?: string;
+  order?: OrderDoc;
 }
 
-type TicketDoc = Document & TicketAttrs & { version: number };
+export type TicketDoc = Document & TicketAttrs & { version: number };
 
 interface TicketModel extends Model<TicketDoc> {
   build: (ticket: TicketAttrs) => TicketDoc;
@@ -29,8 +30,7 @@ const ticketSchema: Schema<TicketDoc> = new Schema(
     eventId: { type: String, required: true },
     price: { type: Number, required: true },
     fileId: { type: String, required: true },
-    orderId: { type: String },
-    orderUserId: { type: String },
+    order: { type: Schema.Types.ObjectId, ref: "Order" },
   },
   {
     toJSON: {

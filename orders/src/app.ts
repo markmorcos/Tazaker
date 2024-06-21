@@ -8,7 +8,6 @@ import { currentUser, errorHandler, NotFoundError } from "@tazaker/common";
 import { indexOrderRouter } from "./routes";
 import { createOrderRouter } from "./routes/create";
 import { readOrderRouter } from "./routes/read";
-import { deleteOrderRouter } from "./routes/delete";
 
 export const app = express();
 
@@ -26,7 +25,6 @@ app.use(currentUser);
 app.use(indexOrderRouter);
 app.use(createOrderRouter);
 app.use(readOrderRouter);
-app.use(deleteOrderRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

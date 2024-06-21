@@ -4,22 +4,42 @@ import { Message } from "node-nats-streaming";
 import { OrderExpiredEvent, OrderStatus } from "@tazaker/common";
 
 import { nats } from "../../../nats";
+import { Event } from "../../../models/event";
 import { Order } from "../../../models/order";
+import { Ticket } from "../../../models/ticket";
+import { User } from "../../../models/user";
 
 import { OrderExpiredListener } from "../order-expired-listener";
 
 const setup = async () => {
   const listener = new OrderExpiredListener(nats.client);
 
+  const user = User.build({
+    id: new Types.ObjectId().toHexString(),
+    email: "test@example.com",
+  });
+  await user.save();
+
+  const event = Event.build({
+    id: new Types.ObjectId().toHexString(),
+    title: "Event",
+    url: "http://example.com/event",
+    end: new Date(new Date().getTime() + 60000),
+  });
+  await event.save();
+
+  const ticket = Ticket.build({
+    id: new Types.ObjectId().toHexString(),
+    user,
+    event,
+    price: 10,
+  });
+  await ticket.save();
+
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
     userId: new Types.ObjectId().toHexString(),
-    ticket: {
-      id: new Types.ObjectId().toHexString(),
-      userId: new Types.ObjectId().toHexString(),
-      price: 10,
-    },
-    eventEnd: new Date(new Date().getTime() + 60000),
+    ticket,
     status: OrderStatus.Created,
     version: 0,
   });
@@ -27,7 +47,7 @@ const setup = async () => {
 
   const data: OrderExpiredEvent["data"] = {
     id: order.id,
-    ticket: { id: new Types.ObjectId().toHexString() },
+    ticketId: ticket.id,
     version: 1,
   };
 

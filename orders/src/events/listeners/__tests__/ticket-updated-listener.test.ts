@@ -22,7 +22,7 @@ const setup = async () => {
   await event.save();
 
   const id = new Types.ObjectId().toHexString();
-  const ticket = await Ticket.build({
+  const ticket = Ticket.build({
     id,
     userId: new Types.ObjectId().toHexString(),
     event,
@@ -32,9 +32,8 @@ const setup = async () => {
 
   const data: TicketUpdatedEvent["data"] = {
     id,
-    userId: new Types.ObjectId().toHexString(),
-    eventId: new Types.ObjectId().toHexString(),
     price: 10,
+    orderId: new Types.ObjectId().toHexString(),
     version: ticket.version + 1,
   };
 

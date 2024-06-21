@@ -85,12 +85,7 @@ router.post(
     await new OrderCreatedPublisher(nats.client).publish({
       id: order.id,
       userId: order.userId,
-      ticket: {
-        id: order.ticket.id,
-        userId: order.ticket.userId,
-        event: { id: ticket.event.id, end: ticket.event.end.toISOString() },
-        price: order.ticket.price,
-      },
+      ticketId: order.ticket.id,
       status: order.status,
       expiresAt: order.expiresAt.toISOString(),
       version: order.version,
