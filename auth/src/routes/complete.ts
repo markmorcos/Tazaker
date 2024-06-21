@@ -17,7 +17,10 @@ router.get(
   async (req: Request, res: Response) => {
     const { email, code } = req.query;
 
-    const user = await User.findOne({ email, code });
+    const user = await User.findOne({
+      email: decodeURIComponent(String(email)),
+      code,
+    });
     if (!user) {
       return res.send("Invalid sign in link");
     }

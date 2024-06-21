@@ -26,7 +26,9 @@ router.post(
       type: NotificationType.Auth,
       email,
       payload: {
-        url: `${baseURL}/api/auth/complete?email=${email}&code=${code}`,
+        url: `${baseURL}/api/auth/complete?email=${encodeURIComponent(
+          email
+        )}&code=${code}`,
       },
     });
 
