@@ -9,10 +9,10 @@ import {
   validateRequest,
 } from "@tazaker/common";
 
-import { Event } from "../models/event";
-import { Order } from "../models/order";
-import { Ticket } from "../models/ticket";
 import { nats } from "../nats";
+import { stripe } from "../stripe";
+import { Ticket } from "../models/ticket";
+import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
@@ -33,9 +33,14 @@ router.post(
     const { id: userId } = req.currentUser!;
     const { ticketId } = req.body;
 
-    const ticket = await Ticket.findById(ticketId).populate("event");
+    const ticket = await Ticket.findById(ticketId)
+      .populate("user")
+      .populate("event");
     if (!ticket) {
       throw new NotFoundError();
+    }
+    if (!ticket.user.stripeAccountId) {
+      throw new BadRequestError("Seller is not connected to Stripe");
     }
     if (new Date() > ticket.event.end) {
       throw new BadRequestError("Event has already ended");
@@ -74,13 +79,29 @@ router.post(
     const expiresAt = new Date();
     expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
-    const order = Order.build({
-      userId,
-      ticket,
-      expiresAt,
-      status,
-    });
+    const order = Order.build({ userId, ticket, expiresAt, status });
     await order.save();
+
+    const session = await stripe.checkout.sessions.create(
+      {
+        client_reference_id: order.id,
+        line_items: [
+          {
+            price_data: {
+              currency: "eur",
+              product_data: { name: ticket.event.title },
+              unit_amount: ticket.price * 100,
+            },
+            quantity: 1,
+          },
+        ],
+        payment_intent_data: { application_fee_amount: ticket.price },
+        mode: "payment",
+        ui_mode: "embedded",
+        return_url: `/orders/${order.id}`,
+      },
+      { stripeAccount: ticket.user.stripeAccountId }
+    );
 
     await new OrderCreatedPublisher(nats.client).publish({
       id: order.id,
@@ -91,7 +112,7 @@ router.post(
       version: order.version,
     });
 
-    res.status(201).send(order);
+    res.status(201).send({ ...order, clientSecret: session.client_secret });
   }
 );
 

@@ -58,14 +58,6 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-    - image: markmorcos/tazaker-payouts
-      context: payouts
-      sync:
-        manual:
-          - src: "src/**/*.ts"
-            dest: .
-      docker:
-        dockerfile: Dockerfile
     - image: markmorcos/tazaker-notification
       context: notification
       sync:

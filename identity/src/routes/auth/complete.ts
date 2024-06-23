@@ -27,7 +27,7 @@ router.get(
     await user.save();
 
     req.session!.jwt = sign(
-      { id: user.id, email: user.email, paypalEmail: user.paypalEmail },
+      { id: user.id, email: user.email, stripeAccountId: user.stripeAccountId },
       process.env.JWT_KEY!
     );
 

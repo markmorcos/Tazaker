@@ -30,9 +30,6 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="6tYGeW66kNj0VJb34lm9-14" value="payouts" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" parent="1" vertex="1">
-          <mxGeometry x="545" y="315" width="120" height="60" as="geometry" />
-        </mxCell>
         <mxCell id="6tYGeW66kNj0VJb34lm9-17" value="identity" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" parent="1" vertex="1">
           <mxGeometry x="375" y="205" width="120" height="60" as="geometry" />
         </mxCell>

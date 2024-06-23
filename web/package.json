@@ -12,8 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@paypal/react-paypal-js": "^8.1.3",
-    "@tazaker/common": "1.0.18",
+    "@stripe/connect-js": "^3.3.6",
+    "@stripe/react-connect-js": "^3.3.8",
+    "@tazaker/common": "1.0.20",
     "axios": "^1.6.2",
     "date-fns": "^3.3.1",
     "next": "^14.0.4",

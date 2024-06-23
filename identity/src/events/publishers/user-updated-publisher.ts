@@ -1,5 +1,5 @@
-import { Publisher, Subjects, UserCreatedEvent } from "@tazaker/common";
+import { Publisher, Subjects, UserUpdatedEvent } from "@tazaker/common";
 
-export class UserCreatedPublisher extends Publisher<UserCreatedEvent> {
-  readonly subject = Subjects.UserCreated;
+export class UserUpdatedPublisher extends Publisher<UserUpdatedEvent> {
+  readonly subject = Subjects.UserUpdated;
 }

@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { body } from "express-validator";
 
 import {
   BadRequestError,
@@ -8,13 +7,12 @@ import {
   NotificationType,
   OrderStatus,
   requireAuth,
-  validateRequest,
 } from "@tazaker/common";
 
+import { nats } from "../nats";
+import { stripe } from "../stripe";
 import { Order } from "../models/order";
 import { Payment } from "../models/payment";
-import { nats } from "../nats";
-import * as paypal from "../paypal";
 import { PaymentCreatedPublisher } from "../events/publishers/payment-created-publisher";
 import { NotificationPublisher } from "../events/publishers/notification-publisher";
 
@@ -23,18 +21,26 @@ const router = express.Router();
 router.post(
   "/api/payments",
   requireAuth,
-  [
-    body("orderId")
-      .notEmpty()
-      .isMongoId()
-      .withMessage("Order ID must be provided"),
-    body("paypalOrderId")
-      .notEmpty()
-      .withMessage("PayPal Order ID must be provided"),
-  ],
-  validateRequest,
   async (req: Request, res: Response) => {
-    const { orderId, paypalOrderId } = req.body;
+    const signature = req.headers["stripe-signature"];
+    if (!signature) {
+      throw new BadRequestError("Missing Stripe signature");
+    }
+
+    const stripeEvent = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    );
+
+    if (stripeEvent.type !== "checkout.session.completed") {
+      throw new BadRequestError("Unexpected event type");
+    }
+
+    const orderId = stripeEvent.data.object.client_reference_id;
+    if (!orderId) {
+      throw new BadRequestError("Missing order ID");
+    }
 
     const order = await Order.findById(orderId)
       .populate("ticket")
@@ -60,15 +66,12 @@ router.post(
       throw new BadRequestError("Event has already ended");
     }
 
-    const payment = Payment.build({ orderId, paypalOrderId });
+    const payment = Payment.build({ orderId });
     await payment.save();
-
-    await paypal.captureOrder(paypalOrderId);
 
     await new PaymentCreatedPublisher(nats.client).publish({
       id: payment.id,
       orderId: payment.orderId,
-      paypalOrderId: payment.paypalOrderId,
     });
 
     await new NotificationPublisher(nats.client).publish({

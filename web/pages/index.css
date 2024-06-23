@@ -4,8 +4,8 @@
 @import url(./reset.css);
 
 :root {
-  --primary-color: #ff8f3a;
-  --primary-color-dark: #f97611;
+  --primary-color: #ed6600;
+  --primary-color-dark: #b32d00;
 
   --background-color: #f4f4f4;
   --hover-background-light: #33333333;

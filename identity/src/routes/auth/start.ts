@@ -5,10 +5,9 @@ import { randomBytes } from "crypto";
 import { NotificationType, baseURL, validateRequest } from "@tazaker/common";
 
 import { nats } from "../../nats";
-import { NotificationPublisher } from "../../events/publishers/notification-publisher";
-import { UserCreatedPublisher } from "../../events/publishers/user-updated-publisher";
 import { User } from "../../models/user";
-import { UserUpdatedPublisher } from "../../events/publishers/user-created-publisher";
+import { NotificationPublisher } from "../../events/publishers/notification-publisher";
+import { UserCreatedPublisher } from "../../events/publishers/user-created-publisher";
 
 const router = express.Router();
 

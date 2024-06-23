@@ -10,7 +10,7 @@ spec:
     - host: tazaker.dev
       http:
         paths:
-          - path: /api/(auth|users)/?(.*)
+          - path: /api/(auth|users|onboarding)/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
@@ -55,16 +55,6 @@ spec:
             backend:
               service:
                 name: payments-srv
-                port:
-                  number: 3000
-    - host: tazaker.dev
-      http:
-        paths:
-          - path: /api/payouts/?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: payouts-srv
                 port:
                   number: 3000
     - host: tazaker.dev

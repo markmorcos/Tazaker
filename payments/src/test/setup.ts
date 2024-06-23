@@ -2,7 +2,6 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 jest.mock("../nats");
-jest.mock("../paypal");
 
 let mongo: MongoMemoryServer;
 

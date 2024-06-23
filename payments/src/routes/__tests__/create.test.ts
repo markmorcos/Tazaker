@@ -18,7 +18,6 @@ it("returns a 404 when purchasing an order that does not exist", async () => {
     .set("Cookie", signIn())
     .send({
       orderId: new Types.ObjectId().toHexString(),
-      paypalOrderId: "fake_order",
     })
     .expect(404);
 });
@@ -58,7 +57,7 @@ it("returns a 401 when purchasing an order that does not belong to the user", as
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn())
-    .send({ orderId: order.id, paypalOrderId: "fake_order" })
+    .send({ orderId: order.id })
     .expect(401);
 });
 
@@ -97,7 +96,7 @@ it("returns a 400 when purchasing an expired order", async () => {
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn(user.id))
-    .send({ orderId: order.id, paypalOrderId: "fake_order" })
+    .send({ orderId: order.id })
     .expect(400);
 });
 
@@ -133,14 +132,12 @@ it("returns 201 with valid inputs", async () => {
   });
   await order.save();
 
-  const paypalOrderId = randomBytes(16).toString("hex");
-
   await request(app)
     .post("/api/payments")
     .set("Cookie", signIn(user.id))
-    .send({ orderId: order.id, paypalOrderId })
+    .send({ orderId: order.id })
     .expect(201);
 
-  const payment = await Payment.findOne({ orderId: order.id, paypalOrderId });
+  const payment = await Payment.findOne({ orderId: order.id });
   expect(payment).not.toBeNull();
 });
