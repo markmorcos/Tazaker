@@ -4,7 +4,7 @@ import { verify } from "jsonwebtoken";
 export interface UserPayload {
   id: string;
   email: string;
-  paypalEmail: string;
+  stripeAccountId?: string;
 }
 
 declare global {

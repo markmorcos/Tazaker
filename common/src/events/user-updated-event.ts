@@ -2,5 +2,5 @@ import { Subjects } from "./subjects";
 
 export interface UserUpdatedEvent {
   subject: Subjects.UserUpdated;
-  data: { id: string; paypalEmail: string; version: number };
+  data: { id: string; stripeAccountId?: string; version: number };
 }
