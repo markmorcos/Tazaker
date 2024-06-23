@@ -10,8 +10,8 @@ build:
   local:
     push: true
   artifacts:
-    - image: markmorcos/tazaker-auth
-      context: auth
+    - image: markmorcos/tazaker-identity
+      context: identity
       sync:
         manual:
           - src: "src/**/*.ts"

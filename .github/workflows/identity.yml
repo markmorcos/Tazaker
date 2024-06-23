@@ -1,27 +1,27 @@
-name: auth
+name: identity
 
 on:
   workflow_dispatch: {}
   push:
     paths:
-      - "auth/**"
+      - "identity/**"
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd auth && npm install && npm run test:ci
+      - run: cd identity && npm install && npm run test:ci
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd auth && npm install && npm run build
+      - run: cd identity && npm install && npm run build
       - uses: actions/upload-artifact@v2
         with:
           name: build-output
-          path: auth/build
+          path: identity/build
 
   deploy:
     runs-on: ubuntu-latest
@@ -32,15 +32,15 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: build-output
-          path: auth/build
-      - run: cd auth && npm run build:docker
+          path: identity/build
+      - run: cd identity && npm run build:docker
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - run: docker push markmorcos/tazaker-auth
+      - run: docker push markmorcos/tazaker-identity
       - uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save tazaker
-      - run: kubectl rollout restart deployment auth-depl
+      - run: kubectl rollout restart deployment identity-depl

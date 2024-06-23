@@ -10,11 +10,11 @@ spec:
     - host: tazaker.dev
       http:
         paths:
-          - path: /api/auth/?(.*)
+          - path: /api/(auth|users)/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: auth-srv
+                name: identity-srv
                 port:
                   number: 3000
     - host: tazaker.dev

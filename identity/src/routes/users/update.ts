@@ -9,18 +9,18 @@ import {
   validateRequest,
 } from "@tazaker/common";
 
-import { nats } from "../nats";
-import { User } from "../models/user";
-import { UserUpdatedPublisher } from "../events/publishers/user-created-publisher";
+import { nats } from "../../nats";
+import { User } from "../../models/user";
+import { UserUpdatedPublisher } from "../../events/publishers/user-created-publisher";
 
 const router = express.Router();
 
 router.patch(
-  "/api/auth",
-  [body("paypalEmail").isEmail()],
-  validateRequest,
+  "/api/users/current",
   currentUser,
   requireAuth,
+  [body("paypalEmail").isEmail()],
+  validateRequest,
   async (req: Request, res: Response) => {
     const user = await User.findById(req.currentUser!.id);
     if (!user) {
@@ -45,8 +45,8 @@ router.patch(
       });
     }
 
-    return res.status(204).send(user);
+    return res.status(200).send(user);
   }
 );
 
-export { router as updateAuthRouter };
+export { router as updateUserRouter };

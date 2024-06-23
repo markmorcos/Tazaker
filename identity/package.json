@@ -1,12 +1,12 @@
 {
-  "name": "auth",
+  "name": "identitytity",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --poll src/index.ts",
     "build": "tsc --project tsconfig.production.json",
-    "build:docker": "docker build . -f Dockerfile.production -t markmorcos/tazaker-auth",
+    "build:docker": "docker build . -f Dockerfile.production -t markmorcos/tazaker-identity",
     "start": "node build/index.js",
     "test": "jest --watchAll --no-cache --detectOpenHandles",
     "test:ci": "jest"

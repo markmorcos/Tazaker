@@ -5,11 +5,12 @@ import cookieSession from "cookie-session";
 
 import { errorHandler, NotFoundError } from "@tazaker/common";
 
-import { currentUserRouter } from "./routes/current-user";
-import { startRouter } from "./routes/start";
-import { signOutRouter } from "./routes/sign-out";
-import { completeRouter } from "./routes/complete";
-import { updateAuthRouter } from "./routes/update";
+import { completeRouter } from "./routes/auth/complete";
+import { signOutRouter } from "./routes/auth/sign-out";
+import { startRouter } from "./routes/auth/start";
+
+import { currentUserRouter } from "./routes/users/current";
+import { updateUserRouter } from "./routes/users/update";
 
 export const app = express();
 
@@ -23,11 +24,12 @@ app.use(
   })
 );
 
-app.use(currentUserRouter);
-app.use(startRouter);
-app.use(signOutRouter);
 app.use(completeRouter);
-app.use(updateAuthRouter);
+app.use(signOutRouter);
+app.use(startRouter);
+
+app.use(currentUserRouter);
+app.use(updateUserRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

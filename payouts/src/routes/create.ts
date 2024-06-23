@@ -37,6 +37,7 @@ router.post(
       email,
       payload: { amount: balance },
     });
+
     res.status(200).send({ success: true });
   }
 );

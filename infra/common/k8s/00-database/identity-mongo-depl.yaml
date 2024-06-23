@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-mongo-depl
+  name: identity-mongo-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-mongo
+      app: identity-mongo
   template:
     metadata:
       labels:
-        app: auth-mongo
+        app: identity-mongo
     spec:
       containers:
-        - name: auth-mongo
+        - name: identity-mongo
           image: mongo
           volumeMounts:
-            - name: auth-mongo-storage
+            - name: identity-mongo-storage
               mountPath: /data/db
       volumes:
-        - name: auth-mongo-storage
+        - name: identity-mongo-storage
           persistentVolumeClaim:
-            claimName: auth-mongo-pvc
+            claimName: identity-mongo-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-mongo-srv
+  name: identity-mongo-srv
 spec:
   selector:
-    app: auth-mongo
+    app: identity-mongo
   ports:
     - name: db
       protocol: TCP

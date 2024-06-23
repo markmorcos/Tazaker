@@ -1,7 +1,7 @@
 import request from "supertest";
 
-import { app } from "../../app";
-import { signUp } from "../../test/global";
+import { app } from "../../../app";
+import { signUp } from "../../../test/global";
 
 it("fails when an invalid email is supplied", () => {
   return request(app)

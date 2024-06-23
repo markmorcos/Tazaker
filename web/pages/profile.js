@@ -12,7 +12,7 @@ const ProfileIndex = ({ currentUser, wallet }) => {
   const [balance, setBalance] = useState(wallet.balance);
 
   const updateUser = useRequest({
-    url: "/api/auth",
+    url: "/api/users/current",
     method: "patch",
     body: { paypalEmail },
   });

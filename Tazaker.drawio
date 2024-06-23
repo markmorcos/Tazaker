@@ -33,7 +33,7 @@
         <mxCell id="6tYGeW66kNj0VJb34lm9-14" value="payouts" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" parent="1" vertex="1">
           <mxGeometry x="545" y="315" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="6tYGeW66kNj0VJb34lm9-17" value="auth" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" parent="1" vertex="1">
+        <mxCell id="6tYGeW66kNj0VJb34lm9-17" value="identity" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=0" parent="1" vertex="1">
           <mxGeometry x="375" y="205" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="6tYGeW66kNj0VJb34lm9-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=-0.001;entryY=0.641;entryDx=0;entryDy=0;entryPerimeter=0;fontStyle=0" parent="1" source="6tYGeW66kNj0VJb34lm9-2" target="6tYGeW66kNj0VJb34lm9-10" edge="1">

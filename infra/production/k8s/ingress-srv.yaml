@@ -21,11 +21,11 @@ spec:
     - host: www.tazaker.org
       http:
         paths:
-          - path: /api/auth/?(.*)
+          - path: /api/(auth|users)/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: auth-srv
+                name: identity-srv
                 port:
                   number: 3000
     - host: www.tazaker.org

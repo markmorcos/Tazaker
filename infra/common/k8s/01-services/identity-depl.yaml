@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: identity-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: identity
   template:
     metadata:
       labels:
-        app: auth
+        app: identity
     spec:
       containers:
-        - name: auth
-          image: markmorcos/tazaker-auth
+        - name: identity
+          image: markmorcos/tazaker-identity
           envFrom:
             - configMapRef:
                 name: global-config
           env:
             - name: MONGO_URI
-              value: "mongodb://auth-mongo-srv:27017/auth"
+              value: "mongodb://identity-mongo-srv:27017/identity"
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -38,12 +38,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-srv
+  name: identity-srv
 spec:
   selector:
-    app: auth
+    app: identity
   ports:
-    - name: auth
+    - name: identity
       protocol: TCP
       port: 3000
       targetPort: 3000

@@ -1,7 +1,7 @@
 import request from "supertest";
 
-import { app } from "../../app";
-import { signUp } from "../../test/global";
+import { app } from "../../../app";
+import { signUp } from "../../../test/global";
 
 it("clears the cookie after signing out", async () => {
   await signUp();
