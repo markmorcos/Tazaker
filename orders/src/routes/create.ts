@@ -85,6 +85,7 @@ router.post(
     const session = await stripe.checkout.sessions.create(
       {
         client_reference_id: order.id,
+        metadata: { userId },
         line_items: [
           {
             price_data: {

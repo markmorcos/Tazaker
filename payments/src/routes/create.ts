@@ -43,13 +43,17 @@ router.post("/api/payments", async (req: Request, res: Response) => {
     .populate("ticket")
     .populate({ path: "ticket", populate: { path: "user" } })
     .populate({ path: "ticket", populate: { path: "event" } });
-
   if (!order) {
     throw new NotFoundError();
   }
 
   const ticket = order.ticket;
   const event = ticket.event;
+
+  const userId = stripeEvent.data.object.metadata?.userId;
+  if (userId !== order.userId) {
+    throw new NotAuthorizedError();
+  }
 
   if (order.status === OrderStatus.Expired) {
     throw new BadRequestError("Cannot pay for an expired order");
