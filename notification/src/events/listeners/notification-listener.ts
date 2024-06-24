@@ -14,7 +14,6 @@ import { queueGroupName } from "./queue-group-name";
 export const sendgridTemplates = {
   [NotificationType.Auth]: "d-9e1523620a424dd7825a77ded3e1b39a",
   [NotificationType.Sale]: "d-93140dcf33c644b79fac21b8985de0c4",
-  [NotificationType.Payout]: "d-6dcd39cd324e4e3dafbefe489bd87241",
 };
 
 export class NotificationListener extends Listener<NotificationEvent> {

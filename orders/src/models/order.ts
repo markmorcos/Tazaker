@@ -10,6 +10,7 @@ export interface OrderAttrs {
   ticket: TicketDoc;
   status: OrderStatus;
   expiresAt: Date;
+  sessionId?: string;
 }
 
 export type OrderDoc = Document & OrderAttrs & { version: number };
@@ -35,6 +36,7 @@ const orderSchema: Schema<OrderDoc> = new Schema(
       default: OrderStatus.Created,
     },
     expiresAt: { type: Schema.Types.Date },
+    sessionId: { type: String },
   },
   {
     toJSON: {

@@ -29,16 +29,10 @@ const setup = async () => {
     },
   };
 
-  const payout = {
-    type: NotificationType.Auth,
-    email: "test@example.com",
-    payload: { amount: 20 },
-  };
-
   // @ts-ignore
   const msg: Message = { ack: jest.fn() };
 
-  return { listener, auth, sale, payout, msg };
+  return { listener, auth, sale, msg };
 };
 
 it("sends the correct email with payload on auth", async () => {
@@ -79,26 +73,11 @@ it("sends the correct email with sale on auth", async () => {
   });
 });
 
-it("sends the correct email with payload on payout", async () => {
-  const { listener, payout, msg } = await setup();
-
-  await listener.onMessage(payout, msg);
-
-  expect(sgMail.send).toHaveBeenCalledWith({
-    from: "Tazaker <info@tazaker.org>",
-    personalizations: [
-      { dynamicTemplateData: { amount: 20 }, to: "test@example.com" },
-    ],
-    templateId: sendgridTemplates[NotificationType.Auth],
-  });
-});
-
 it("acks the message", async () => {
-  const { listener, auth, payout, sale, msg } = await setup();
+  const { listener, auth, sale, msg } = await setup();
 
   await listener.onMessage(auth, msg);
-  await listener.onMessage(payout, msg);
   await listener.onMessage(sale, msg);
 
-  expect(msg.ack).toHaveBeenCalledTimes(3);
+  expect(msg.ack).toHaveBeenCalledTimes(2);
 });

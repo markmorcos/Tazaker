@@ -5,10 +5,11 @@ import { OrderStatus } from "@tazaker/common";
 
 import { EventDoc } from "./event";
 import { Order, OrderDoc } from "./order";
+import { UserDoc } from "./user";
 
 export interface TicketAttrs {
   id: string;
-  userId: string;
+  user: UserDoc;
   event: EventDoc;
   price: number;
 }
@@ -35,7 +36,7 @@ export interface TicketPayload {
 
 const ticketSchema: Schema<TicketDoc> = new Schema(
   {
-    userId: { type: String, required: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     event: { type: Schema.Types.ObjectId, ref: "Event", required: true },
     price: { type: Number, required: true },
   },

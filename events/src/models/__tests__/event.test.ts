@@ -13,8 +13,8 @@ it("should update the version key automatically", async () => {
   const firstInstance = await Event.findById(id);
   const secondInstance = await Event.findById(id);
 
-  firstInstance!.set({ title: "Title 2" });
-  secondInstance!.set({ title: "Title 3" });
+  firstInstance!.set("title", "Title 2");
+  secondInstance!.set("title", "Title 3");
 
   await firstInstance!.save();
 

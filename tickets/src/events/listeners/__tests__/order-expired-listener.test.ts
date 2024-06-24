@@ -28,7 +28,7 @@ const setup = async () => {
   });
   await order.save();
 
-  ticket.set({ order });
+  ticket.set("order", order);
   await ticket.save();
 
   const data: OrderExpiredEvent["data"] = {

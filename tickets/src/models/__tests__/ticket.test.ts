@@ -12,8 +12,8 @@ it("should update the version key automatically", async () => {
   const firstInstance = await Ticket.findById(id);
   const secondInstance = await Ticket.findById(id);
 
-  firstInstance!.set({ price: 10 });
-  secondInstance!.set({ price: 15 });
+  firstInstance!.set("price", 10);
+  secondInstance!.set("price", 15);
 
   await firstInstance!.save();
 

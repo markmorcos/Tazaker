@@ -4,11 +4,13 @@ import request from "supertest";
 import { OrderStatus } from "@tazaker/common";
 
 import { app } from "../../app";
+import { nats } from "../../nats";
+import { stripe } from "../../stripe";
 import { signIn } from "../../test/global";
+import { User } from "../../models/user";
 import { Event } from "../../models/event";
 import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
-import { nats } from "../../nats";
 
 it("returns an error if the ticket does not exist", () => {
   return request(app)
@@ -20,7 +22,14 @@ it("returns an error if the ticket does not exist", () => {
 
 it("returns an error if the ticket is already reserved", async () => {
   const id = new Types.ObjectId().toHexString();
-  const userId = new Types.ObjectId().toHexString();
+
+  const user = User.build({
+    id: new Types.ObjectId().toHexString(),
+    email: "test@example.com",
+    stripeAccountId: "stripe-account-id",
+  });
+  await user.save();
+
   const event = Event.build({
     id: new Types.ObjectId().toHexString(),
     title: "Event",
@@ -30,16 +39,12 @@ it("returns an error if the ticket is already reserved", async () => {
   });
   await event.save();
 
-  const ticket = Ticket.build({
-    id,
-    userId: new Types.ObjectId().toHexString(),
-    event,
-    price: 10,
-  });
+  const price = 10;
+  const ticket = Ticket.build({ id, user, event, price });
   await ticket.save();
 
   const order = Order.build({
-    userId,
+    userId: user.id,
     ticket,
     status: OrderStatus.Created,
     expiresAt: new Date(),
@@ -48,23 +53,29 @@ it("returns an error if the ticket is already reserved", async () => {
 
   await request(app)
     .post("/api/orders")
-    .set("Cookie", signIn(userId))
+    .set("Cookie", signIn(user.id))
     .send({ ticketId: ticket.id })
     .expect(200);
 
-  order.set({ userId: new Types.ObjectId().toHexString() });
+  order.set("userId", new Types.ObjectId().toHexString());
   await order.save();
 
   return request(app)
     .post("/api/orders")
-    .set("Cookie", signIn(userId))
+    .set("Cookie", signIn(user.id))
     .send({ ticketId: ticket.id })
     .expect(400);
 });
 
 it("reserves a ticket", async () => {
   const id = new Types.ObjectId().toHexString();
-  const userId = new Types.ObjectId().toHexString();
+
+  const user = User.build({
+    id: new Types.ObjectId().toHexString(),
+    email: "test@example.com",
+    stripeAccountId: "stripe-account-id",
+  });
+  await user.save();
 
   const event = Event.build({
     id: new Types.ObjectId().toHexString(),
@@ -77,7 +88,7 @@ it("reserves a ticket", async () => {
 
   const ticket = Ticket.build({
     id,
-    userId: new Types.ObjectId().toHexString(),
+    user,
     event,
     price: 10,
   });
@@ -85,7 +96,7 @@ it("reserves a ticket", async () => {
 
   const { body } = await request(app)
     .post("/api/orders")
-    .set("Cookie", signIn(userId))
+    .set("Cookie", signIn(user.id))
     .send({ ticketId: ticket.id })
     .expect(201);
 

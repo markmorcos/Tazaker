@@ -9,10 +9,9 @@ import {
   validateRequest,
 } from "@tazaker/common";
 
-import { Event } from "../models/event";
-import { Order } from "../models/order";
-import { Ticket } from "../models/ticket";
 import { nats } from "../nats";
+import { Ticket } from "../models/ticket";
+import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
@@ -33,9 +32,14 @@ router.post(
     const { id: userId } = req.currentUser!;
     const { ticketId } = req.body;
 
-    const ticket = await Ticket.findById(ticketId).populate("event");
+    const ticket = await Ticket.findById(ticketId)
+      .populate("user")
+      .populate("event");
     if (!ticket) {
       throw new NotFoundError();
+    }
+    if (!ticket.user.stripeAccountId) {
+      throw new BadRequestError("Seller is not connected to Stripe");
     }
     if (new Date() > ticket.event.end) {
       throw new BadRequestError("Event has already ended");
@@ -74,12 +78,7 @@ router.post(
     const expiresAt = new Date();
     expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
-    const order = Order.build({
-      userId,
-      ticket,
-      expiresAt,
-      status,
-    });
+    const order = Order.build({ userId, ticket, expiresAt, status });
     await order.save();
 
     await new OrderCreatedPublisher(nats.client).publish({

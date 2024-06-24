@@ -27,7 +27,7 @@ export const Breadcrumbs = styled.ol`
     }
 
     &.active {
-      color: var(--primary);
+      color: var(--primary-color);
     }
   }
 `;

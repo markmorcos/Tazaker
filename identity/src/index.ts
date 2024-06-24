@@ -21,6 +21,9 @@ const start = async () => {
   if (!process.env.NATS_URL) {
     throw new Error("NATS_URL must be defined");
   }
+  if (!process.env.STRIPE_SECRET) {
+    throw new Error("STRIPE_SECRET must be defined");
+  }
 
   try {
     await nats.connect(

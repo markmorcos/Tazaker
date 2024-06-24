@@ -52,7 +52,7 @@ router.put(
       version: ticket.version,
     });
 
-    res.send(ticket);
+    res.status(200).send(ticket);
   }
 );
 

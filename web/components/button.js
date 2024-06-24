@@ -5,9 +5,9 @@ export const Button = styled.button`
   outline: none;
   border: none;
   background-color: var(--primary-color);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  color: #333;
+  border-radius: 0.2rem;
+  padding: 0.4rem;
+  color: var(--light-text-color);
   transition: all 0.4s;
 
   &:hover {

@@ -5,6 +5,6 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-RUN NEXT_PUBLIC_ENVIRONMENT=production npm run build
+RUN npm run build
 
 CMD ["npm", "run", "start"]

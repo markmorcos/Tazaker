@@ -10,6 +10,8 @@ import { ExpirationCompleteListener } from "./events/listeners/expiration-comple
 import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
+import { UserCreatedListener } from "./events/listeners/user-created-listener";
+import { UserUpdatedListener } from "./events/listeners/user-updated-listener";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {
@@ -26,6 +28,9 @@ const start = async () => {
   }
   if (!process.env.NATS_URL) {
     throw new Error("NATS_URL must be defined");
+  }
+  if (!process.env.STRIPE_SECRET) {
+    throw new Error("STRIPE_SECRET must be defined");
   }
 
   try {
@@ -47,6 +52,8 @@ const start = async () => {
     new PaymentCreatedListener(nats.client).listen();
     new TicketCreatedListener(nats.client).listen();
     new TicketUpdatedListener(nats.client).listen();
+    new UserCreatedListener(nats.client).listen();
+    new UserUpdatedListener(nats.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");

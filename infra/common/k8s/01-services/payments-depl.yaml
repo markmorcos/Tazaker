@@ -34,16 +34,16 @@ spec:
               value: tazaker
             - name: NATS_URL
               value: "http://nats-srv:4222"
-            - name: PAYPAL_CLIENT_ID
+            - name: STRIPE_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: paypal-secret
-                  key: PAYPAL_CLIENT_ID
-            - name: PAYPAL_SECRET
+                  name: stripe-secret
+                  key: STRIPE_SECRET
+            - name: STRIPE_WEBHOOK_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: paypal-secret
-                  key: PAYPAL_SECRET
+                  name: stripe-secret
+                  key: STRIPE_WEBHOOK_SECRET
 ---
 apiVersion: v1
 kind: Service

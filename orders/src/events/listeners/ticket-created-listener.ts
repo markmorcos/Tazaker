@@ -2,6 +2,7 @@ import { Message } from "node-nats-streaming";
 
 import { Listener, Subjects, TicketCreatedEvent } from "@tazaker/common";
 
+import { User } from "../../models/user";
 import { Event } from "../../models/event";
 import { Ticket } from "../../models/ticket";
 
@@ -14,12 +15,17 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
   async onMessage(data: TicketCreatedEvent["data"], msg: Message) {
     const { id, userId, eventId, price } = data;
 
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     const event = await Event.findById(eventId);
     if (!event) {
       throw new Error("Event not found");
     }
 
-    const ticket = Ticket.build({ id, userId, event, price });
+    const ticket = Ticket.build({ id, user, event, price });
     await ticket.save();
 
     msg.ack();

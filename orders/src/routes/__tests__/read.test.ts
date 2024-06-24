@@ -2,6 +2,7 @@ import request from "supertest";
 import { Types } from "mongoose";
 
 import { app } from "../../app";
+import { stripe } from "../../stripe";
 import { createOrder, createTicket, signIn } from "../../test/global";
 
 it("throws an error if the provided ID does not exist", async () => {
@@ -35,7 +36,7 @@ it("returns a 401 if the user does not own the order", async () => {
 
 it("get the order provided valid input", async () => {
   const userId = new Types.ObjectId().toHexString();
-  const ticket = await createTicket();
+  const ticket = await createTicket(userId);
   const order = await createOrder(ticket.id, userId);
 
   const { body } = await request(app)
@@ -44,4 +45,5 @@ it("get the order provided valid input", async () => {
     .expect(200);
 
   expect(body.id).toEqual(order.id);
+  expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });

@@ -40,7 +40,7 @@ router.get(
       throw new NotFoundError();
     }
 
-    res.send(ticket);
+    res.status(200).send(ticket);
   }
 );
 
@@ -57,7 +57,7 @@ router.get(
     }
 
     if (ticket.order?.userId !== req.currentUser?.id) {
-      return res.send("Not authorized");
+      throw new NotAuthorizedError();
     }
 
     const { fileId } = ticket;

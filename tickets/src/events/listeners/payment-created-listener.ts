@@ -23,7 +23,7 @@ export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
       throw new Error("Ticket not found");
     }
 
-    ticket.set({ order });
+    ticket.set("order", undefined);
     await ticket.save();
 
     await new TicketUpdatedPublisher(this.client).publish({
