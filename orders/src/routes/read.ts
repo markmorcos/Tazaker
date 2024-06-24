@@ -4,11 +4,13 @@ import { param } from "express-validator";
 import {
   NotAuthorizedError,
   NotFoundError,
+  OrderStatus,
   requireAuth,
   validateRequest,
 } from "@tazaker/common";
 
 import { Order } from "../models/order";
+import { stripe } from "../stripe";
 
 const router = express.Router();
 
@@ -20,6 +22,7 @@ router.get(
   async (req: Request, res: Response) => {
     const order = await Order.findById(req.params.id)
       .populate("ticket")
+      .populate({ path: "ticket", populate: { path: "user" } })
       .populate({ path: "ticket", populate: { path: "event" } });
 
     if (!order) {
@@ -30,7 +33,14 @@ router.get(
       throw new NotAuthorizedError();
     }
 
-    res.send(order);
+    const session = await stripe.checkout.sessions.retrieve(order.sessionId!);
+    if (session.status === "expired") {
+      order.set("status", OrderStatus.Expired);
+      await order.save();
+      return res.send(order);
+    }
+
+    res.send({ ...order.toJSON(), clientSecret: session.client_secret });
   }
 );
 

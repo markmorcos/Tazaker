@@ -10,6 +10,7 @@ import { OrderExpiredListener } from "./events/listeners/order-expired-listener"
 import { TicketCreatedListener } from "./events/listeners/ticket-created-listener";
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 import { UserCreatedListener } from "./events/listeners/user-created-listener";
+import { UserUpdatedListener } from "./events/listeners/user-updated-listener";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {
@@ -53,6 +54,7 @@ const start = async () => {
     new TicketCreatedListener(nats.client).listen();
     new TicketUpdatedListener(nats.client).listen();
     new UserCreatedListener(nats.client).listen();
+    new UserUpdatedListener(nats.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");

@@ -5,6 +5,7 @@ import {
   BadRequestError,
   NotFoundError,
   OrderStatus,
+  baseURL,
   requireAuth,
   validateRequest,
 } from "@tazaker/common";
@@ -80,7 +81,6 @@ router.post(
     expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
     const order = Order.build({ userId, ticket, expiresAt, status });
-    await order.save();
 
     const session = await stripe.checkout.sessions.create(
       {
@@ -98,10 +98,13 @@ router.post(
         payment_intent_data: { application_fee_amount: ticket.price },
         mode: "payment",
         ui_mode: "embedded",
-        return_url: `/orders/${order.id}`,
+        return_url: `${baseURL}/orders/${order.id}`,
       },
       { stripeAccount: ticket.user.stripeAccountId }
     );
+
+    order.set("sessionId", session.id);
+    await order.save();
 
     await new OrderCreatedPublisher(nats.client).publish({
       id: order.id,
@@ -112,9 +115,7 @@ router.post(
       version: order.version,
     });
 
-    res
-      .status(201)
-      .send({ ...order.toJSON(), clientSecret: session.client_secret });
+    res.status(201).send(order);
   }
 );
 

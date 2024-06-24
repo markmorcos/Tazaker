@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Router from "next/router";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   EmbeddedCheckoutProvider,
@@ -7,10 +6,8 @@ import {
 } from "@stripe/react-stripe-js";
 
 import redirect from "../../api/redirect";
-import useRequest from "../../hooks/use-request";
 import { Link } from "../../components/link";
 
-import Loading from "./_components/loading";
 import OrderSummary from "./_components/summary";
 import { Breadcrumbs } from "../../components/breadcrumbs";
 import { Alert } from "../../components/alert";
@@ -23,13 +20,6 @@ const OrderRead = ({ order, currentUser }) => {
 
   const [timeLeft, setTimeLeft] = useState(0);
 
-  const { doRequest, loading, errors } = useRequest({
-    url: "/api/payments",
-    method: "post",
-    body: { orderId: order.id },
-    onSuccess: () => Router.reload(),
-  });
-
   useEffect(() => {
     const findTimeLeft = () => {
       const msLeft = new Date(order.expiresAt) - new Date();
@@ -41,10 +31,6 @@ const OrderRead = ({ order, currentUser }) => {
 
     return () => clearInterval(interval);
   }, []);
-
-  if (loading) {
-    return <Loading />;
-  }
 
   if (order.status === "complete") {
     return <OrderSummary order={order} currentUser={currentUser} />;
@@ -86,7 +72,6 @@ const OrderRead = ({ order, currentUser }) => {
       >
         <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>
-      {errors}
     </>
   );
 };
