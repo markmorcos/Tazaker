@@ -4,12 +4,13 @@ import request from "supertest";
 import { OrderStatus } from "@tazaker/common";
 
 import { app } from "../../app";
+import { nats } from "../../nats";
+import { stripe } from "../../stripe";
 import { signIn } from "../../test/global";
 import { User } from "../../models/user";
 import { Event } from "../../models/event";
 import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
-import { nats } from "../../nats";
 
 it("returns an error if the ticket does not exist", () => {
   return request(app)
@@ -103,4 +104,5 @@ it("reserves a ticket", async () => {
   expect(order).toBeDefined();
 
   expect(nats.client.publish).toHaveBeenCalled();
+  expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });
