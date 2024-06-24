@@ -66,8 +66,7 @@ router.delete(
     }
 
     if (user.stripeAccountId) {
-      await stripe.accounts.del(user.stripeAccountId);
-      user.stripeAccountId = undefined;
+      user.set("stripeAccountId", undefined);
       await user.save();
 
       req.session!.jwt = sign(

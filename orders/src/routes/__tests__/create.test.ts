@@ -57,7 +57,7 @@ it("returns an error if the ticket is already reserved", async () => {
     .send({ ticketId: ticket.id })
     .expect(200);
 
-  order.set({ userId: new Types.ObjectId().toHexString() });
+  order.set("userId", new Types.ObjectId().toHexString());
   await order.save();
 
   return request(app)

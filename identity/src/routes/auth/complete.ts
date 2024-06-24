@@ -22,7 +22,7 @@ router.get(
       throw new NotAuthorizedError();
     }
 
-    user.set({ code: undefined });
+    user.set("code", undefined);
     await user.save();
 
     req.session!.jwt = sign(

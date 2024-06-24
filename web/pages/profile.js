@@ -96,13 +96,13 @@ const ProfileIndex = ({ currentUser }) => {
           <div className="dev-callout">
             {connectedAccountId && (
               <p>
-                Your connected account ID is:{" "}
+                Your connected Stripe account ID is:{" "}
                 <code className="bold">{connectedAccountId}</code>{" "}
                 <Button
                   onClick={async () => {
                     if (
                       confirm(
-                        "Are you sure you want to delete your Stripe account?"
+                        "Are you sure you want to disconnect your Stripe account?"
                       )
                     ) {
                       setAccountDeletePending(true);
@@ -119,7 +119,7 @@ const ProfileIndex = ({ currentUser }) => {
                     }
                   }}
                 >
-                  Delete account
+                  Disconnect account
                 </Button>
               </p>
             )}

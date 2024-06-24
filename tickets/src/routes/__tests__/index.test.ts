@@ -32,7 +32,7 @@ it("can fetch a list of tickets", async () => {
   });
   await order.save();
 
-  orderedTicket.set({ order });
+  orderedTicket.set("order", order);
   await orderedTicket.save();
 
   const response = await request(app)
