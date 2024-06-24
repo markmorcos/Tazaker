@@ -28,18 +28,13 @@ router.post(
 
     let account;
     if (user.stripeAccountId) {
-      try {
-        account = await stripe.accounts.retrieve(user.stripeAccountId);
-      } catch (error) {
-        account = await stripe.accounts.create({});
-      }
+      account = await stripe.accounts.retrieve(user.stripeAccountId);
     } else {
-      account = await stripe.accounts.create({});
+      account = await stripe.accounts.create();
+
       user.stripeAccountId = account.id;
       await user.save();
-    }
 
-    if (req.currentUser!.stripeAccountId !== user.stripeAccountId) {
       req.session!.jwt = sign(
         {
           id: user.id,
@@ -87,7 +82,7 @@ router.delete(
       });
     }
 
-    return res.status(200).send({});
+    return res.sendStatus(204);
   }
 );
 

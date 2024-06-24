@@ -5,7 +5,7 @@ import { signIn } from "../../../test/global";
 import { stripe } from "../../../stripe";
 
 test("can only be accessed if the user is signed in", async () => {
-  await request(app).post("/api/onboarding/account").send({}).expect(401);
+  await request(app).post("/api/onboarding/account").expect(401);
 });
 
 test("creates an account with valid inputs", async () => {

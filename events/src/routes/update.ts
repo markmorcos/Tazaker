@@ -63,7 +63,7 @@ router.put(
       version: event.version,
     });
 
-    res.send(event);
+    res.status(200).send(event);
   }
 );
 

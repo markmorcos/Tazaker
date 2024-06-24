@@ -9,7 +9,7 @@ router.get("/api/events", async (req: Request, res: Response) => {
     start: "ascending",
   });
 
-  res.send(events);
+  res.status(200).send(events);
 });
 
 export { router as indexEventRouter };

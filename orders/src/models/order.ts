@@ -3,7 +3,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 import { OrderStatus } from "@tazaker/common";
 
-import { UserDoc } from "./user";
 import { TicketDoc } from "./ticket";
 
 export interface OrderAttrs {

@@ -19,7 +19,7 @@ router.get(
       throw new NotFoundError();
     }
 
-    res.send(event);
+    res.status(200).send(event);
   }
 );
 

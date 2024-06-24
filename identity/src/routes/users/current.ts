@@ -9,7 +9,7 @@ router.get(
   currentUser,
   requireAuth,
   (req: Request, res: Response) => {
-    res.send({ currentUser: req.currentUser });
+    res.status(200).send({ currentUser: req.currentUser });
   }
 );
 

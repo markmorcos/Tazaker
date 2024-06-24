@@ -5,13 +5,11 @@ import {
   BadRequestError,
   NotFoundError,
   OrderStatus,
-  baseURL,
   requireAuth,
   validateRequest,
 } from "@tazaker/common";
 
 import { nats } from "../nats";
-import { stripe } from "../stripe";
 import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
@@ -81,30 +79,6 @@ router.post(
     expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
     const order = Order.build({ userId, ticket, expiresAt, status });
-
-    const session = await stripe.checkout.sessions.create(
-      {
-        client_reference_id: order.id,
-        metadata: { userId },
-        line_items: [
-          {
-            price_data: {
-              currency: "eur",
-              product_data: { name: ticket.event.title },
-              unit_amount: ticket.price * 100,
-            },
-            quantity: 1,
-          },
-        ],
-        payment_intent_data: { application_fee_amount: ticket.price },
-        mode: "payment",
-        ui_mode: "embedded",
-        return_url: `${baseURL}/orders/${order.id}`,
-      },
-      { stripeAccount: ticket.user.stripeAccountId }
-    );
-
-    order.set("sessionId", session.id);
     await order.save();
 
     await new OrderCreatedPublisher(nats.client).publish({

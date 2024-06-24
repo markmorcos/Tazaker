@@ -6,7 +6,7 @@ import {
   NotFoundError,
   NotificationType,
   OrderStatus,
-  requireAuth,
+  baseURL,
 } from "@tazaker/common";
 
 import { nats } from "../nats";
@@ -31,7 +31,7 @@ router.post("/api/payments", async (req: Request, res: Response) => {
   );
 
   if (stripeEvent.type !== "checkout.session.completed") {
-    return res.send({});
+    return res.sendStatus(200);
   }
 
   const orderId = stripeEvent.data.object.client_reference_id;
@@ -76,7 +76,7 @@ router.post("/api/payments", async (req: Request, res: Response) => {
     type: NotificationType.Sale,
     payload: {
       eventTitle: event.title,
-      eventUrl: event.url,
+      eventUrl: `${baseURL}/events/${event.id}`,
       price: ticket.price,
     },
   });

@@ -13,7 +13,7 @@ router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
     .sort({ expiresAt: "descending" })
     .populate({ path: "ticket", populate: "event" });
 
-  res.send(orders);
+  res.status(200).send(orders);
 });
 
 export { router as indexOrderRouter };

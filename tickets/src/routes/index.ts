@@ -17,7 +17,7 @@ router.get(
       order: null,
     });
 
-    res.send(tickets);
+    res.status(200).send(tickets);
   }
 );
 

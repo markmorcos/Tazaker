@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { query } from "express-validator";
 import { sign } from "jsonwebtoken";
 
-import { validateRequest } from "@tazaker/common";
+import { NotAuthorizedError, validateRequest } from "@tazaker/common";
 
 import { User } from "../../models/user";
 
@@ -17,10 +17,9 @@ router.get(
 
     const user = await User.findOne({
       email: decodeURIComponent(String(email)),
-      code,
     });
-    if (!user) {
-      return res.send("Invalid sign in link");
+    if (!user || user.code !== code) {
+      throw new NotAuthorizedError();
     }
 
     user.set({ code: undefined });
