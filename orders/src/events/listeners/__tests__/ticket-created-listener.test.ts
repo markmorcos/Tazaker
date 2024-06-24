@@ -4,6 +4,7 @@ import { Message } from "node-nats-streaming";
 import { TicketCreatedEvent } from "@tazaker/common";
 
 import { nats } from "../../../nats";
+import { User } from "../../../models/user";
 import { Event } from "../../../models/event";
 import { Ticket } from "../../../models/ticket";
 
@@ -11,6 +12,12 @@ import { TicketCreatedListener } from "../ticket-created-listener";
 
 const setup = async () => {
   const listener = new TicketCreatedListener(nats.client);
+
+  const user = User.build({
+    id: new Types.ObjectId().toHexString(),
+    email: "test@example.com",
+  });
+  await user.save();
 
   const event = Event.build({
     id: new Types.ObjectId().toHexString(),
@@ -23,7 +30,7 @@ const setup = async () => {
 
   const data: TicketCreatedEvent["data"] = {
     id: new Types.ObjectId().toHexString(),
-    userId: new Types.ObjectId().toHexString(),
+    userId: user.id,
     eventId: event.id,
     price: 10,
     version: 0,

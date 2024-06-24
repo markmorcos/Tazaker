@@ -2,11 +2,13 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 jest.mock("../nats");
+jest.mock("../stripe");
 
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
   process.env.JWT_KEY = "asdfasdf";
+  process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
 
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();

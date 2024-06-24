@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import request from "supertest";
-import { randomBytes } from "crypto";
+import { randomBytes, createHmac } from "crypto";
 
 import { OrderStatus } from "@tazaker/common";
 
@@ -11,14 +11,23 @@ import { Order } from "../../models/order";
 import { Payment } from "../../models/payment";
 import { Ticket } from "../../models/ticket";
 import { User } from "../../models/user";
+import { stripe } from "../../stripe";
 
 it("returns a 404 when purchasing an order that does not exist", async () => {
+  const payload = {
+    type: "checkout.session.completed",
+    data: {
+      object: { client_reference_id: new Types.ObjectId().toHexString() },
+    },
+  };
+
+  (<jest.Mock>stripe.webhooks.constructEvent).mockReturnValueOnce(payload);
+
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn())
-    .send({
-      orderId: new Types.ObjectId().toHexString(),
-    })
+    .set("stripe-signature", "stripe-signature")
+    .send(payload)
     .expect(404);
 });
 
@@ -54,10 +63,18 @@ it("returns a 401 when purchasing an order that does not belong to the user", as
   });
   await order.save();
 
+  const payload = {
+    type: "checkout.session.completed",
+    data: { object: { client_reference_id: order.id } },
+  };
+
+  (<jest.Mock>stripe.webhooks.constructEvent).mockReturnValueOnce(payload);
+
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn())
-    .send({ orderId: order.id })
+    .set("stripe-signature", "stripe-signature")
+    .send(payload)
     .expect(401);
 });
 
@@ -132,10 +149,18 @@ it("returns 201 with valid inputs", async () => {
   });
   await order.save();
 
+  const payload = {
+    type: "checkout.session.completed",
+    data: { object: { client_reference_id: order.id } },
+  };
+
+  (<jest.Mock>stripe.webhooks.constructEvent).mockReturnValueOnce(payload);
+
   await request(app)
     .post("/api/payments")
     .set("Cookie", signIn(user.id))
-    .send({ orderId: order.id })
+    .set("stripe-signature", "stripe-signature")
+    .send(payload)
     .expect(201);
 
   const payment = await Payment.findOne({ orderId: order.id });

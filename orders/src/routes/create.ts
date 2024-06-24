@@ -112,7 +112,9 @@ router.post(
       version: order.version,
     });
 
-    res.status(201).send({ ...order, clientSecret: session.client_secret });
+    res
+      .status(201)
+      .send({ ...order.toJSON(), clientSecret: session.client_secret });
   }
 );
 

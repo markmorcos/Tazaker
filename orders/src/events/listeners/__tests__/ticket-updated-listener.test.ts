@@ -4,6 +4,7 @@ import { Message } from "node-nats-streaming";
 import { TicketUpdatedEvent } from "@tazaker/common";
 
 import { nats } from "../../../nats";
+import { User } from "../../../models/user";
 import { Event } from "../../../models/event";
 import { Ticket } from "../../../models/ticket";
 
@@ -11,6 +12,13 @@ import { TicketUpdatedListener } from "../ticket-updated-listener";
 
 const setup = async () => {
   const listener = new TicketUpdatedListener(nats.client);
+
+  const user = User.build({
+    id: new Types.ObjectId().toHexString(),
+    email: "test@example.com",
+    stripeAccountId: "stripe-account-id",
+  });
+  await user.save();
 
   const event = Event.build({
     id: new Types.ObjectId().toHexString(),
@@ -22,12 +30,8 @@ const setup = async () => {
   await event.save();
 
   const id = new Types.ObjectId().toHexString();
-  const ticket = Ticket.build({
-    id,
-    userId: new Types.ObjectId().toHexString(),
-    event,
-    price: 10,
-  });
+  const price = 10;
+  const ticket = Ticket.build({ id, user, event, price });
   await ticket.save();
 
   const data: TicketUpdatedEvent["data"] = {

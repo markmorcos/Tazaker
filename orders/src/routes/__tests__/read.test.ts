@@ -35,7 +35,7 @@ it("returns a 401 if the user does not own the order", async () => {
 
 it("get the order provided valid input", async () => {
   const userId = new Types.ObjectId().toHexString();
-  const ticket = await createTicket();
+  const ticket = await createTicket(userId);
   const order = await createOrder(ticket.id, userId);
 
   const { body } = await request(app)

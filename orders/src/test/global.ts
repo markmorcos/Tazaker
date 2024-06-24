@@ -3,9 +3,10 @@ import { sign } from "jsonwebtoken";
 import request from "supertest";
 
 import { app } from "../app";
-import { OrderPayload } from "../models/order";
+import { User } from "../models/user";
 import { Ticket } from "../models/ticket";
 import { Event } from "../models/event";
+import { OrderPayload } from "../models/order";
 
 export const signIn = (id = new Types.ObjectId().toHexString()) => {
   const payload = { id, email: "test@example.com" };
@@ -15,8 +16,17 @@ export const signIn = (id = new Types.ObjectId().toHexString()) => {
   return [`session=${base64}`];
 };
 
-export const createTicket = async () => {
+export const createTicket = async (
+  userId = new Types.ObjectId().toHexString()
+) => {
   const id = new Types.ObjectId().toHexString();
+
+  const user = User.build({
+    id: userId,
+    email: "test@example.com",
+    stripeAccountId: "stripe-account-id",
+  });
+  await user.save();
 
   const event = Event.build({
     id: new Types.ObjectId().toHexString(),
@@ -27,12 +37,8 @@ export const createTicket = async () => {
   });
   await event.save();
 
-  const ticket = Ticket.build({
-    id,
-    userId: new Types.ObjectId().toHexString(),
-    event,
-    price: 10,
-  });
+  const price = 10;
+  const ticket = Ticket.build({ id, user, event, price });
   await ticket.save();
 
   return ticket;
