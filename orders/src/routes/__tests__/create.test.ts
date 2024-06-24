@@ -104,5 +104,4 @@ it("reserves a ticket", async () => {
   expect(order).toBeDefined();
 
   expect(nats.client.publish).toHaveBeenCalled();
-  expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });

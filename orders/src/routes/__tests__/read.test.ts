@@ -45,5 +45,5 @@ it("get the order provided valid input", async () => {
     .expect(200);
 
   expect(body.id).toEqual(order.id);
-  expect(stripe.checkout.sessions.retrieve).toHaveBeenCalled();
+  expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });
