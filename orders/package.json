@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --poll src/index.ts",
     "build": "tsc",
+    "build:docker": "docker build . -f Dockerfile.production -t markmorcos/tazaker-orders",
     "start": "node build/index.js",
     "test": "jest --watchAll --no-cache --detectOpenHandles",
     "test:ci": "jest"
