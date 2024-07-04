@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "build:docker": "docker build . -f Dockerfile.production -t markmorcos/tazaker-web",
     "start": "next start"
   },
   "keywords": [],
