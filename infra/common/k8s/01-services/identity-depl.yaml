@@ -13,8 +13,6 @@ spec:
         app: identity
     spec:
       containers:
-        - name: identity-sidecar
-          image: fluent/fluentd-kubernetes-daemonset:v1-debian-logging
         - name: identity
           image: markmorcos/tazaker-identity
           envFrom:
