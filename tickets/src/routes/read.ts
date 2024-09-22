@@ -14,7 +14,7 @@ import { Ticket } from "../models/ticket";
 const downloadFile = (fileId: string): Promise<mongo.GridFSBucketReadStream> =>
   new Promise((resolve, reject) => {
     try {
-      const bucket = new mongo.GridFSBucket(connection.db);
+      const bucket = new mongo.GridFSBucket(connection.db!);
       const downloadStream = bucket.openDownloadStream(
         new mongo.ObjectId(fileId)
       );

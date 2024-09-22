@@ -6,7 +6,6 @@ import { app } from "./app";
 import { nats } from "./nats";
 import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 import { OrderExpiredListener } from "./events/listeners/order-expired-listener";
-import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 
 const start = async () => {
   if (!process.env.MONGO_URI) {
@@ -40,7 +39,6 @@ const start = async () => {
 
     new OrderCreatedListener(nats.client).listen();
     new OrderExpiredListener(nats.client).listen();
-    new PaymentCreatedListener(nats.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");

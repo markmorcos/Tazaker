@@ -13,7 +13,7 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
   async onMessage(data: UserUpdatedEvent["data"], msg: Message) {
     const user = await User.findById(data.id);
     if (!user) {
-      throw new Error("User not found");
+      return console.error("User not found");
     }
 
     user.set("stripeAccountId", data.stripeAccountId);

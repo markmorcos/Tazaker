@@ -17,12 +17,12 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
 
     const user = await User.findById(userId);
     if (!user) {
-      throw new Error("User not found");
+      return console.error("User not found");
     }
 
     const event = await Event.findById(eventId);
     if (!event) {
-      throw new Error("Event not found");
+      return console.error("Event not found");
     }
 
     const ticket = Ticket.build({ id, user, event, price });

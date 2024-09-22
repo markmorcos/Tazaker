@@ -13,7 +13,7 @@ export class OrderExpiredListener extends Listener<OrderExpiredEvent> {
   async onMessage(data: OrderExpiredEvent["data"], msg: Message) {
     const ticket = await Ticket.findById(data.ticketId);
     if (!ticket) {
-      throw new Error("Ticket not found");
+      return console.error("Ticket not found");
     }
 
     ticket.set("order", undefined);

@@ -17,7 +17,7 @@ const router = express.Router();
 const uploadFile = (file: Express.Multer.File): Promise<string> =>
   new Promise((resolve, reject) => {
     try {
-      const bucket = new mongo.GridFSBucket(connection.db);
+      const bucket = new mongo.GridFSBucket(connection.db!);
       const uploadStream = bucket.openUploadStream(file.originalname);
 
       const readStream = new PassThrough();
