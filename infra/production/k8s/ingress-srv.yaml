@@ -68,7 +68,7 @@ spec:
                 name: payments-srv
                 port:
                   number: 3000
-    - host: tazaker.dev
+    - host: www.tazaker.org
       http:
         paths:
           - path: /v2/?(.*)
