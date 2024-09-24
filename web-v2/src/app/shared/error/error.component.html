@@ -1,0 +1,7 @@
+<app-alert type="danger">
+  <ul>
+    @for (error of errors(); track error) {
+    <li>{{ error.message }}</li>
+    }
+  </ul>
+</app-alert>

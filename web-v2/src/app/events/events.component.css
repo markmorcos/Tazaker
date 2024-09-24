@@ -1,0 +1,11 @@
+section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+section.empty {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

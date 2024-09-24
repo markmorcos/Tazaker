@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  color: var(--light-text-color);
+}
+
+:host.success {
+  background-color: #04aa6d;
+}
+
+:host.danger {
+  background-color: #f44336;
+}
+
+:host.warning {
+  background-color: #ff9800;
+}

@@ -1,0 +1,29 @@
+@if (success()) {
+<app-alert type="success"
+  >Please check your email to complete the login.</app-alert
+>
+} @else {
+<app-card>
+  <div class="content">
+    <form (submit)="onSubmit()">
+      @if (errors().length > 0) {
+      <app-error [errors]="errors()" />
+      }
+      <label htmlFor="email" class="form-label">Email</label>
+      <input
+        id="email"
+        class="form-control"
+        [class.disabled]="loading()"
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        [disabled]="loading()"
+      />
+      <small>We'll never share your email with anyone else.</small>
+      <button type="submit" [class.disabled]="loading()" [disabled]="loading()">
+        Send authentication link
+      </button>
+    </form>
+  </div>
+</app-card>
+}

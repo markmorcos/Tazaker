@@ -1,0 +1,82 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--background-color);
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}
+
+.burger {
+  display: none;
+  cursor: pointer;
+  margin-bottom: 0.2rem;
+}
+
+@media (max-width: 768px) {
+  .burger {
+    display: block;
+  }
+}
+
+.logo {
+  font-family: "Dancing Script";
+  font-size: 2rem;
+}
+
+.navbar ul {
+  display: flex;
+  overflow: hidden;
+  transition: all 0.4s;
+  margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .navbar ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    height: 0;
+    margin-left: 0;
+  }
+}
+
+.navbar ul.open {
+  height: 10rem;
+}
+
+.navbar ul li {
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .navbar ul li {
+    flex-direction: column;
+    align-items: center;
+    margin-right: 0;
+  }
+}
+
+.navbar ul li a {
+  transition: all 0.4s;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+}
+
+.navbar ul li a.active,
+.navbar ul li a:hover,
+.navbar ul li a:active {
+  font-weight: bold;
+  background: var(--hover-background-light);
+}
+
+.navbar ul li:last-child {
+  margin-right: 0;
+}

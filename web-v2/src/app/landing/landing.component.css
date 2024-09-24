@@ -1,0 +1,41 @@
+section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-image: url("/hero.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  filter: blur(0.5rem);
+}
+
+a {
+  z-index: 1;
+  background-color: var(--primary-color);
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  transition: all 0.4s;
+  opacity: 0.8;
+}
+
+a:hover {
+  background-color: var(--primary-color-dark);
+  opacity: 1;
+}
+
+h1 {
+  font-family: "Dancing Script";
+  font-size: 8rem;
+  color: var(--text-color);
+}

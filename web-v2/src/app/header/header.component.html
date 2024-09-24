@@ -1,0 +1,21 @@
+<nav class="navbar">
+  <a routerLink="/" class="logo">Tazaker</a>
+  <div class="burger" (click)="nav.classList.toggle('open')">
+    <button class="secondary">☰</button>
+  </div>
+  <ul role="list" #nav>
+    @for (link of links(); track link.href) {
+    <li>
+      <a [routerLink]="link.href" [routerLinkActive]="['active']">{{
+        link.label
+      }}</a>
+    </li>
+    } @if (email()) {
+    <li>
+      <button class="secondary" (click)="onSignOut()">
+        Sign Out ({{ email() }})
+      </button>
+    </li>
+    }
+  </ul>
+</nav>

@@ -1,0 +1,15 @@
+@if (!loading()) {
+<article>
+  <app-card>
+    <img width="100%" [src]="event()!.image" />
+    <div class="content">
+      <a [href]="event()!.url" target="_blank">
+        <h1>{{ event()!.title }}</h1> </a
+      >{{ " " }}
+      <a [routerLink]="['/events', event()!.id, 'new-ticket']">
+        <button>Sell a ticket</button>
+      </a>
+    </div>
+  </app-card>
+</article>
+}

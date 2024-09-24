@@ -1,0 +1,9 @@
+<section [class.empty]="events().length === 0">
+  @for (event of events(); track event.id) {
+  <app-event [event]="event" />
+  } @empty {
+  <app-card>
+    <div class="content">No events found</div>
+  </app-card>
+  }
+</section>
