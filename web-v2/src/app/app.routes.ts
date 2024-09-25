@@ -21,9 +21,6 @@ export const routes: Routes = [
     component: EventDetailsComponent,
     children: [{ path: 'new-ticket', component: NewTicketComponent }],
   },
-  {
-    path: 'orders',
-    component: OrdersComponent,
-    children: [{ path: ':id', component: OrderComponent }],
-  },
+  { path: 'orders', component: OrdersComponent },
+  { path: 'orders/:id', component: OrderComponent },
 ];

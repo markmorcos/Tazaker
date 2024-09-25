@@ -1,6 +1,9 @@
-article {
-  max-width: 50rem;
-}
+/* article.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+} */
 
 img {
   object-fit: cover;

@@ -1,0 +1,41 @@
+:host {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: all 0.4s;
+  display: block;
+  width: calc(100% - 2rem);
+  margin-bottom: 1rem;
+}
+
+:host:last-child {
+  margin-bottom: 0;
+}
+
+:host[type="file"] {
+  cursor: pointer;
+}
+
+:host[type="file"]::-webkit-file-upload-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.4s;
+  background-color: transparent;
+}
+
+:host[type="file"]::-webkit-file-upload-button:hover {
+  background-color: #33333333;
+  border-color: var(--primary-color);
+}
+
+:host:hover {
+  border-color: var(--primary-color);
+}
+
+:host.error {
+  border-color: var(--error-color);
+}

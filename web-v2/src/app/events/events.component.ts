@@ -1,13 +1,7 @@
-import {
-  afterNextRender,
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CardComponent } from '../shared/card/card.component';
-import { EventsService } from './events.service';
+import { Event, EventsService } from './events.service';
 import { EventComponent } from './event/event.component';
 
 @Component({
@@ -21,10 +15,15 @@ export class EventsComponent implements OnInit {
   private eventsService = inject(EventsService);
   private destroyRef = inject(DestroyRef);
 
-  events = this.eventsService.events;
+  events = signal<Event[]>([]);
+  loading = this.eventsService.loading;
 
   ngOnInit() {
-    const subscription = this.eventsService.getEvents().subscribe();
+    const subscription = this.eventsService.getEvents().subscribe({
+      next: (events) => {
+        this.events.set(events);
+      },
+    });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
   }

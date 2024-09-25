@@ -1,4 +1,8 @@
 button {
+  display: block;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.1;
   cursor: pointer;
   outline: none;
   border: none;
@@ -27,4 +31,9 @@ button.disabled,
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.25rem;
 }

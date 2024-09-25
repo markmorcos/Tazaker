@@ -1,9 +1,11 @@
 <section [class.empty]="events().length === 0">
-  @for (event of events(); track event.id) {
-  <app-event [event]="event" />
-  } @empty {
+  @if (events().length === 0) {
   <app-card>
-    <div class="content">No events found</div>
+    <div class="content">
+      {{ loading() ? "Loading..." : "No events found" }}
+    </div>
   </app-card>
+  } @for (event of events(); track event.id) {
+  <app-event [event]="event" />
   }
 </section>

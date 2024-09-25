@@ -1,15 +1,21 @@
-@if (!loading()) {
-<article>
+<article [class.empty]="loading()">
+  @if (!event()) {
+  <app-card>
+    <div class="content">Loading...</div>
+  </app-card>
+  } @else {
   <app-card>
     <img width="100%" [src]="event()!.image" />
     <div class="content">
       <a [href]="event()!.url" target="_blank">
-        <h1>{{ event()!.title }}</h1> </a
-      >{{ " " }}
+        <h1>{{ event()!.title }}</h1>
+      </a>
       <a [routerLink]="['/events', event()!.id, 'new-ticket']">
         <button>Sell a ticket</button>
       </a>
+      <router-outlet />
     </div>
   </app-card>
+  }
+  <app-tickets [eventId]="id()" />
 </article>
-}

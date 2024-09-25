@@ -1,0 +1,12 @@
+<app-card>
+  <div class="content">
+    <h1>{{ ticket().total | currency : "EUR" }}</h1>
+    <p>
+      Seller price: <strong>{{ ticket().price | currency : "EUR" }}</strong>
+    </p>
+    <p>
+      Platform fees: <strong>{{ ticket().fees | currency : "EUR" }}</strong>
+    </p>
+    <button (click)="onOrderTicket(ticket().id)">Order</button>
+  </div>
+</app-card>

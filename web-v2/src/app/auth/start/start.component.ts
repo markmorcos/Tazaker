@@ -4,11 +4,20 @@ import { CardComponent } from '../../shared/card/card.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { Error, ErrorComponent } from '../../shared/error/error.component';
 import { AuthService } from '../auth.service';
+import { InputComponent } from '../../shared/input/input.component';
+import { ButtonComponent } from '../../shared/button/button.component';
 
 @Component({
   selector: 'app-start',
   standalone: true,
-  imports: [FormsModule, CardComponent, AlertComponent, ErrorComponent],
+  imports: [
+    FormsModule,
+    CardComponent,
+    AlertComponent,
+    ErrorComponent,
+    InputComponent,
+    ButtonComponent,
+  ],
   templateUrl: './start.component.html',
   styleUrl: './start.component.css',
 })

@@ -1,0 +1,11 @@
+<section [class.empty]="tickets().length === 0">
+  @if (tickets().length === 0) {
+  <app-card>
+    <div class="content">
+      {{ loading() ? "Loading..." : "No tickets found" }}
+    </div>
+  </app-card>
+  } @for (ticket of tickets(); track ticket.id) {
+  <app-ticket [ticket]="ticket" />
+  }
+</section>
