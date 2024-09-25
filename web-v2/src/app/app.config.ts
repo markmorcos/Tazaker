@@ -16,15 +16,15 @@ const httpClientInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn
 ) => {
-  const environment: 'development' | 'production' = 'development';
-  const baseUrl = {
-    development: 'https://tazaker.dev',
-    production: 'https://tazaker.org',
-  }[environment];
+  // const environment: 'development' | 'production' = 'development';
+  // const baseUrl = {
+  //   development: 'https://tazaker.dev',
+  //   production: 'https://tazaker.org',
+  // }[environment];
 
-  const req = request.clone({ url: `${baseUrl}${request.url}` });
+  // const req = request.clone({ url: `${baseUrl}${request.url}` });
 
-  return next(req);
+  return next(request);
 };
 
 export const appConfig: ApplicationConfig = {
