@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "build:docker": "docker build . -f Dockerfile.production -t markmorcos/tazaker-web-v2",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

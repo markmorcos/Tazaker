@@ -17,10 +17,12 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
+  const router = express.Router();
+
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
-  server.get(
+  router.get(
     '**',
     express.static(browserDistFolder, {
       maxAge: '1y',
@@ -29,7 +31,7 @@ export function app(): express.Express {
   );
 
   // All regular routes use the Angular engine
-  server.get('**', (req, res, next) => {
+  router.get('**', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
@@ -43,6 +45,8 @@ export function app(): express.Express {
       .then((html) => res.send(html))
       .catch((err) => next(err));
   });
+
+  server.use('/v2', router);
 
   return server;
 }
