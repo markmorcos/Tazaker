@@ -14,9 +14,21 @@ export interface Order {
     price: number;
     event: { id: string; title: string };
   };
+  expiresAt: string;
   status: string;
   statusInfo: StatusInfo;
 }
+
+const statusMap: { [key: string]: StatusInfo } = {
+  created: { title: 'Started', background: 'primary' },
+  expired: { title: 'Expired', background: 'danger' },
+  complete: { title: 'Complete', background: 'success' },
+};
+
+const orderMapper = (order: Order) => ({
+  ...order,
+  statusInfo: statusMap[order.status],
+});
 
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
@@ -44,21 +56,24 @@ export class OrdersService {
   getOrders() {
     this.loading.set(true);
     return this.httpClient.get<Order[]>('/api/orders').pipe(
-      map((orders) => {
-        const statusMap: { [key: string]: StatusInfo } = {
-          created: { title: 'Started', background: 'primary' },
-          expired: { title: 'Expired', background: 'danger' },
-          complete: { title: 'Complete', background: 'success' },
-        };
-
-        return orders.map((order) => ({
-          ...order,
-          statusInfo: statusMap[order.status],
-        }));
-      }),
+      map((orders) => orders.map(orderMapper)),
       tap({
         next: (orders) => {
           this.orders.set(orders);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+        },
+      })
+    );
+  }
+
+  getOrder(id: string) {
+    return this.httpClient.get<Order>(`/api/orders/${id}`).pipe(
+      map(orderMapper),
+      tap({
+        next: () => {
           this.loading.set(false);
         },
         error: () => {

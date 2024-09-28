@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CardComponent } from '../shared/card/card.component';
 import { OrdersService } from './orders.service';
 import { RouterLink } from '@angular/router';
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css',
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit {
   private ordersService = inject(OrdersService);
 
   orders = this.ordersService.orders;

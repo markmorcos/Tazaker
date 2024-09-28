@@ -9,6 +9,8 @@ import { RouterOutlet } from '@angular/router';
 import { LandingComponent } from './landing/landing.component';
 import { HeaderComponent } from './header/header.component';
 import { UserService } from './auth/user.service';
+import { environment } from '../environments/environment.development';
+import { loadScript } from '@paypal/paypal-js';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +27,8 @@ export class AppComponent {
 
   constructor() {
     afterNextRender(() => {
+      loadScript({ clientId: environment.paypalClientId });
+
       const subscription = this.userService.getCurrentUser().subscribe();
 
       this.destroyRef.onDestroy(() => subscription.unsubscribe());

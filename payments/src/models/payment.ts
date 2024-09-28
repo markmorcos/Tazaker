@@ -2,6 +2,7 @@ import { Document, Model, Schema, model } from "mongoose";
 
 export interface PaymentAttrs {
   orderId: string;
+  paypalOrderId: string;
 }
 
 type PaymentDoc = Document & PaymentAttrs;
@@ -15,7 +16,10 @@ export interface PaymentPayload {
 }
 
 const paymentSchema: Schema<PaymentDoc> = new Schema(
-  { orderId: { type: String, required: true } },
+  {
+    orderId: { type: String, required: true },
+    paypalOrderId: { type: String, required: true },
+  },
   {
     toJSON: {
       transform: (doc, ret) => {

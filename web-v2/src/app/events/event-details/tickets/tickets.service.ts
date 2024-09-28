@@ -48,7 +48,6 @@ export class TicketsService {
       .get<Ticket[]>(`/api/tickets?eventId=${eventId}`)
       .pipe(
         map((tickets) => {
-          console.log({ tickets });
           return tickets.map((ticket) => {
             const fees = Math.round(100 * (ticket.price * 0.05 + 0.5)) / 100;
             return { ...ticket, fees, total: ticket.price + fees };

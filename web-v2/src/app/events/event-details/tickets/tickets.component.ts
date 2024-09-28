@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, input } from '@angular/core';
+import { Component, DestroyRef, inject, input, OnInit } from '@angular/core';
 import { CardComponent } from '../../../shared/card/card.component';
 import { TicketsService } from './tickets.service';
 import { TicketComponent } from './ticket/ticket.component';
@@ -10,7 +10,7 @@ import { TicketComponent } from './ticket/ticket.component';
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.css',
 })
-export class TicketsComponent {
+export class TicketsComponent implements OnInit {
   private ticketsService = inject(TicketsService);
   private destroyRef = inject(DestroyRef);
 

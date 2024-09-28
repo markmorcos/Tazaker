@@ -4,7 +4,7 @@ import { EventsComponent } from './events/events.component';
 import { NewEventComponent } from './events/new-event/new-event.component';
 import { NewTicketComponent } from './events/event-details/new-ticket/new-ticket.component';
 import { OrdersComponent } from './orders/orders.component';
-import { OrderComponent } from './orders/order/order.component';
+import { OrderDetailsComponent } from './orders/order-details/order-details.component';
 import { LandingComponent } from './landing/landing.component';
 import { StartComponent } from './auth/start/start.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -22,5 +22,5 @@ export const routes: Routes = [
     children: [{ path: 'new-ticket', component: NewTicketComponent }],
   },
   { path: 'orders', component: OrdersComponent },
-  { path: 'orders/:id', component: OrderComponent },
+  { path: 'orders/:id', component: OrderDetailsComponent },
 ];

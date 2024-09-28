@@ -4,7 +4,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 export interface UserAttrs {
   id: string;
   email: string;
-  stripeAccountId?: string;
 }
 
 export type UserDoc = Document & UserAttrs;
@@ -18,10 +17,7 @@ interface UserModel extends Model<UserDoc> {
 }
 
 const userSchema: Schema<UserDoc> = new Schema(
-  {
-    email: { type: String, required: true },
-    stripeAccountId: { type: String },
-  },
+  { email: { type: String, required: true } },
   {
     toJSON: {
       transform: (doc, ret) => {

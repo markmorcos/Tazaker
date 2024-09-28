@@ -15,7 +15,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   async onMessage(data: OrderCreatedEvent["data"], msg: Message) {
     const ticket = await Ticket.findById(data.ticketId);
     if (!ticket) {
-      return console.error("Ticket not found");
+      throw new Error("Ticket not found");
     }
 
     const order = Order.build({

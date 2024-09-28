@@ -21,11 +21,7 @@ export const createTicket = async (
 ) => {
   const id = new Types.ObjectId().toHexString();
 
-  const user = User.build({
-    id: userId,
-    email: "test@example.com",
-    stripeAccountId: "stripe-account-id",
-  });
+  const user = User.build({ id: userId, email: "test@example.com" });
   await user.save();
 
   const event = Event.build({

@@ -4,7 +4,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@tazaker/common";
 
 import { TicketDoc } from "./ticket";
-import { EventDoc } from "./event";
 
 export interface OrderAttrs {
   id: string;

@@ -2,7 +2,6 @@ import request from "supertest";
 import { Types } from "mongoose";
 
 import { app } from "../../app";
-import { stripe } from "../../stripe";
 import { createOrder, createTicket, signIn } from "../../test/global";
 
 it("throws an error if the provided ID does not exist", async () => {
@@ -45,5 +44,4 @@ it("get the order provided valid input", async () => {
     .expect(200);
 
   expect(body.id).toEqual(order.id);
-  expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });

@@ -1,37 +1,25 @@
 import { Types } from "mongoose";
 import request from "supertest";
+import { randomBytes } from "crypto";
 
 import { OrderStatus } from "@tazaker/common";
 
 import { app } from "../../app";
 import { signIn } from "../../test/global";
-import { Event } from "../../models/event";
 import { Order } from "../../models/order";
 import { Payment } from "../../models/payment";
-import { Ticket } from "../../models/ticket";
 import { User } from "../../models/user";
-import { stripe } from "../../stripe";
+import { Event } from "../../models/event";
+import { Ticket } from "../../models/ticket";
 
 it("returns a 404 when purchasing an order that does not exist", async () => {
-  const userId = new Types.ObjectId().toHexString();
-
-  const payload = {
-    type: "checkout.session.completed",
-    data: {
-      object: {
-        client_reference_id: new Types.ObjectId().toHexString(),
-        metadata: { userId },
-      },
-    },
-  };
-
-  (<jest.Mock>stripe.webhooks.constructEvent).mockReturnValueOnce(payload);
-
   return request(app)
     .post("/api/payments")
-    .set("Cookie", signIn(userId))
-    .set("stripe-signature", "stripe-signature")
-    .send(payload)
+    .set("Cookie", signIn())
+    .send({
+      orderId: new Types.ObjectId().toHexString(),
+      paypalOrderId: "fake_order",
+    })
     .expect(404);
 });
 
@@ -67,21 +55,10 @@ it("returns a 401 when purchasing an order that does not belong to the user", as
   });
   await order.save();
 
-  const payload = {
-    type: "checkout.session.completed",
-    data: {
-      object: { client_reference_id: order.id },
-      metadata: { userId: new Types.ObjectId().toHexString() },
-    },
-  };
-
-  (<jest.Mock>stripe.webhooks.constructEvent).mockReturnValueOnce(payload);
-
   return request(app)
     .post("/api/payments")
-    .set("Cookie", signIn(user.id))
-    .set("stripe-signature", "stripe-signature")
-    .send(payload)
+    .set("Cookie", signIn())
+    .send({ orderId: order.id, paypalOrderId: "fake_order" })
     .expect(401);
 });
 
@@ -110,9 +87,9 @@ it("returns a 400 when purchasing an expired order", async () => {
 
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
-    userId: user.id,
+    userId: new Types.ObjectId().toHexString(),
     ticket,
-    status: OrderStatus.Expired,
+    status: OrderStatus.Created,
     version: 0,
   });
   await order.save();
@@ -120,7 +97,7 @@ it("returns a 400 when purchasing an expired order", async () => {
   return request(app)
     .post("/api/payments")
     .set("Cookie", signIn(user.id))
-    .send({ orderId: order.id })
+    .send({ orderId: order.id, paypalOrderId: "fake_order" })
     .expect(400);
 });
 
@@ -149,29 +126,21 @@ it("returns 201 with valid inputs", async () => {
 
   const order = Order.build({
     id: new Types.ObjectId().toHexString(),
-    userId: user.id,
+    userId: new Types.ObjectId().toHexString(),
     ticket,
     status: OrderStatus.Created,
     version: 0,
   });
   await order.save();
 
-  const payload = {
-    type: "checkout.session.completed",
-    data: {
-      object: { client_reference_id: order.id, metadata: { userId: user.id } },
-    },
-  };
-
-  (<jest.Mock>stripe.webhooks.constructEvent).mockReturnValueOnce(payload);
+  const paypalOrderId = randomBytes(16).toString("hex");
 
   await request(app)
     .post("/api/payments")
     .set("Cookie", signIn(user.id))
-    .set("stripe-signature", "stripe-signature")
-    .send(payload)
+    .send({ orderId: order.id, paypalOrderId })
     .expect(201);
 
-  const payment = await Payment.findOne({ orderId: order.id });
+  const payment = await Payment.findOne({ orderId: order.id, paypalOrderId });
   expect(payment).not.toBeNull();
 });
