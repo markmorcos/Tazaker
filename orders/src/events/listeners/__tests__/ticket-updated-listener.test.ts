@@ -16,7 +16,6 @@ const setup = async () => {
   const user = User.build({
     id: new Types.ObjectId().toHexString(),
     email: "test@example.com",
-    stripeAccountId: "stripe-account-id",
   });
   await user.save();
 

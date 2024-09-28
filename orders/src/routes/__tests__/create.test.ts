@@ -5,7 +5,6 @@ import { OrderStatus } from "@tazaker/common";
 
 import { app } from "../../app";
 import { nats } from "../../nats";
-import { stripe } from "../../stripe";
 import { signIn } from "../../test/global";
 import { User } from "../../models/user";
 import { Event } from "../../models/event";
@@ -26,7 +25,6 @@ it("returns an error if the ticket is already reserved", async () => {
   const user = User.build({
     id: new Types.ObjectId().toHexString(),
     email: "test@example.com",
-    stripeAccountId: "stripe-account-id",
   });
   await user.save();
 
@@ -73,7 +71,6 @@ it("reserves a ticket", async () => {
   const user = User.build({
     id: new Types.ObjectId().toHexString(),
     email: "test@example.com",
-    stripeAccountId: "stripe-account-id",
   });
   await user.save();
 

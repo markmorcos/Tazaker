@@ -3,7 +3,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 export interface UserAttrs {
   email: string;
-  stripeAccountId?: string;
   code: string;
 }
 
@@ -19,7 +18,6 @@ interface UserModel extends Model<UserDoc> {
 const userSchema: Schema<UserDoc> = new Schema(
   {
     email: { type: String, required: true },
-    stripeAccountId: { type: String },
     code: { type: String },
   },
   {

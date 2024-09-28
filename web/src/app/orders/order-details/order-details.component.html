@@ -1,0 +1,36 @@
+<article [class.empty]="loading()">
+  @if (loading()) {
+  <app-card>
+    <div class="content">Loading...</div>
+  </app-card>
+  } @else if (order()!.status === "complete") {
+  <app-card>
+    <div class="content">
+      <app-alert type="success"
+        >Your ticket for
+        <a [routerLink]="['/events', order()!.ticket.event.id]">{{
+          order()!.ticket.event.title
+        }}</a>
+        is now available!</app-alert
+      >
+      <a
+        [href]="['/api/tickets/' + order()!.ticket.id + '/file']"
+        target="_blank"
+      >
+        <button>Download</button>
+      </a>
+    </div>
+  </app-card>
+  } @else if (timeLeft() <= 0) {
+  <app-alert type="danger"
+    >This order has expired. Please go back to the
+    <a [routerLink]="['/events', order()!.ticket.event.id]">event page</a> and
+    start a new order.</app-alert
+  >
+  } @else {
+  <app-alert type="warning"
+    >Time left to pay: {{ timeLeft() }} minutes</app-alert
+  >
+  <app-payment [orderId]="order()!.id" (success)="onPaymentSuccess()" />
+  }
+</article>

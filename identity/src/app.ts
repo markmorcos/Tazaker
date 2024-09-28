@@ -10,7 +10,6 @@ import { signOutRouter } from "./routes/auth/sign-out";
 import { startRouter } from "./routes/auth/start";
 
 import { currentUserRouter } from "./routes/users/current";
-import { onboardingRouter } from "./routes/onboarding/create";
 
 export const app = express();
 
@@ -29,7 +28,6 @@ app.use(signOutRouter);
 app.use(startRouter);
 
 app.use(currentUserRouter);
-app.use(onboardingRouter);
 
 app.all("*", async () => {
   throw new NotFoundError();

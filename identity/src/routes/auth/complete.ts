@@ -26,7 +26,7 @@ router.get(
     await user.save();
 
     req.session!.jwt = sign(
-      { id: user.id, email: user.email, stripeAccountId: user.stripeAccountId },
+      { id: user.id, email: user.email },
       process.env.JWT_KEY!
     );
 

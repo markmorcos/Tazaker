@@ -4,7 +4,6 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { OrderStatus } from "@tazaker/common";
 
 import { TicketDoc } from "./ticket";
-import { EventDoc } from "./event";
 
 export interface OrderAttrs {
   id: string;
@@ -14,7 +13,7 @@ export interface OrderAttrs {
   version: number;
 }
 
-type OrderDoc = Document & Omit<OrderAttrs, "id" | "version">;
+export type OrderDoc = Document & Omit<OrderAttrs, "id" | "version">;
 
 interface OrderModel extends Model<OrderDoc> {
   build: (order: OrderAttrs) => OrderDoc;

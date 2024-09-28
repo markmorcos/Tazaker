@@ -1,0 +1,40 @@
+<section [class.empty]="orders().length === 0">
+  @if (orders().length === 0) {
+  <app-card>
+    <div class="content">
+      {{ loading() ? "Loading..." : "No orders found" }}
+    </div>
+  </app-card>
+  } @else {
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Price</th>
+        <th>Event</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (order of orders(); track order.id) {
+      <tr key="{id}">
+        <td>
+          <a [routerLink]="['/orders', order.id]">{{ order.id }}</a>
+        </td>
+        <td>€{{ order.ticket.total }}</td>
+        <td>
+          <a [routerLink]="['/events', order.ticket.event.id]">
+            {{ order.ticket.event.title }}
+          </a>
+        </td>
+        <td>
+          <span [class]="['badge', order.statusInfo.background]">
+            {{ order.statusInfo.title }}
+          </span>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+</section>

@@ -12,9 +12,7 @@ export interface TicketAttrs {
 }
 
 export type TicketDoc = Document &
-  TicketAttrs & {
-    version: number;
-  };
+  TicketAttrs & { fees: number; total: number; version: number };
 
 interface TicketModel extends Model<TicketDoc> {
   build: (ticket: TicketAttrs) => TicketDoc;
@@ -37,11 +35,24 @@ const ticketSchema: Schema<TicketDoc> = new Schema(
     price: { type: Number, required: true },
   },
   {
+    virtuals: {
+      fees: {
+        get: function () {
+          return Math.round(100 * (this.price * 0.05 + 0.5)) / 100;
+        },
+      },
+      total: {
+        get: function () {
+          return this.price + this.fees;
+        },
+      },
+    },
     toJSON: {
       transform: (doc, ret) => {
         ret.id = ret._id;
         delete ret._id;
       },
+      virtuals: true,
     },
   }
 );

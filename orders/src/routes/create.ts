@@ -10,13 +10,38 @@ import {
 } from "@tazaker/common";
 
 import { nats } from "../nats";
-import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
+import { createOrder } from "../paypal";
+import { Ticket } from "../models/ticket";
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
 
 const router = express.Router();
+
+router.post(
+  "/api/orders/paypal",
+  requireAuth,
+  [
+    body("orderId")
+      .notEmpty()
+      .isMongoId()
+      .withMessage("Order ID must be provided"),
+  ],
+  validateRequest,
+  async (req: Request, res: Response) => {
+    const { orderId } = req.body;
+
+    const order = await Order.findById(orderId).populate("ticket");
+    if (!order) {
+      throw new NotFoundError();
+    }
+
+    const paypalOrder = await createOrder(order.ticket.total.toFixed(2));
+
+    return res.status(201).send(paypalOrder);
+  }
+);
 
 router.post(
   "/api/orders",
@@ -37,9 +62,6 @@ router.post(
       .populate("event");
     if (!ticket) {
       throw new NotFoundError();
-    }
-    if (!ticket.user.stripeAccountId) {
-      throw new BadRequestError("Seller is not connected to Stripe");
     }
     if (new Date() > ticket.event.end) {
       throw new BadRequestError("Event has already ended");

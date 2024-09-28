@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v1-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-v1
+  template:
+    metadata:
+      labels:
+        app: web-v1
+    spec:
+      containers:
+        - name: web-v1
+          image: markmorcos/tazaker-web-v1
+          envFrom:
+            - configMapRef:
+                name: global-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-v1-srv
+spec:
+  selector:
+    app: web-v1
+  ports:
+    - name: web-v1
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

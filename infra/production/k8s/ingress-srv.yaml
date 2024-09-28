@@ -71,11 +71,11 @@ spec:
     - host: www.tazaker.org
       http:
         paths:
-          - path: /v2/?(.*)
+          - path: /v1/?(.*)
             pathType: ImplementationSpecific
             backend:
               service:
-                name: web-v2-srv
+                name: web-v1-srv
                 port:
                   number: 3000
     - host: www.tazaker.org
