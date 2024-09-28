@@ -1,6 +1,6 @@
 import "express-async-errors";
 import express from "express";
-import { json, raw } from "body-parser";
+import { json } from "body-parser";
 import cookieSession from "cookie-session";
 
 import { currentUser, errorHandler, NotFoundError } from "@tazaker/common";
@@ -11,7 +11,7 @@ export const app = express();
 
 app.set("trust proxy", true);
 
-app.use(raw({ type: "application/json" }));
+app.use(json());
 app.use(
   cookieSession({
     signed: false,

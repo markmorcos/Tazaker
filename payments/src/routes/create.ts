@@ -3,8 +3,10 @@ import { body } from "express-validator";
 
 import {
   BadRequestError,
+  baseURL,
   NotAuthorizedError,
   NotFoundError,
+  NotificationType,
   OrderStatus,
   requireAuth,
   validateRequest,
@@ -15,6 +17,7 @@ import { Payment } from "../models/payment";
 import { nats } from "../nats";
 import { captureOrder } from "../paypal";
 import { PaymentCreatedPublisher } from "../events/publishers/payment-created-publisher";
+import { NotificationPublisher } from "../events/publishers/notification-publisher";
 
 const router = express.Router();
 
@@ -38,6 +41,7 @@ router.post(
       .populate("ticket")
       .populate({ path: "ticket", populate: { path: "user" } })
       .populate({ path: "ticket", populate: { path: "event" } });
+
     if (!order) {
       throw new NotFoundError();
     }
@@ -62,10 +66,22 @@ router.post(
     const payment = Payment.build({ orderId, paypalOrderId });
     await payment.save();
 
+    await captureOrder(paypalOrderId);
+
     await new PaymentCreatedPublisher(nats.client).publish({
       id: payment.id,
       orderId: payment.orderId,
       paypalOrderId: payment.paypalOrderId,
+    });
+
+    await new NotificationPublisher(nats.client).publish({
+      email: ticket.user.email,
+      type: NotificationType.Sale,
+      payload: {
+        eventTitle: event.title,
+        eventUrl: `${baseURL}/events/${event.id}`,
+        price: ticket.price,
+      },
     });
 
     res.status(201).send(payment);

@@ -89,14 +89,14 @@ it("returns a 400 when purchasing an expired order", async () => {
     id: new Types.ObjectId().toHexString(),
     userId: new Types.ObjectId().toHexString(),
     ticket,
-    status: OrderStatus.Created,
+    status: OrderStatus.Expired,
     version: 0,
   });
   await order.save();
 
   return request(app)
     .post("/api/payments")
-    .set("Cookie", signIn(user.id))
+    .set("Cookie", signIn(order.userId))
     .send({ orderId: order.id, paypalOrderId: "fake_order" })
     .expect(400);
 });
@@ -137,7 +137,7 @@ it("returns 201 with valid inputs", async () => {
 
   await request(app)
     .post("/api/payments")
-    .set("Cookie", signIn(user.id))
+    .set("Cookie", signIn(order.userId))
     .send({ orderId: order.id, paypalOrderId })
     .expect(201);
 
