@@ -63,14 +63,12 @@ router.post(
 
     await captureOrder(paypalOrderId);
 
-    const payment = Payment.build({ orderId, paypalOrderId });
+    const payment = Payment.build({ order, paypalOrderId });
     await payment.save();
-
-    await captureOrder(paypalOrderId);
 
     await new PaymentCreatedPublisher(nats.client).publish({
       id: payment.id,
-      orderId: payment.orderId,
+      orderId: payment.order.id,
       paypalOrderId: payment.paypalOrderId,
     });
 

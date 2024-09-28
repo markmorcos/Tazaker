@@ -1,7 +1,9 @@
 import { Document, Model, Schema, model } from "mongoose";
 
+import { OrderDoc } from "./order";
+
 export interface PaymentAttrs {
-  orderId: string;
+  order: OrderDoc;
   paypalOrderId: string;
 }
 
@@ -17,7 +19,7 @@ export interface PaymentPayload {
 
 const paymentSchema: Schema<PaymentDoc> = new Schema(
   {
-    orderId: { type: String, required: true },
+    order: { type: Schema.Types.ObjectId, ref: "Order", required: true },
     paypalOrderId: { type: String, required: true },
   },
   {

@@ -10,34 +10,34 @@ import {
 } from "@tazaker/common";
 
 import { nats } from "../nats";
-import { Ticket } from "../models/ticket";
 import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 import { createOrder } from "../paypal";
+import { Ticket } from "../models/ticket";
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
 
 const router = express.Router();
 
 router.post(
-  "api/orders/paypal",
+  "/api/orders/paypal",
   requireAuth,
   [
-    body("ticketId")
+    body("orderId")
       .notEmpty()
       .isMongoId()
-      .withMessage("Ticket ID must be provided"),
+      .withMessage("Order ID must be provided"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { ticketId } = req.body;
+    const { orderId } = req.body;
 
-    const ticket = await Ticket.findById(ticketId);
-    if (!ticket) {
+    const order = await Order.findById(orderId).populate("ticket");
+    if (!order) {
       throw new NotFoundError();
     }
 
-    const paypalOrder = await createOrder(ticket.price.toFixed(2));
+    const paypalOrder = await createOrder(order.ticket.total.toFixed(2));
 
     return res.status(201).send(paypalOrder);
   }

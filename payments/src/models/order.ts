@@ -13,7 +13,7 @@ export interface OrderAttrs {
   version: number;
 }
 
-type OrderDoc = Document & Omit<OrderAttrs, "id" | "version">;
+export type OrderDoc = Document & Omit<OrderAttrs, "id" | "version">;
 
 interface OrderModel extends Model<OrderDoc> {
   build: (order: OrderAttrs) => OrderDoc;

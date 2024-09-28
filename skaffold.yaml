@@ -66,8 +66,8 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-    - image: markmorcos/tazaker-web
-      context: web
+    - image: markmorcos/tazaker-web-v1
+      context: web-v1
       sync:
         manual:
           - src: "**/*.js"
@@ -76,8 +76,8 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
-    - image: markmorcos/tazaker-web-v2
-      context: web-v2
+    - image: markmorcos/tazaker-web
+      context: web
       sync:
         manual:
           - src: "**/*.ts"

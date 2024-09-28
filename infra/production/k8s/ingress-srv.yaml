@@ -71,18 +71,8 @@ spec:
     - host: www.tazaker.org
       http:
         paths:
-          - path: /v2/?(.*)
+          - path: /?(.*)
             pathType: ImplementationSpecific
-            backend:
-              service:
-                name: web-v2-srv
-                port:
-                  number: 3000
-    - host: www.tazaker.org
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
             backend:
               service:
                 name: web-srv
