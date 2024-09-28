@@ -141,6 +141,6 @@ it("returns 201 with valid inputs", async () => {
     .send({ orderId: order.id, paypalOrderId })
     .expect(201);
 
-  const payment = await Payment.findOne({ orderId: order.id, paypalOrderId });
+  const payment = await Payment.findOne({ order: order.id, paypalOrderId });
   expect(payment).not.toBeNull();
 });
