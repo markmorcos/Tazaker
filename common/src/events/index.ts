@@ -12,4 +12,3 @@ export * from "./subjects";
 export * from "./ticket-created-event";
 export * from "./ticket-updated-event";
 export * from "./user-created-event";
-export * from "./user-updated-event";

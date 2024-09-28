@@ -5,5 +5,6 @@ export interface PaymentCreatedEvent {
   data: {
     id: string;
     orderId: string;
+    paypalOrderId: string;
   };
 }
