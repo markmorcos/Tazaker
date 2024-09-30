@@ -1,7 +1,7 @@
 import { Document, Model, Schema, model } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
-import { OrderStatus } from "@tazaker/common";
+import { defaultFees, OrderStatus } from "@tazaker/common";
 
 import { EventDoc } from "./event";
 import { Order, OrderDoc } from "./order";
@@ -46,7 +46,7 @@ const ticketSchema: Schema<TicketDoc> = new Schema(
     virtuals: {
       fees: {
         get: function () {
-          return Math.round(100 * (this.price * 0.05 + 0.5)) / 100;
+          return defaultFees(this.price);
         },
       },
       total: {

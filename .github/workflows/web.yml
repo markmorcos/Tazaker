@@ -17,7 +17,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: web/dist
+          path: web/build
 
   deploy:
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-output
-          path: web/dist
+          path: web/build
 
       - run: cd web && npm run build:docker
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
