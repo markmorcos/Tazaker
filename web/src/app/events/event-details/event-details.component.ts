@@ -1,5 +1,4 @@
 import {
-  afterNextRender,
   Component,
   DestroyRef,
   inject,
@@ -27,10 +26,6 @@ export class EventDetailsComponent implements OnInit {
   id = input.required<string>();
   event = signal<Event | undefined>(undefined);
   loading = this.eventsService.loading;
-
-  constructor() {
-    afterNextRender(() => {});
-  }
 
   ngOnInit() {
     const subscription = this.eventsService.getEvent(this.id()).subscribe({

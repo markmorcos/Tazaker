@@ -11,11 +11,12 @@ import { HeaderComponent } from './header/header.component';
 import { UserService } from './auth/user.service';
 import { environment } from '../environments/environment.development';
 import { loadScript } from '@paypal/paypal-js';
+import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LandingComponent, HeaderComponent],
+  imports: [RouterOutlet, LandingComponent, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

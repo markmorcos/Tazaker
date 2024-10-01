@@ -1,6 +1,8 @@
 import { Document, Model, Schema, model } from "mongoose";
 import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
+import { defaultFees } from "@tazaker/common";
+
 import { OrderDoc } from "./order";
 
 export interface TicketAttrs {
@@ -37,7 +39,7 @@ const ticketSchema: Schema<TicketDoc> = new Schema(
     virtuals: {
       fees: {
         get: function () {
-          return Math.round(100 * (this.price * 0.05 + 0.5)) / 100;
+          return defaultFees(this.price);
         },
       },
       total: {

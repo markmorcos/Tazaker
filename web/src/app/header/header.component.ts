@@ -26,7 +26,6 @@ export class HeaderComponent {
       return [
         { label: 'Profile', href: ['/profile'] },
         { label: 'Events', href: ['/events'] },
-        { label: 'Orders', href: ['/orders'] },
       ];
     }
 

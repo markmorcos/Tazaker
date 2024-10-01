@@ -37,9 +37,22 @@ export class EventsService {
     this.loading.set(true);
     return this.httpClient.get<Event>(`/api/events/${id}`).pipe(
       tap({
-        next: (event) => {
+        next: () => {
           this.loading.set(false);
-          return of(event);
+        },
+        error: () => {
+          this.loading.set(false);
+        },
+      })
+    );
+  }
+
+  createEvent(event: Partial<Event>) {
+    this.loading.set(true);
+    return this.httpClient.post<Partial<Event>>('/api/events', event).pipe(
+      tap({
+        next: () => {
+          this.loading.set(false);
         },
         error: () => {
           this.loading.set(false);
