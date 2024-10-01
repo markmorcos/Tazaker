@@ -17,7 +17,7 @@
     "@stripe/react-connect-js": "^3.3.8",
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.5.0",
-    "@tazaker/common": "1.0.21",
+    "@tazaker/common": "1.0.22",
     "axios": "^1.6.2",
     "date-fns": "^3.3.1",
     "next": "^14.0.4",

@@ -22,7 +22,7 @@ export class TicketComponent {
   onOrderTicket(id: string) {
     this.ordersService.createOrder(id).subscribe({
       next: (order) => {
-        this.router.navigate(['/orders', order.id]);
+        this.router.navigate(['/profile', 'orders', order.id]);
       },
       error: () => {},
     });

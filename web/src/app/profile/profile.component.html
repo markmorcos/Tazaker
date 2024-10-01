@@ -1,3 +1,37 @@
-<app-card>
-  <div class="content">Profile</div>
-</app-card>
+<section>
+  <article>
+    <a routerLink="/profile/orders">
+      <app-card>
+        <div class="content">
+          <h1 class="text">Orders</h1>
+        </div>
+      </app-card>
+    </a>
+  </article>
+  <article>
+    <app-card>
+      <div class="content">
+        <h1 class="text">Listings</h1>
+      </div>
+    </app-card>
+  </article>
+  <article>
+    <a routerLink="/profile/sales">
+      <app-card>
+        <div class="content">
+          <h1 class="text">Sales</h1>
+        </div>
+      </app-card>
+    </a>
+  </article>
+  <article>
+    <app-card>
+      <div class="content">
+        <h1 class="text">Payments</h1>
+      </div>
+    </app-card>
+  </article>
+</section>
+<section class="children">
+  <router-outlet />
+</section>

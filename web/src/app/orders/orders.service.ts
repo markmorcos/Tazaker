@@ -62,6 +62,21 @@ export class OrdersService {
     );
   }
 
+  getSales() {
+    this.loading.set(true);
+    return this.httpClient.get<Order[]>('/api/orders/sales').pipe(
+      map((orders) => orders.map(orderMapper)),
+      tap({
+        next: () => {
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+        },
+      })
+    );
+  }
+
   getOrder(id: string) {
     this.loading.set(true);
     return this.httpClient.get<Order>(`/api/orders/${id}`).pipe(
