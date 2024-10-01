@@ -11,10 +11,8 @@ it("throws an error if the provided ID does not exist", async () => {
     title: "Event",
     url: "https://google.com",
     image: "https://placehold.it/180x60",
-    startDate: "1970-01-01",
-    startTime: "00:00:00",
-    endDate: "1970-01-01",
-    endTime: "00:00:00",
+    start: "1970-01-01T00:00:00",
+    end: "1970-01-01T00:00:00",
     timezone: "Europe/Berlin",
   };
 
@@ -67,10 +65,8 @@ it("update the event provided valid input", async () => {
       title: "New Event",
       url: "https://google.com",
       image: "https://placehold.it/180x60",
-      startDate: "1970-01-01",
-      startTime: "00:00:00",
-      endDate: "1970-01-01",
-      endTime: "00:00:00",
+      start: "1970-01-01T00:00:00",
+      end: "1970-01-01T00:00:00",
       timezone: "Europe/Berlin",
     })
     .expect(200);

@@ -17,10 +17,8 @@ router.put(
     body("title").notEmpty().withMessage("Title is required"),
     body("url").notEmpty().withMessage("URL is required"),
     body("image").notEmpty().withMessage("Image is required"),
-    body("startDate").notEmpty().withMessage("Start date is required"),
-    body("startTime").notEmpty().withMessage("Start time is required"),
-    body("endDate").notEmpty().withMessage("End date is required"),
-    body("endTime").notEmpty().withMessage("End time is required"),
+    body("start").notEmpty().withMessage("Start is required"),
+    body("end").notEmpty().withMessage("End is required"),
     body("timezone").notEmpty().withMessage("Timezone is required"),
   ],
   validateRequest,
@@ -32,22 +30,13 @@ router.put(
       throw new NotFoundError();
     }
 
-    const {
-      title,
-      url,
-      image,
-      startDate,
-      startTime,
-      endDate,
-      endTime,
-      timezone,
-    } = req.body;
+    const { title, url, image, start, end, timezone } = req.body;
     event.set({
       title,
       url,
       image,
-      start: new Date(`${startDate}T${startTime}Z`),
-      end: new Date(`${endDate}T${endTime}Z`),
+      start: new Date(start),
+      end: new Date(end),
       timezone,
     });
     await event.save();

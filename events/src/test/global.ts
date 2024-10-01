@@ -20,10 +20,8 @@ export const createEvent = async (
     title: attrs.title,
     url: attrs.url,
     image: attrs.image,
-    startDate: attrs.start!.toISOString().split("T")[0],
-    startTime: attrs.start!.toISOString().split("T")[1].split(".")[0],
-    endDate: attrs.end!.toISOString().split("T")[0],
-    endTime: attrs.end!.toISOString().split("T")[1].split(".")[0],
+    start: attrs.start!.toISOString(),
+    end: attrs.end!.toISOString(),
     timezone: "Europe/Berlin",
   };
 
