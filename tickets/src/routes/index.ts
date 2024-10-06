@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { query } from "express-validator";
 
-import { validateRequest } from "@tazaker/common";
+import { requireAuth, validateRequest } from "@tazaker/common";
 
 import { Ticket } from "../models/ticket";
 
@@ -16,6 +16,18 @@ router.get(
       eventId: String(req.query.eventId),
       order: null,
     });
+
+    res.status(200).send(tickets);
+  }
+);
+
+router.get(
+  "/api/tickets/listings",
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const { id: userId } = req.currentUser!;
+
+    const tickets = await Ticket.find({ userId });
 
     res.status(200).send(tickets);
   }

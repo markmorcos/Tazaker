@@ -24,8 +24,8 @@ app.use(
 app.use(currentUser);
 
 app.use(createTicketRouter);
-app.use(readTicketRouter);
 app.use(indexTicketRouter);
+app.use(readTicketRouter);
 app.use(updateTicketRouter);
 
 app.all("*", async () => {
