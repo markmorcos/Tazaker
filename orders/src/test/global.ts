@@ -3,7 +3,7 @@ import { sign } from "jsonwebtoken";
 import request from "supertest";
 
 import { app } from "../app";
-import { User } from "../models/user";
+import { User, UserDoc } from "../models/user";
 import { Ticket } from "../models/ticket";
 import { Event } from "../models/event";
 import { OrderPayload } from "../models/order";
@@ -21,8 +21,11 @@ export const createTicket = async (
 ) => {
   const id = new Types.ObjectId().toHexString();
 
-  const user = User.build({ id: userId, email: "test@example.com" });
-  await user.save();
+  let user: unknown = await User.findById(userId);
+  if (!user) {
+    user = User.build({ id: userId, email: "test@example.com" });
+    await (user as UserDoc).save();
+  }
 
   const event = Event.build({
     id: new Types.ObjectId().toHexString(),
@@ -34,7 +37,7 @@ export const createTicket = async (
   await event.save();
 
   const price = 10;
-  const ticket = Ticket.build({ id, user, event, price });
+  const ticket = Ticket.build({ id, user: user as UserDoc, event, price });
   await ticket.save();
 
   return ticket;

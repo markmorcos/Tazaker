@@ -2,7 +2,7 @@ import request from "supertest";
 import { Types } from "mongoose";
 
 import { app } from "../../app";
-import { createTicket } from "../../test/global";
+import { createTicket, signIn } from "../../test/global";
 import { Order } from "../../models/order";
 import { Ticket } from "../../models/ticket";
 
@@ -40,4 +40,25 @@ it("can fetch a list of tickets", async () => {
     .send()
     .expect(200);
   expect(response.body).toHaveLength(3);
+});
+
+it("can fetch a list of tickets for a user", async () => {
+  const userId = new Types.ObjectId().toHexString();
+  const eventId = new Types.ObjectId().toHexString();
+  const anotherUserId = new Types.ObjectId().toHexString();
+  await createTicket({ userId, eventId, price: 10 });
+  await createTicket({ userId: anotherUserId, eventId, price: 20 });
+  await createTicket({ userId, eventId, price: 30 });
+
+  const response = await request(app)
+    .get("/api/tickets/listings")
+    .set("Cookie", signIn(userId))
+    .send()
+    .expect(200);
+
+  expect(response.body).toHaveLength(2);
+  expect(response.body[0].userId).toEqual(userId);
+  expect(response.body[0].price).toEqual(10);
+  expect(response.body[1].userId).toEqual(userId);
+  expect(response.body[1].price).toEqual(30);
 });
