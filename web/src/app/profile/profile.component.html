@@ -1,6 +1,6 @@
 <section>
   <article>
-    <a routerLink="/profile/orders">
+    <a routerLink="/orders">
       <app-card>
         <div class="content">
           <h1 class="text">Orders</h1>
@@ -9,14 +9,16 @@
     </a>
   </article>
   <article>
-    <app-card>
-      <div class="content">
-        <h1 class="text">Listings</h1>
-      </div>
-    </app-card>
+    <a routerLink="/listings">
+      <app-card>
+        <div class="content">
+          <h1 class="text">Listings</h1>
+        </div>
+      </app-card>
+    </a>
   </article>
   <article>
-    <a routerLink="/profile/sales">
+    <a routerLink="/sales">
       <app-card>
         <div class="content">
           <h1 class="text">Sales</h1>
@@ -24,14 +26,4 @@
       </app-card>
     </a>
   </article>
-  <article>
-    <app-card>
-      <div class="content">
-        <h1 class="text">Payments</h1>
-      </div>
-    </app-card>
-  </article>
-</section>
-<section class="children">
-  <router-outlet />
 </section>

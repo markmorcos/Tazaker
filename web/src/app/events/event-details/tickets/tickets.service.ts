@@ -58,4 +58,19 @@ export class TicketsService {
         })
       );
   }
+
+  getTicketListings() {
+    this.loading.set(true);
+    return this.httpClient.get<Ticket[]>('/api/tickets/listings').pipe(
+      tap({
+        next: (tickets) => {
+          this.tickets.set(tickets);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+        },
+      })
+    );
+  }
 }

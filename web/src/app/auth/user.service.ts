@@ -3,7 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { map, tap } from 'rxjs';
 
 export interface User {
-  id: number;
+  id: string;
   email: string;
 }
 

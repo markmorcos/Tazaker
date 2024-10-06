@@ -7,8 +7,14 @@
     <p>
       Platform fees: <strong>{{ ticket().fees | currency : "EUR" }}</strong>
     </p>
+    @if (canOrder()) {
     <button (click)="onOrderTicket(ticket().id)" [disabled]="loading()">
       Order
     </button>
+    } @if (eventLink()) {
+    <a [routerLink]="['/events', ticket().eventId]">
+      <button>Go to event</button>
+    </a>
+    }
   </div>
 </app-card>

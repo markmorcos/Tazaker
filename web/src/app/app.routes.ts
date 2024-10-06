@@ -14,19 +14,23 @@ import { TermsAndConditionsComponent } from './static/terms-and-conditions/terms
 import { SalesComponent } from './orders/sales/sales.component';
 import { AboutUsComponent } from './static/about-us/about-us.component';
 import { FrequentlyAskedQuestionsComponent } from './static/frequently-asked-questions/frequently-asked-questions.component';
+import { ListingsComponent } from './orders/listings/listings.component';
 
 export const routes: Routes = [
+  // Start
   { path: '', pathMatch: 'full', component: LandingComponent },
   { path: 'start', component: StartComponent },
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    children: [
-      { path: 'orders', pathMatch: 'full', component: OrdersComponent },
-      { path: 'orders/:id', component: OrderDetailsComponent },
-      { path: 'sales', component: SalesComponent },
-    ],
-  },
+
+  // Profile
+  { path: 'profile', component: ProfileComponent },
+  { path: 'sales', component: SalesComponent },
+  { path: 'listings', component: ListingsComponent },
+
+  // Orders
+  { path: 'orders', pathMatch: 'full', component: OrdersComponent },
+  { path: 'orders/:id', component: OrderDetailsComponent },
+
+  // Events
   { path: 'events', component: EventsComponent },
   { path: 'events/new', component: NewEventComponent },
   {
@@ -34,6 +38,8 @@ export const routes: Routes = [
     component: EventDetailsComponent,
     children: [{ path: 'new-ticket', component: NewTicketComponent }],
   },
+
+  // Static pages
   { path: 'about-us', component: AboutUsComponent },
   {
     path: 'frequently-asked-questions',

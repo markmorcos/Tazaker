@@ -24,7 +24,17 @@ export class HeaderComponent {
 
     if (this.userService.currentUser()) {
       return [
-        { label: 'Profile', href: ['/profile'] },
+        {
+          label: 'Profile',
+          href: ['/profile'],
+          menu: [
+            { label: 'Overview', href: ['/profile'] },
+            { label: 'Orders', href: ['/orders'] },
+            { label: 'Listings', href: ['/listings'] },
+            { label: 'Sales', href: ['/sales'] },
+            { label: 'Sign Out', onClick: () => this.onSignOut() },
+          ],
+        },
         { label: 'Events', href: ['/events'] },
       ];
     }

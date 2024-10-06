@@ -9,6 +9,19 @@
       <a [routerLink]="link.href" [routerLinkActive]="['active']">{{
         link.label
       }}</a>
+      @if (link.menu) {
+      <div class="menu">
+        @for (child of link.menu; track child.label) { @if (child.onClick) {
+        <button (click)="child.onClick()">
+          {{ child.label }}
+        </button>
+        } @else {
+        <a [routerLink]="child.href" [routerLinkActive]="['active']">{{
+          child.label
+        }}</a>
+        } }
+      </div>
+      }
     </li>
     }
   </ul>

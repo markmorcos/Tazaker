@@ -2,11 +2,12 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CardComponent } from '../shared/card/card.component';
 import { Order, OrdersService } from './orders.service';
 import { RouterLink } from '@angular/router';
+import { TableComponent } from '../shared/table/table.component';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CardComponent, RouterLink],
+  imports: [CardComponent, RouterLink, TableComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css',
 })
