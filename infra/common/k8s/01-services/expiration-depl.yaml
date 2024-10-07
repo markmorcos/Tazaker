@@ -17,11 +17,11 @@ spec:
           image: markmorcos/tazaker-expiration
           env:
             - name: NATS_CLUSTER_ID
+              value: tazaker
+            - name: NATS_CLIENT_ID
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: NATS_CLIENT_ID
-              value: tazaker
             - name: NATS_URL
               value: "http://nats-srv:4222"
             - name: REDIS_HOST
