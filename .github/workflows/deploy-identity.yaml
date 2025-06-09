@@ -1,0 +1,25 @@
+name: deploy-tazaker
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["identity/**"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger infrastructure deployment
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.INFRASTRUCTURE_PAT }}
+          repository: markmorcos/infrastructure
+          event-type: deploy-tazaker
+          client-payload: |-
+            {
+              "repository": "markmorcos/tazaker",
+              "token": "${{ secrets.DEPLOYMENT_TOKEN }}",
+              "version": "${{ github.sha }}",
+              "config_file": "identity/deployment.yaml"
+            }
