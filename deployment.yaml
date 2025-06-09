@@ -1,0 +1,56 @@
+version: 0.4.4
+
+project: "tazaker"
+
+services:
+  - name: nats
+    image: nats-streaming
+    tag: latest
+    args:
+      [
+        "-p",
+        "4222",
+        "-m",
+        "8222",
+        "-hbi",
+        "5s",
+        "-hbt",
+        "5s",
+        "-hbf",
+        "2",
+        "-SD",
+        "-cid",
+        "tazaker",
+      ]
+    ports:
+      - name: client
+        port: 4222
+      - name: monitoring
+        port: 8222
+  - name: identity
+    image: ghcr.io/markmorcos/tazaker-identity
+    context: "./identity"
+    port: 3000
+    env:
+      - name: MONGO_URI
+        valueFrom:
+          secretKeyRef:
+            name: identity-database-secret
+            key: MONGO_URI
+      - name: JWT_KEY
+        valueFrom:
+          secretKeyRef:
+            name: identity-jwt-secret
+            key: JWT_KEY
+      - name: NATS_CLUSTER_ID
+        value: tazaker
+      - name: NATS_CLIENT_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NATS_URL
+        value: "http://tazaker-nats-service:4222"
+    ingress:
+      host: tazaker.morcos.tech
+      path: /api/(auth|users)/?(.*)
+      pathType: ImplementationSpecific
