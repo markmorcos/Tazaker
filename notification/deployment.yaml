@@ -1,0 +1,22 @@
+version: 0.4.4
+
+project: "tazaker"
+
+services:
+  - name: notification
+    image: ghcr.io/markmorcos/tazaker-notification
+    context: "./notification"
+    env:
+      - name: NATS_CLUSTER_ID
+        value: tazaker
+      - name: NATS_CLIENT_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NATS_URL
+        value: "http://tazaker-nats-service:4222"
+      - name: SENDGRID_KEY
+        valueFrom:
+          secretKeyRef:
+            name: notification-sendgrid-secret
+            key: SENDGRID_KEY

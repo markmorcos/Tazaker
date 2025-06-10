@@ -1,0 +1,16 @@
+version: 0.4.4
+
+project: "tazaker"
+
+services:
+  - name: web
+    image: ghcr.io/markmorcos/tazaker-web
+    context: "./web"
+    port: 3000
+    env:
+      - name: PORT
+        value: "3000"
+    ingress:
+      host: tazaker.morcos.tech
+      path: /?(.*)
+      pathType: ImplementationSpecific

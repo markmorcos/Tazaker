@@ -1,0 +1,19 @@
+version: 0.4.4
+
+project: "tazaker"
+
+services:
+  - name: expiration
+    image: ghcr.io/markmorcos/tazaker-expiration
+    context: "./expiration"
+    env:
+      - name: NATS_CLUSTER_ID
+        value: tazaker
+      - name: NATS_CLIENT_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NATS_URL
+        value: "http://tazaker-nats-service:4222"
+      - name: REDIS_HOST
+        value: "tazaker-redis-service"

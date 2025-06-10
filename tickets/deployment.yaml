@@ -1,0 +1,32 @@
+version: 0.4.4
+
+project: "tazaker"
+
+services:
+  - name: tickets
+    image: ghcr.io/markmorcos/tazaker-tickets
+    context: "./tickets"
+    port: 3000
+    env:
+      - name: MONGO_URI
+        valueFrom:
+          secretKeyRef:
+            name: tickets-database-secret
+            key: MONGO_URI
+      - name: JWT_KEY
+        valueFrom:
+          secretKeyRef:
+            name: jwt-secret
+            key: JWT_KEY
+      - name: NATS_CLUSTER_ID
+        value: tazaker
+      - name: NATS_CLIENT_ID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: NATS_URL
+        value: "http://tazaker-nats-service:4222"
+    ingress:
+      host: tazaker.morcos.tech
+      path: /api/tickets/?(.*)
+      pathType: ImplementationSpecific

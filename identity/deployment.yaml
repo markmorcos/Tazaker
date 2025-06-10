@@ -3,30 +3,6 @@ version: 0.4.4
 project: "tazaker"
 
 services:
-  - name: nats
-    image: nats-streaming
-    tag: latest
-    args:
-      [
-        "-p",
-        "4222",
-        "-m",
-        "8222",
-        "-hbi",
-        "5s",
-        "-hbt",
-        "5s",
-        "-hbf",
-        "2",
-        "-SD",
-        "-cid",
-        "tazaker",
-      ]
-    ports:
-      - name: client
-        port: 4222
-      - name: monitoring
-        port: 8222
   - name: identity
     image: ghcr.io/markmorcos/tazaker-identity
     context: "./identity"
@@ -40,7 +16,7 @@ services:
       - name: JWT_KEY
         valueFrom:
           secretKeyRef:
-            name: identity-jwt-secret
+            name: jwt-secret
             key: JWT_KEY
       - name: NATS_CLUSTER_ID
         value: tazaker
