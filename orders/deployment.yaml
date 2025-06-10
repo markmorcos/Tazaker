@@ -30,12 +30,12 @@ services:
       - name: PAYPAL_CLIENT_ID
         valueFrom:
           secretKeyRef:
-            name: orders-paypal-secret
+            name: paypal-secret
             key: PAYPAL_CLIENT_ID
       - name: PAYPAL_SECRET
         valueFrom:
           secretKeyRef:
-            name: orders-paypal-secret
+            name: paypal-secret
             key: PAYPAL_SECRET
     ingress:
       host: tazaker.morcos.tech

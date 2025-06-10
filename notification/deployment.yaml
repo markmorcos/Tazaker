@@ -19,5 +19,5 @@ services:
       - name: SENDGRID_KEY
         valueFrom:
           secretKeyRef:
-            name: notification-sendgrid-secret
+            name: sendgrid-secret
             key: SENDGRID_KEY
