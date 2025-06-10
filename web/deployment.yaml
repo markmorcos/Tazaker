@@ -1,6 +1,6 @@
 version: 0.4.4
 
-project: "tazaker"
+project: "tazaker-web"
 
 services:
   - name: web
